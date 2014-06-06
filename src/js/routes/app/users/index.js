@@ -1,16 +1,14 @@
 define([
   'routes/base',
-  'jsx!views/users/index',
-  'stores/accounts',
-  'stores/users',
-], function(Route, View, AccountStore, UserStore) {
+  'jsx!views/app/users/index'
+], function(Route, View) {
   new Route('userIndex', {
     views: [{ component: View }],
 
     enter: function() {
       this.update({
         navbar: {
-          item: '/users'
+          item: '/app/users'
         }
       });
     }

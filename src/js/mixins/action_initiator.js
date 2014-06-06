@@ -1,4 +1,6 @@
-define([], function() {
+define([ 'underscore' ], function(_) {
+  var clone = _.clone;
+
   return {
     getInitialState: function() {
       return {
@@ -18,12 +20,23 @@ define([], function() {
       }
     },
 
-    componentDidUpdate: function() {
-      var storeError = this.props.storeError;
+    componentWillReceiveProps: function(nextProps) {
+      var storeError = nextProps.storeError;
 
       if (storeError && storeError.actionIndex === this.state.actionIndex) {
         this.onStoreError(storeError);
+        this.setState({ storeError: clone(storeError) });
       }
+    },
+
+    clearStoreError: function() {
+      this.setState({ storeError: undefined });
+    },
+
+    trackAction: function(service) {
+      this.setState({
+        actionIndex: service.actionIndex
+      });
     }
   }
 });

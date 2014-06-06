@@ -5,7 +5,7 @@ module.exports = {
   production: {
     options: {
       paths: [ 'src/css' ],
-      compress: false
+      compress: true
     },
     files: {
       'www/dist/quizard.css': 'src/css/app.less'

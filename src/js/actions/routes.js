@@ -1,24 +1,45 @@
 define([ 'ext/pixy', 'stores/app', 'stores/sessions', 'constants' ],
 function(Pixy, AppStore, SessionStore, K) {
-  var RouteActions;
   var router = Pixy.ApplicationRouter;
   var dispatcher = Pixy.Dispatcher;
 
-  function transitionTo(destination) {
+  var transitionTo = function(destination) {
     return router.transitionTo(destination);
-  }
+  };
 
-  function goToDestinationOrHome(destination) {
+  var home = function() {
+    var destination = SessionStore.isActive() ?
+      K.DEFAULT_PRIVATE_ROUTE :
+      K.DEFAULT_PUBLIC_ROUTE;
+
+    console.debug('RouteActions: going home.');
+
+    return transitionTo(destination).promise;
+  };
+
+  var goToDestinationOrHome = function(destination) {
+    var targetHandler;
+
     if (destination) {
       console.debug('RouteActions:\tdestination:', destination);
-      return transitionTo(destination).followRedirects().catch(RouteActions.home);
+
+      if (router.hasRoute(destination)) {
+        targetHandler = router.getHandler(destination);
+
+        if (!targetHandler.isAccessible()) {
+          console.warn('\tDestination is not accessible, going back home.');
+          return home();
+        }
+      }
+
+      return transitionTo(destination).followRedirects().catch(home);
     } else {
       console.debug('RouteActions:\tdestination unavailable, going back home.');
-      return RouteActions.home();
+      return home();
     }
-  }
+  };
 
-  RouteActions = {
+  return {
     /**
      * Transition back to the previous primary view.
      */
@@ -27,15 +48,7 @@ function(Pixy, AppStore, SessionStore, K) {
       return goToDestinationOrHome(AppStore.previousPrimaryRoute());
     },
 
-    home: function() {
-      var destination = SessionStore.isActive() ?
-        K.DEFAULT_PRIVATE_ROUTE :
-        K.DEFAULT_PUBLIC_ROUTE;
-
-      console.debug('RouteActions: going home.');
-
-      return transitionTo(destination).promise;
-    },
+    home: home,
 
     /**
      * Transition back to the current primary view, assuming we're in a
@@ -53,6 +66,4 @@ function(Pixy, AppStore, SessionStore, K) {
       });
     }
   };
-
-  return RouteActions;
 });

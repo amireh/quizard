@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 define([ 'react', 'jquery' ], function(React, $) {
-  var LoadingScreen = React.createClass({
+  var Loading = React.createClass({
     getDefaultProps: function() {
       return {
         version: '1.0.0'
@@ -29,5 +29,5 @@ define([ 'react', 'jquery' ], function(React, $) {
     }
   });
 
-  return LoadingScreen;
+  return Loading;
 });

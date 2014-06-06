@@ -16,7 +16,6 @@ define([
     return collection.get(id);
   };
 
-
   var activate = function(payload, onChange, onError) {
     var account = get(payload.id);
 
@@ -39,7 +38,7 @@ define([
 
       return collection.fetch({ reset: true }).then(function() {
         if (_activeAccountId) {
-          activate({ id: _activeAccountId }, NOOP, NOOP);
+          activate({ id: _activeAccountId }, store.emitChange.bind(store), NOOP);
         }
 
         return store.getAll();

@@ -1,8 +1,12 @@
 define([ 'core/dispatcher', 'constants' ],
 function(Dispatcher, K) {
   return {
-    create: function(name) {
-      return Dispatcher.dispatch(K.USER_CREATE);
+    create: function(name, email, password) {
+      return Dispatcher.dispatch(K.USER_CREATE, {
+        name: name,
+        email: email,
+        password: password
+      });
     },
 
     loadAll: function() {

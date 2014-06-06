@@ -6,13 +6,22 @@ define([ 'react' ], function(React) {
   var STATE_SUCCESS = 3;
   var STATE_ERROR = 4;
 
-  function activate(e) {
+  var resetTimer;
+
+  var activate = function(e) {
     this.markLoading();
 
     if (this.props.onClick) {
       this.props.onClick(e);
     }
-  }
+  };
+
+  var clearTimer = function() {
+    if (resetTimer) {
+      clearTimeout(resetTimer);
+      resetTimer = null;
+    }
+  };
 
   /**
    * @class Components.SaveButton
@@ -24,7 +33,7 @@ define([ 'react' ], function(React) {
       children: React.PropTypes.renderable,
       className: React.PropTypes.oneOf([ 'default', 'primary', 'success', 'danger' ]),
       onClick: React.PropTypes.func,
-      resetTimer: React.PropTypes.number
+      resetAfter: React.PropTypes.number
     },
 
     getInitialState: function() {
@@ -36,7 +45,7 @@ define([ 'react' ], function(React) {
     getDefaultProps: function() {
       return {
         className: 'default',
-        resetTimer: 500,
+        resetAfter: 1000,
         overlay: false,
         paddedOverlay: false,
         onClick: null
@@ -45,11 +54,12 @@ define([ 'react' ], function(React) {
 
     componentDidUpdate: function() {
       if (this.state.buttonState === STATE_IDLE) {
-        if (this.__resetTimer) {
-          clearTimeout(this.__resetTimer);
-          this.__resetTimer = null;
-        }
+        clearTimer();
       }
+    },
+
+    componentWillUnmount: function() {
+      clearTimer();
     },
 
     render: function() {
@@ -87,10 +97,6 @@ define([ 'react' ], function(React) {
       });
     },
 
-    isIdle: function() {
-      return this.__resetTimer || this.state === STATE_IDLE;
-    },
-
     markLoading: function() {
       this.setState({
         buttonState: STATE_LOADING
@@ -104,7 +110,9 @@ define([ 'react' ], function(React) {
         buttonState: success ? STATE_SUCCESS : STATE_ERROR
       });
 
-      this.__resetTimer = setTimeout(this.reset, this.props.resetTimer);
+      clearTimer();
+
+      resetTimer = setTimeout(this.reset, this.props.resetAfter);
     }
   });
 

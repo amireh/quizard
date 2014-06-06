@@ -1,13 +1,14 @@
 /** @jsx React.DOM */
 define([
-  'react',
+  'ext/react',
   'jquery',
   'actions/routes'
 ], function(React, $, Actions) {
   var DialogLayout = React.createClass({
+    mixins: [ React.addons.StackedLayoutMixin ],
+
     getDefaultProps: function() {
       return {
-        children: false,
         onClose: this.closeDialog
       };
     },
@@ -23,7 +24,7 @@ define([
     render: function() {
       return(
         <aside id="dialogs">
-          {this.transferPropsTo(this.props.children())}
+          {this.renderComponent()}
         </aside>
       );
     },

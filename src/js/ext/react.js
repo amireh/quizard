@@ -1,5 +1,5 @@
 define([
-  'react',
+  'pixy/ext/react',
   './react/link_utils',
   'mixins/action_initiator',
   'mixins/form_errors'

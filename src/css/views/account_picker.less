@@ -20,8 +20,7 @@
 
   .btn-dropdown {
     border: none;
-    // border-right: 1px solid rgba(0, 0, 0, 0.05);
-    border-right: 1px solid #ddd;
+    border-right: 1px solid transparent;
     // border-radius: 2px 0 0 2px;
     border-radius: 0;
     height: @height - 2px;
@@ -30,6 +29,10 @@
     font-size: @font-size;
     position: relative;
     z-index: 11;
+
+    &.open {
+      border-right-color: #ddd;
+    }
   }
 
   .btn-dropdown-anchor, .heading {

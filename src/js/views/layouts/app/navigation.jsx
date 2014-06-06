@@ -84,29 +84,29 @@ define([ 'react' ], function(React) {
 
       return(
         <nav id="navbar">
-          <Link icon="icon-home" href="/">Dashboard</Link>
+          <Link icon="icon-home" href="/app">Dashboard</Link>
 
-          <Link icon="icon-android" href="/users">Users</Link>
-          <SubNav for="/users">
-            <SubLink href="/users/list">
+          <Link icon="icon-android" href="/app/users">Users</Link>
+          <SubNav for="/app/users">
+            <SubLink href="/app/users/list">
               View users
             </SubLink>
 
-            <SubLink href="/users/enroll">
+            <SubLink href="/app/users/enroll">
               Enroll a student
             </SubLink>
           </SubNav>
 
-          <Link icon="icon-wand" href="/quizzes">
+          <Link icon="icon-wand" href="/app/quizzes">
             Quizzes
           </Link>
 
-          <SubNav for="/quizzes">
-            <SubLink href="/quizzes/create">
+          <SubNav for="/app/quizzes">
+            <SubLink href="/app/quizzes/create">
               Create a quiz
             </SubLink>
 
-            <SubLink href="/quizzes/take">
+            <SubLink href="/app/quizzes/take">
               Take a quiz
             </SubLink>
           </SubNav>

@@ -7,12 +7,11 @@ define([ 'ext/pixy' ], function(Pixy) {
    */
   var User = Pixy.Model.extend({
     name: 'User',
-    urlRoot: '/users',
 
     initialize: function() {
     },
 
-    toJSON: function() {
+    toProps: function() {
       var props = this.pick('name', 'email', 'login_id');
 
       props.id = this.get('id') + '';

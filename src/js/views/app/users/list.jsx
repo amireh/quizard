@@ -34,7 +34,7 @@ define([ 'react', 'actions/users' ], function(React, UserActions) {
     renderUser: function(user) {
       return (
         <li key={user.id}>{user.name}</li>
-      )
+      );
     },
 
     renderRequirementWarning: function() {

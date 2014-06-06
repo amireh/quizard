@@ -18,10 +18,6 @@ define([ 'ext/underscore', 'ext/pixy', 'models/user' ],
       active: false
     },
 
-    requires: [],
-
-    module: 'session',
-
     /**
       * Create a new Session with its own users collection.
       */

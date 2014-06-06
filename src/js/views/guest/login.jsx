@@ -35,7 +35,8 @@ define([
         <Dialog
           onClose={this.props.onClose}
           title='Sign in to Canvas'
-          autoFocus='[name="email"]'
+          autoFocus='[name="apiToken"]'
+          closable={false}
           thin={true}>
 
           <p>Fill in your Canvas API token to proceed.</p>
@@ -46,7 +47,6 @@ define([
               name="apiToken"
               placeholder="Your API token"
               autoFocus={true}
-              ref="autoFocusNode"
               valueLink={this.linkState('apiToken')}
               className="form-input" />
 
@@ -63,17 +63,8 @@ define([
       );
     },
 
-    login: function(e) {
-      var service;
-
-      e.preventDefault();
-
-      this.refs.saveButton.markLoading();
-      service = SessionActions.create(this.state.apiToken);
-
-      this.setState({
-        actionIndex: service.actionIndex
-      });
+    login: function() {
+      this.trackAction(SessionActions.create(this.state.apiToken));
     }
   });
 

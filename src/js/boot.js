@@ -1,8 +1,8 @@
 require([
   'ext/pixy',
   'stores/sessions',
-  'bundles/core_bundle',
-  'bundles/store_bundle',
+  'bundles/core',
+  'bundles/stores',
   'config/initializer',
   'config/initializers/routes'
 ],

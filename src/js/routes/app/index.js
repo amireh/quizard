@@ -1,9 +1,8 @@
 define([
   'routes/base',
-  'jsx!views/index'
+  'jsx!views/app/index'
 ], function(Route, View) {
-  new Route('index', {
-    windowTitle: 'Quizard - Canvas Quiz Hax',
+  new Route('appIndex', {
     views: [{ component: View }]
   });
 });

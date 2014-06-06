@@ -38,7 +38,7 @@ define([
               <li>
                 <a
                   data-online="disable"
-                  href="/logout"
+                  href="/app/logout"
                   onClick={this.logout}
                   className="dropdown-item icon-switch embedded-icon-16">
                   Logout

@@ -1,18 +1,17 @@
 define([
   'routes/secondary',
-  'jsx!views/login',
+  'jsx!views/guest/login',
   'stores/sessions',
   'constants'
 ], function(SecondaryRoute, Dialog, Store, K) {
   new SecondaryRoute('login', {
     accessPolicy: 'public',
+    windowTitle: 'Login - Quizard',
 
     views: [{
       component: Dialog,
       into: 'dialogs'
     }],
-
-    windowTitle: 'Login - Quizard',
 
     enter: function() {
       Store.addActionErrorListener(K.SESSION_CREATE,

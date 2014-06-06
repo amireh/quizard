@@ -11,14 +11,15 @@
 
   width: @navbar-width;
 
-  color: white;
+  color: #666;
   // background: rgba(255,255,255,0.9);
   // box-shadow: 2px 2px 4px @shade;
   font-size: 16.5px;
   line-height: 42px;
 
-  background: #555;
+  // background: #555;
   .disable-selection();
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
 }
 
 .navbar-link {
@@ -59,13 +60,13 @@
   padding: 5px 0;
   @width: 1px;
   @offset: 20px;
-  @height: 20px;
+  @height: 30px;
   list-style-type: none;
 
   li a {
     display: block;
     color: inherit;
-    font-size: 11px;
+    font-size: 12.5px;
     line-height: @height;
     padding-left: @offset;
 

@@ -1,41 +1,21 @@
 define([
   'ext/pixy',
-  'util/get',
-  'mixins/routes/access_policy',
-  'mixins/routes/window_title',
-  'mixins/routes/loading',
-  'mixins/routes/secondary_transitions',
-  'mixins/routes/renderer',
-  'mixins/routes/trackable',
-  'mixins/routes/props',
-],
-function(
-  Pixy,
-  get,
-  AccessPolicyMixin,
-  WindowTitleMixin,
-  LoadingMixin,
-  SecondaryTransitionsMixin,
-  RendererMixin,
-  TrackableMixin,
-  PropsMixin)
-{
+  'pixy/mixins/routes',
+  'mixins/routes/trackable'
+], function(Pixy, RouteMixins, TrackableMixin) {
   var Route = Pixy.Route.extend({
     mixins: [
-      AccessPolicyMixin,
-      SecondaryTransitionsMixin,
-      WindowTitleMixin,
-      LoadingMixin,
-      RendererMixin,
-      TrackableMixin,
-      PropsMixin
+      RouteMixins.AccessPolicy,
+      RouteMixins.WindowTitle,
+      RouteMixins.Loading,
+      RouteMixins.Renderer,
+      RouteMixins.Props,
+      TrackableMixin
     ],
-
-    get: get,
 
     events: {
       willTransition: function(transition) {
-        SecondaryTransitionsMixin.events.willTransition.call(this, transition);
+        RouteMixins.SecondaryTransitions.willTransition.call(this, transition);
       }
     },
 
@@ -47,8 +27,6 @@ function(
       return this.trigger('remove', component, options);
     },
 
-    update: PropsMixin.update,
-
     injectStoreError: function(actionIndex, storeError) {
       this.trigger('storeError', {
         actionIndex: actionIndex,
@@ -56,18 +34,13 @@ function(
       });
     },
 
-    setStatus: function(message, ratio) {
-      setTimeout(function() {
-        this.update({ status: message });
-      }.bind(this), 100);
+    setStatus: function(message) {
+      this.update({ status: message });
     },
 
     clearStatus: function() {
       this.setStatus(undefined);
-    },
-
-    /** @internal  */
-    _propKeys: []
+    }
   });
 
   return Route;

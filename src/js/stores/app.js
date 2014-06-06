@@ -1,15 +1,10 @@
-define([ 'ext/pixy', 'underscore', 'constants', 'moment', 'config' ],
-function(Pixy, _, Constants, moment, Config) {
+define([ 'ext/pixy', 'underscore', 'constants' ],
+function(Pixy, _, Constants) {
   var store;
   var primaryRoute;
   var previousPrimaryRoute;
   var secondaryRoute;
   var clone = _.clone;
-  var dateRange = {
-    from: moment.utc().startOf('month'),
-    to: moment.utc().endOf('month'),
-    format: Config.defaultPreferences.user.dateFormat
-  };
 
   /**
    * @internal
@@ -56,43 +51,6 @@ function(Pixy, _, Constants, moment, Config) {
     }
 
     onChange();
-  }
-
-  /**
-   * Update the date-range that affects the resources loaded.
-   *
-   * @param {Object} payload  [description]
-   *
-   * @param {String} payload.from (required)
-   * @param {String} payload.to (required)
-   * @param {String} payload.format
-   */
-  function setDateRange(payload, onChange/*, onError*/) {
-    var from, to, format, valid;
-
-    if (!dateRange) {
-      dateRange = {};
-    }
-
-    format = payload.format || dateRange.format;
-    from = moment.utc(payload.from, format);
-    to = moment.utc(payload.to, format);
-
-    valid = to.isSame(from) || to.isAfter(from);
-
-    if (!valid) {
-      return onError();
-    }
-
-    if (from.isSame(dateRange.from) && to.isSame(dateRange.to)) {
-      return;
-    }
-
-    dateRange.from = from;
-    dateRange.to = to;
-    dateRange.format = format;
-
-    onChange('dateRange', dateRange);
   }
 
   /**
@@ -146,23 +104,10 @@ function(Pixy, _, Constants, moment, Config) {
       return secondaryRoute;
     },
 
-    dateRange: function() {
-      var format = dateRange.format;
-
-      return {
-        from: dateRange.from.format(format),
-        to: dateRange.to.format(format),
-        format: format
-      };
-    },
-
     onAction: function(action, payload, onChange, onError) {
       switch(action) {
         case Constants.APP_TRACK_ROUTE:
           trackRouteChanges(payload, onChange);
-        break;
-        case Constants.APP_SET_DATE_RANGE:
-          setDateRange(payload, onChange, onError);
         break;
       }
     }

@@ -46,7 +46,7 @@ define([ 'react', 'underscore', 'util/debug_log' ], function(React, _, Logger) {
 
       switch(region) {
         case 'main':
-          assertValidOutlet(this.availableOutlets, outlet);
+          assertValidOutlet(this.availableOutlets(), outlet);
 
           //>>excludeStart("production", pragmas.production);
           if (this.state.outlets[outlet]) {

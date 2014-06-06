@@ -69,6 +69,7 @@ function(CONFIG, RSVP, diff) {
     });
   };
 
+  DEBUG.expose('stores/app', 'appStore');
   DEBUG.expose('core/session', 'session');
   DEBUG.expose('stores/accounts', 'accountStore');
   DEBUG.expose('stores/users', 'userStore');

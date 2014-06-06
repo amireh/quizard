@@ -1,20 +1,45 @@
 define([
-  'ext/pixy', 'bundles/routes', 'constants', 'rsvp'
-], function(Pixy, RouteBundle, K, RSVP) {
+  'ext/pixy',
+  'constants',
+  'rsvp',
+  'bundles/routes'
+], function(Pixy, K, RSVP) {
   'use strict';
 
-  var router = Pixy.ApplicationRouter;
+  var router, bundle;
 
-  RouteBundle.setup(router);
+  router = Pixy.ApplicationRouter;
+  bundle = Pixy.routeMap;
 
   router.getHandler = function(name) {
-    var handler = RouteBundle.routeMap[name];
+    var handler = bundle[name];
 
     if (!handler) {
-      router.trigger('error', K.ERROR_NOT_FOUND);
+      console.error('No route handler found for', name);
       return RSVP.reject(K.ERROR_NOT_FOUND);
     }
 
-    return RouteBundle.routeMap[name];
+    return bundle[name];
   };
+
+  router.map(function(match) {
+    match('/').to('root', function(match) {
+      match('/welcome').to('guestIndex');
+      match('/login').to('login');
+
+      match('/app').to('app', function(match) {
+        match('/').to('appIndex');
+        match('/logout').to('logout');
+
+        match('/users').to('users', function(match) {
+          match('/').to('userIndex');
+          match('/list').to('userList');
+          match('/enroll').to('userEnroll');
+        });
+
+        // 404
+        match('/*rogueRoute').to('notFound');
+      });
+    });
+  });
 });

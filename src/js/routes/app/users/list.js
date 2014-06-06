@@ -1,6 +1,6 @@
 define([
   'routes/base',
-  'jsx!views/users/list',
+  'jsx!views/app/users/list',
   'stores/accounts',
   'stores/users',
 ], function(Route, View, AccountStore, UserStore) {
@@ -24,8 +24,8 @@ define([
       this.update({
         users: uniq(flatten(users, true), false, 'id'),
         navbar: {
-          item: '/users',
-          child: '/users/list'
+          item: '/app/users',
+          child: '/app/users/list'
         }
       });
     }

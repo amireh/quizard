@@ -18,7 +18,7 @@ define([ 'react' ], function(React) {
     renderAccount: function(account) {
       return (
         <li key={account.id}>{account.name}</li>
-      )
+      );
     }
   });
 
