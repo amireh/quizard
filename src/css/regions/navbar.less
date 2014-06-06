@@ -1,0 +1,85 @@
+#navbar {
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+  white-space: nowrap;
+
+  top: @menubar-height + @region-spacing;
+  right: auto;
+  bottom: 0;
+  left: 0;
+
+  width: @navbar-width;
+
+  color: white;
+  // background: rgba(255,255,255,0.9);
+  // box-shadow: 2px 2px 4px @shade;
+  font-size: 16.5px;
+  line-height: 42px;
+
+  background: #555;
+  .disable-selection();
+}
+
+.navbar-link {
+  position: relative;
+  display: block;
+  color: inherit;
+  padding: 0 @whitespace;
+
+  &:hover, &:focus, &.active {
+    text-decoration: none;
+    background: rgba(0,0,0,0.05);
+
+    &:before, i {
+      opacity: 1;
+    }
+  }
+
+  // &.active {
+  //   font-weight: bold;
+  // }
+
+  &:before, i {
+    display: block;
+    position: absolute;
+    right: @whitespace;
+    line-height: inherit;
+    font-weight: normal;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+.navbar-subnav {
+  margin: 0;
+  padding: 5px 0;
+  @width: 1px;
+  @offset: 20px;
+  @height: 20px;
+  list-style-type: none;
+
+  li a {
+    display: block;
+    color: inherit;
+    font-size: 11px;
+    line-height: @height;
+    padding-left: @offset;
+
+    &:hover, &.active {
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
+}
+
+.navbar-header {
+  padding: 0 @whitespace;
+  text-transform: uppercase;
+  font-size: 11px;
+  line-height: 30px;
+  text-shadow: 0 1px 0 white;
+}

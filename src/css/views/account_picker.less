@@ -1,0 +1,76 @@
+.account-picker {
+  @height: @menubar-height + 2px;
+  @font-size: 11px;
+
+  display: inline-block;
+  position: relative;
+  width: @navbar-width;
+  font-size: @font-size;
+
+  .heading {
+    .disable-selection;
+
+    .active-account {
+      .inline;
+      .ellipsify;
+
+      max-width: 110px;
+    }
+  }
+
+  .btn-dropdown {
+    border: none;
+    // border-right: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 1px solid #ddd;
+    // border-radius: 2px 0 0 2px;
+    border-radius: 0;
+    height: @height - 2px;
+    line-height: @height - 2px;
+    box-shadow: none;
+    font-size: @font-size;
+    position: relative;
+    z-index: 11;
+  }
+
+  .btn-dropdown-anchor, .heading {
+    height: @height - 2px;
+    line-height: @height - 2px;
+  }
+
+  .dropdown-menu {
+    min-width: @navbar-width - 1px;
+    max-width: 480px;
+    // margin-left: -1px;
+    padding-top: 0;
+    border-color: #ccc;
+    border-left: none;
+    padding-bottom: 0;
+
+    &:before, &:after { display: none; }
+
+    .list-item {
+      color: @foreground;
+      line-height: 30px;
+      height: auto;
+      white-space: nowrap;
+      .ellipsify();
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .list-separator {
+      line-height: 30px;
+      border: none;
+    }
+  }
+
+  .account-balance {
+    position: absolute;
+    right: -140px;
+    top: 0;
+    width: 120px;
+    line-height: @height - 2px;
+  }
+}

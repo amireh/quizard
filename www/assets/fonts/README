@@ -1,0 +1,9 @@
+== Notes on installing newer versions of Pibi-Icons and Pibi-Emblems
+
+1. create a symlink: 'archive/style.css' -> 'archive/style.less'
+2. edit 'style.less' to not use the icon-specific ".icon-" classes, but to use the generic
+   selector format instead, ie:
+   # [class*="icon-"] or [class*="emblem-"]
+   # instead of
+   # .icon-foo, .icon-bar
+3. remove the body of that selector and replace it with the .iconify() mixin

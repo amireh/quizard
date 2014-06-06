@@ -1,0 +1,64 @@
+.save-button {
+  @transition-timer: 0.3s;
+
+  position: relative;
+
+  .transition(background-color @transition-timer ease-in-out 0);
+
+  .content, .indicator {
+    .transition(opacity @transition-timer ease-in 0);
+  }
+
+  .indicator {
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -0.5em;
+    opacity: 0;
+
+    &:before { .iconify(); }
+  }
+
+  &.state-loading .indicator {
+    &:before { content: @icon-cog; }
+
+    .anime-rotate();
+  }
+
+  &.state-success .indicator:before { content: @icon-checkmark; }
+  &.state-error .indicator:before {
+    content: @icon-cross;
+    font-size: 1.15rem;
+    margin-right: -2px;
+    margin-top: -0.15rem;
+    // font-weight: bold;
+  }
+
+  &.state-loading, &.state-success, &.state-error {
+    .content { opacity: 0; }
+
+    .indicator {
+      opacity: 1;
+    }
+  }
+
+  &[disabled], &[disabled].state-loading {
+    cursor: default;
+    opacity: 1;
+  }
+
+  &.overlay {
+    &.state-loading, &.state-success, &.state-error {
+      .content { opacity: 1; }
+      .indicator {
+        right: 10px;
+        left: auto;
+        margin-left: 0;
+      }
+    }
+
+    &.padded-overlay {
+      padding: 0 30px 0 15px;
+    }
+  }
+}

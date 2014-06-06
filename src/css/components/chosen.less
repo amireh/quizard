@@ -1,0 +1,92 @@
+@import "../helpers";
+@import "../icons";
+
+.chzn-container-single .chzn-single:after {
+  position: absolute;
+  top:  0;
+  right: 0;
+  display: inline-block;
+  font-family: 'Pibi';
+  content: '\e008';
+  font-size: 16px;
+}
+
+.chosen-container.with-arrow {
+  position: relative;
+
+  .arrow-block() {
+    position: absolute;
+    right:  1px;
+    top:    1px;
+    bottom: 1px;
+    display: block;
+    pointer-events: none;
+    width: 26px;
+    z-index: 1;
+  }
+
+  &.chosen-with-drop {
+    .chosen-drop {
+      padding-top: 5px;
+      border-top: 1px solid #ddd;
+    }
+  }
+
+  &:hover, &.chosen-with-drop {
+    .chosen-single {
+      background: #f4f4f4;
+    }
+  }
+
+  // This is basically the :focus equivalent for Chosen.
+  &.chosen-container-active {
+    .chosen-single {
+      border-color: @dark-blue;
+    }
+
+    &.chosen-with-drop {
+      .chosen-single {
+        border-color: #ddd;
+      }
+    }
+  }
+
+  &:before {
+    .transition(width 0.25s ease-out 0s);
+    .arrow-block();
+    content: '';
+    background: #eee;
+    border-left: 1px solid #ccc;
+  }
+
+  &:after {
+    .iconify(@icon-arrow-down);
+    .arrow-block();
+    line-height: 28px;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  &.chosen-with-drop:before {
+    width: 0;
+    border-left-color: transparent;
+  }
+
+  /**
+   * This is for embedding inside an .input-prepend or .input-append block.
+   *
+   * Here's an example markup:
+   *
+   *   <div class="input-append">
+   *     <input type="text" />
+   *     <select class="add-on with-arrow text-left"></select>
+   *   </div>
+   */
+  &.add-on {
+    padding: 0;
+
+    &.text-left {
+      text-align: left;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+#menubar {
+  position: absolute;
+  z-index: 5;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  height: @menubar-height;
+  line-height: 28px;
+  // box-shadow: 0 2px 4px @shade;
+
+  padding: 0 0 0 @whitespace;
+  font-size: 11px;
+  font-weight: bold;
+  background: #f4f4f4;
+}
+
+.menubar-btn {
+  padding: 0 @whitespace;
+  height: @menubar-height;
+  line-height: @menubar-height - 1px;
+  margin: 0;
+  font-size: inherit;
+  display: inline-block;
+
+  &.padded {
+    padding-right: 40px;
+    padding-left: 15px;
+    margin-right: 0;
+  }
+
+  &.btn {
+    background: none;
+    box-shadow: -1px 0 rgba(0,0,0,0.05);
+    border-radius: 0;
+  }
+
+  &.active, &.open, &:hover {
+    background: white;
+  }
+
+  .btn-dropdown-anchor {
+    line-height: inherit;
+  }
+}
+
+#menubar .account-picker {
+  margin-left: -15px;
+}

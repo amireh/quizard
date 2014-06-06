@@ -1,0 +1,218 @@
+@import "icons";
+
+input:-webkit-autofill {
+  &, &:focus, &:active, &:invalid {
+    color: inherit;
+    box-shadow: 0 0 0 1000px white inset;
+  }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  display: none;
+  margin: 0;
+}
+
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner {
+  border: none;
+}
+
+form {
+  position: relative;
+
+  &.tiny-legend {
+    legend {
+      margin: 5px 0;
+      font-size: 13px;
+      line-height: 24px;
+      font-weight: bold;
+      border-bottom: none;
+    }
+  }
+}
+
+fieldset {
+  border: 0;
+  margin: 10px 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.vertical-form {
+  .form-input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 4px 9px;
+    height: auto;
+    line-height: 2em;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .secondary-actions {
+    .btn {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.form-label {
+  display: block;
+  font-weight: bold;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+input.spanner, .breaker {
+  width: 100%;
+  clear: both;
+}
+
+label.skinned-checkbox {
+  position: relative;
+  vertical-align: middle;
+  line-height: 28px;
+
+  input[type="checkbox"] {
+    display: inline-block;
+    width:  22px;
+    display: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+
+    &+ span:before {
+      .iconify(@icon-checkbox-unchecked);
+      font-size: 14px;
+      height: 16px;
+      width: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      margin: -2px 0 0 0;
+    }
+
+    &:checked + span:before {
+      content: @icon-checkbox-checked;
+    }
+  }
+
+  span {
+    pointer-events: none;
+  }
+}
+
+
+label.skinned-radio.margined {
+  span:before { margin-right: 5px; }
+}
+
+label.skinned-radio {
+  position: relative;
+  vertical-align: middle;
+  line-height: 28px;
+
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+
+  input:focus + span {
+    outline: 1px solid #ccc;
+  }
+
+  input + span:before {
+    .iconify('\e439');
+    display: inline-block;
+
+    font-size: 1em;
+    width:  1em;
+    height: 1em;
+    line-height: 1;
+    vertical-align: middle;
+    padding-right: 5px;
+    color: #666;
+  }
+
+  input:checked + span:before {
+    content: '\e438';
+  }
+
+  span {
+    display: inline-block;
+    pointer-events: none;
+  }
+}
+
+@media screen and (min-width: 481px) {
+  label.skinned-radio:hover input + span:before {
+    content: '\e438';
+  }
+}
+
+.form-hint {
+  font-size: smaller;
+  font-style: italic;
+}
+
+.alert.alert-with-dismiss {
+  position: relative;
+  padding-right: 28px;
+  padding-left: 28px;
+
+  > i {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+
+  .dismiss-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+}
+
+/**
+ * Colorizes a label add-on when it's prepended to an input element with a light
+ * gray background and some border radius to make it look coupled to the field.
+ *
+ * E.g:
+ *
+ * <div class="input-prepend">
+ *   <label class="form-control add-on" for="number">
+ *     Your number
+ *   </label>
+ *
+ *   <input type="number" id="number" class="form-input" />
+ * </div>
+ */
+.input-prepend label.add-on {
+  background: #f4f4f4;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  font-size: 11px;
+  line-height: 28px;
+  height: 30px;
+}
+
+/**
+ * Makes for a huge input box.
+ *
+ * <input type="text" class="form-input input-emphasized" />
+ */
+.input-emphasized {
+  font-size: 18px;
+  line-height: 48px;
+  width: 100%;
+  height: inherit;
+}

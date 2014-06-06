@@ -1,0 +1,147 @@
+@media screen and (max-width: 480px) {
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+}
+
+@media screen and (min-width: 769px) {
+  /** Sidebar layout **/
+
+  #sidebar {
+    position: absolute;
+    top: @desktop-statusbar-height + @desktop-actionbar-height;
+    right: 0;
+    // height: @sidebar-height;
+    bottom: 0;
+    // padding: 0 10px;
+    background: rgba(255,255,255,0.9);
+    width: @desktop-sidebar-width;
+    display: none;
+    border-radius: 0 0 2px 0;
+  }
+
+  body.with-sidebar #sidebar {
+    display: block;
+    z-index: 1;
+  }
+
+  /** Sidebar Skin **/
+  @sidebar-radius: 2px;
+
+
+
+  .sidebar-field-hint {
+    color:     #aaa;
+    font-size: 11px;
+    /*font-style: italic;*/
+  }
+
+  .sidebar-label {
+    position: relative;
+    margin: 10px 0;
+    height: 30px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #777;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 white;
+  /*    font-size: 12px;
+      line-height: 16px;*/
+
+    .item-value {
+      text-align:right;
+      font-size:    11px;
+      line-height:  16px;
+      color: #aaa;
+      letter-spacing: 1px;
+      font-weight: normal;
+      position: absolute;
+      right:  18px;
+      top:    8px;
+      display: block;
+      width: 160px;
+      .ellipsify();
+
+      &.tx-note-chars-remaining {
+        right: 0;
+      }
+    }
+
+    i, button {
+      display: inline-block;
+      font-size: 18px;
+      line-height: 30px;
+      height: 30px;
+      vertical-align: middle;
+    }
+
+    button {
+      .appearance(none);
+      border: none;
+      background: none;
+      color: inherit;
+      height: auto;
+      padding: 0;
+      text-align: left;
+    }
+  }
+
+  .renderable {
+    position: absolute;
+    right:  0;
+    left:   0;
+
+    border-color: rgba(0, 0, 0, 0.05);
+    // border: 1px solid rgba(0, 0, 0, 0.15);
+    // border-top: none;
+    // box-shadow: 1px 1px 0 rgba(255,255,255,0.75) inset;
+
+    border-left-style: solid;
+    border-left-width: 1px;
+  }
+
+  .sidebar-content {
+    top: 0;
+    bottom: @sidebar-footer-height;
+
+    overflow: auto;
+    padding: 0 @whitespace;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+
+  .sidebar-actions {
+    height: @sidebar-footer-height;
+    bottom: 0;
+    padding: @whitespace;
+  }
+}
+
+.sidebar-popup-toggle {
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    color: black;
+
+    &:before {
+      opacity: 1;
+    }
+  }
+
+  &:before {
+    .iconify('\e2aa');
+    position: absolute;
+    right: 0;
+    line-height: 30px;
+    font-size: 13px;
+    color: rgba(0,0,0,0.5);
+    font-weight: normal;
+    opacity: 0.5;
+  }
+}
+
+body.distraction-free-really.with-sidebar #sidebar {
+  top: @desktop-actionbar-height;
+}

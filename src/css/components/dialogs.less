@@ -1,0 +1,258 @@
+@dialog-actions-height: 45px;
+@dialog-nav-width: 160px;
+@dialog-title-padding: 20px;
+@dialog-title-height: 61px;
+
+body.with-dialog {
+  &:after {
+    .fullscreen();
+    content: "";
+    position: fixed;
+    z-index: 9;
+    background: rgba(0,0,0,0.5);
+  }
+
+  #main {
+    z-index: -1 !important;
+    pointer-events: none;
+    .disable-selection;
+  }
+
+  #dialogs {
+    display: block;
+    z-index: 10;
+  }
+}
+
+#dialogs {
+  display: none;
+  position: fixed;
+  z-index: -1;
+
+  top:    50%;
+  left:   50%;
+  right: auto;
+  bottom: auto;
+  width: 600px;
+  height: 560px;
+  margin-left: -300px;
+  margin-top: -280px;
+
+  .transition(
+    ~"top 0.25s ease-in-out 0s,",
+    ~"margin-top 0.25s ease-in-out 0s"
+  );
+
+  &.large-dialog {
+    height: auto;
+    margin-top: 0;
+    top: 30px;
+    bottom: 30px;
+  }
+}
+
+.dialog {
+  background: white;
+  position: relative;
+  margin: 0 auto;
+  .touch-scrolling;
+  .kickass-shadow;
+  overflow: hidden;
+
+  &.scrollable {
+    .fullscreen();
+
+    .dialog-main {
+      .fullscreen();
+    }
+
+    .dialog-content {
+      .fullscreen();
+      overflow: auto;
+    }
+
+    .dialog-title + .dialog-main {
+      top: @dialog-title-height - 2px;
+    }
+  }
+
+  &.no-padding {
+    .dialog-content { padding-top: 0; padding-bottom: 0; }
+  }
+}
+
+.dialog.with-bottom-actions {
+  .dialog-content {
+    bottom: 55px;
+  }
+
+  .dialog-actions {
+    position: absolute;
+    bottom: 0;
+    height: 55px;
+    overflow: auto;
+    left: 0;
+    right: 0;
+    padding: 10px @whitespace;
+    background: #f4f4f4;
+    border-radius: 0 0 3px 3px;
+
+    /**
+     * Markup required:
+     *
+     * <div class="dialog-actions">
+     *   <button class="btn btn-prev icon-arrow-left"></button>
+     *   <button class="btn btn-next icon-arrow-right"></button>
+     * </div>
+     */
+    .btn-prev, .btn-next {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 60px;
+      font-size: 24px;
+      line-height: 40px;
+      height: auto;
+    }
+
+    .btn-next {
+      right: 0;
+      left: auto;
+    }
+  }
+}
+
+.close-dialog-button {
+  position: absolute;
+  top:    0;
+  bottom: 0;
+  right:  0;
+
+  line-height: 1;
+  z-index: 2;
+  cursor: pointer;
+  padding: @dialog-title-padding;
+  border: none;
+
+  background-color: transparent;
+
+  &:hover {
+    color: @link_fg;
+  }
+
+  &:active {
+    outline: none;
+    border: none;
+  }
+}
+
+.dialog-title {
+  position: relative;
+  padding: @dialog-title-padding;
+  margin: 0;
+  font-weight: normal;
+
+  font-size: 17.5px;
+  line-height: normal;
+
+  height: @dialog-title-height - 2px;
+  background: #f4f4f4;
+  border-radius: 4px 4px 0 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow: 0 1px 0 0 #ccc;
+  z-index: 1;
+}
+
+.dialog-nav {
+  width: 160px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid #ddd;
+  background: #eee;
+  box-shadow: -1px 0 1px #f4f4f4 inset;
+  border-radius: 0 0 0 4px;
+
+  a, header {
+    display: block;
+    line-height: 32px;
+    white-space: nowrap;
+    padding: 0 20px;
+  }
+
+  header {
+    padding: 10px 20px;
+  }
+
+  a {
+    &.active, &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    i {
+      position: absolute;
+      right: 20px;
+    }
+  }
+}
+
+.dialog-nav + .dialog-content {
+  margin-left: 160px;
+}
+
+.dialog-content {
+  padding: 20px;
+}
+
+.thin-dialog {
+  width: 280px;
+  text-align: center;
+
+  .dialog-content {
+    > :first-child {
+      margin-top: 0;
+    }
+  }
+
+  hr {
+    border: none;
+    height: 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .icon-pibi-framed {
+    display: block;
+    margin-bottom: 20px;
+    pointer-events: none;
+
+    .flip-y();
+  }
+}
+
+.dialog-actions {
+  margin-top: 10px;
+  padding: 10px;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1);
+  text-align: right;
+}
+
+.dialog form {
+  legend {
+    font-size: 17.5px;
+    line-height: 32px;
+    // margin-bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    cursor: text;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizelegibility;
+
+    small {
+      font-size: 12px;
+    }
+  }
+}

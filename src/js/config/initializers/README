@@ -1,0 +1,5 @@
+# Initializers
+
+Files in this folder will be run at the dependency resolution stage. This is
+the place to provide components or functionality that will be required by
+modules later in the app lifecycle.

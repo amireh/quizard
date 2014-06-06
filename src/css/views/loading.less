@@ -1,0 +1,67 @@
+#asset_preloader {
+  font-family: 'Pibi';
+  position: absolute;
+  width:  1px;
+  height: 0;
+  z-index: -10;
+  color: transparent;
+  font-size: 0;
+  display: block;
+}
+
+#loading_screen {
+  .fullscreen();
+  .disable-selection();
+  background: white;
+
+  position: fixed;
+  // display:  none;
+  z-index: 1000;
+  overflow: hidden;
+
+  header {
+    text-align: left;
+    margin: -20px 0 0 0;
+    padding: 10px 0;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 240px;
+  }
+
+  .logo {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height:     168px;
+    margin-top: -96px;
+    margin-left: -200px;
+    &:before {
+      line-height: 168px;
+    }
+  }
+
+  .version {
+    position: absolute;
+    bottom: auto;
+    right: auto;
+    left: 50%;
+    top: 50%;
+    margin-top: -50px;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid #555;
+    display: block;
+    width: 240px;
+    text-align: left;
+  }
+}
+
+// This is done in CSS because we don't want it to show up in SEO.
+#loading_status:empty {
+  &:after {
+    content: "Loading... Please wait.";
+  }
+}

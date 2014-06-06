@@ -1,0 +1,28 @@
+@import "colorscheme";
+
+.humane,
+.humane-libnotify {
+  border-radius: 4px;
+}
+
+.humane.humane-libnotify-info,
+.humane-libnotify.humane-libnotify-info {
+  background: #eee;
+}
+
+.humane.humane-libnotify-success,
+.humane-libnotify.humane-libnotify-success {
+  background: white;
+  // text-shadow: 0 1px 0 white;
+}
+.humane.humane-libnotify-warning,
+.humane-libnotify.humane-libnotify-warning {
+  background: @orange;
+}
+
+.humane.humane-libnotify-error,
+.humane-libnotify.humane-libnotify-error {
+  background: @darkred;
+  color: white;
+  // text-shadow: 0 1px 0 rgba(0,0,0,0.75);
+}

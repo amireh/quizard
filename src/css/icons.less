@@ -1,0 +1,86 @@
+@import "colorscheme";
+
+@icon-arrow-up: '\e3b4';
+@icon-arrow-right: '\e3b5';
+@icon-arrow-down: '\e3b6';
+@icon-arrow-left: '\e3b7';
+@icon-checkbox-unchecked: '\e435';
+@icon-checkbox-checked: '\e432';
+@icon-close: '\e36c';
+@icon-cross: @icon-close;
+@icon-untagged: '\e0ba';
+@icon-checkmark: '\e370';
+@icon-warning: '\e358';
+@icon-cog: '\e1e5';
+
+.icon-orange    { color: @orange; }
+.icon-yellow    { color: @yellow; }
+.icon-green     { color: @green;  }
+.icon-lime      { color: @lime;   }
+.icon-red       { color: @red;    }
+.icon-lightred  { color: @lightred; }
+.icon-blue      { color: @blue;   }
+.icon-purple    { color: @purple; }
+.icon-pink      { color: @pink;   }
+.icon-white     { color: white;   }
+.icon-black     { color: black;   }
+.icon-gray      { color: @gray;    }
+
+.icon-orange-fg:before    { color: @orange; }
+.icon-yellow-fg:before    { color: @yellow; }
+.icon-green-fg:before     { color: @green;  }
+.icon-lime-fg:before      { color: @lime;   }
+.icon-red-fg:before       { color: @red;    }
+.icon-lightred-fg:before  { color: @lightred; }
+.icon-blue-fg:before      { color: @blue;   }
+.icon-purple-fg:before    { color: @purple; }
+.icon-pink-fg:before      { color: @pink;   }
+.icon-white-fg:before     { color: white;   }
+.icon-black-fg:before     { color: black;   }
+.icon-gray-fg:before      { color: @gray;    }
+
+.icon-orange-bc    { border-color: @orange !important; }
+.icon-yellow-bc    { border-color: @yellow !important; }
+.icon-green-bc     { border-color: @green !important;  }
+.icon-lime-bc      { border-color: @lime !important;   }
+.icon-red-bc       { border-color: @red !important;    }
+.icon-lightred-bc  { border-color: @lightred !important; }
+.icon-blue-bc      { border-color: @blue !important;   }
+.icon-purple-bc    { border-color: @purple !important; }
+.icon-pink-bc      { border-color: @pink !important;   }
+.icon-white-bc     { border-color: white !important;   }
+.icon-black-bc     { border-color: black !important;   }
+.icon-gray-bc      { border-color: @gray !important;    }
+
+.icon-orange-bg    { color: white; background-color: @orange; }
+.icon-yellow-bg    { color: white; background-color: @yellow; }
+.icon-green-bg     { color: white; background-color: @green;  }
+.icon-lime-bg      { color: white; background-color: @lime;   }
+.icon-red-bg       { color: white; background-color: @red;    }
+.icon-lightred-bg  { color: white; background-color: @lightred; }
+.icon-blue-bg      { color: white; background-color: @blue;   }
+.icon-purple-bg    { color: white; background-color: @purple; }
+.icon-pink-bg      { color: white; background-color: @pink;   }
+.icon-white-bg     { color: white; background-color: white;   }
+.icon-black-bg     { color: white; background-color: black;   }
+.icon-gray-bg      { color: white; background-color: @gray;    }
+
+.icon-12:before  { font-size: 12px; line-height: 1; }
+.icon-14:before  { font-size: 14px; line-height: 1; }
+.icon-16:before  { font-size: 16px; line-height: 1; width: 16px; }
+.icon-18:before  { font-size: 18px; line-height: 18px; }
+.icon-24:before  { font-size: 24px; line-height: 24px; }
+.icon-32:before  { font-size: 32px; line-height: 32px; }
+.icon-48:before  { font-size: 48px; line-height: 48px; }
+.icon-64:before  { font-size: 64px; line-height: 64px; }
+.icon-96:before  { font-size: 96px; line-height: 96px; }
+.icon-128:before { font-size: 128px; line-height: 128px; }
+.icon-196:before { font-size: 196px; line-height: 144px; }
+.icon-256:before { font-size: 256px; }
+
+.emblem-default {
+  &:before {
+    font-family: 'Pibi' !important;
+    content: @icon-untagged;
+  }
+}

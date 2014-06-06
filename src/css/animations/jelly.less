@@ -1,0 +1,51 @@
+@keyframes anime-jelly {
+  0% { transform: rotate(-1deg); }
+  100% { transform: rotate(1deg); }
+}
+@-webkit-keyframes  anime-jelly {
+  0% { -webkit-transform: rotate(-1deg); }
+  100% { -webkit-transform: rotate(1deg); }
+}
+@-moz-keyframes     anime-jelly {
+  0% { -moz-transform: rotate(-1deg); }
+  100% { -moz-transform: rotate(1deg); }
+}
+@-o-keyframes       anime-jelly {
+  0% { -o-transform: rotate(-1deg); }
+  100% { -o-transform: rotate(1deg); }
+}
+
+
+.jelly {
+  .animate(jelly, 250ms ease-in-out infinite alternate);
+}
+
+.jelly-hover:hover {
+  .jelly();
+}
+
+@keyframes anime-easy-jelly {
+  0% { transform: rotate(-1deg); }
+  20% { transform: rotate(1deg); }
+  100% { }
+}
+@-webkit-keyframes  anime-easy-jelly {
+  0% { -webkit-transform: rotate(-1deg); }
+  20% { -webkit-transform: rotate(1deg); }
+  100% { }
+}
+@-moz-keyframes     anime-easy-jelly {
+  0% { -moz-transform: rotate(-1deg); }
+  20% { -moz-transform: rotate(1deg); }
+  100% { }
+}
+@-o-keyframes       anime-easy-jelly {
+  0%  { -o-transform: rotate(-1deg); }
+  20% { -o-transform: rotate(1deg); }
+  100% { }
+}
+
+.easy-jelly {
+  .animate(easy-jelly, 1000ms ease-in-out infinite alternate);
+}
+/** Slide in & out **/

@@ -1,0 +1,99 @@
+/** flashes **/
+#flash_wrap {
+  text-align: center;
+  height: 0;
+  pointer-events: none;
+  z-index: 12;
+  overflow: hidden;
+}
+
+#flash {
+  .transition(top, 0.5s, ease, 0s);
+
+  text-align: left;
+  display: inline-block;
+  z-index: 1;
+  pointer-events: auto;
+  background: #444;
+  color: white;
+
+  * {
+    vertical-align: top;
+  }
+
+  ol {
+    text-align: left;
+  }
+
+  [data-action="close"] {
+    position: absolute;
+    right:  0;
+    top:    0;
+    bottom: 0;
+    background: rgba(0,0,0,0.1);
+    padding: 5px;
+  }
+
+  a {
+    color: white;
+    font-weight: bold;
+  }
+
+  .flash-indicator {
+    position: absolute;
+  }
+
+  .flash-indicator:before {
+    .iconify();
+  }
+
+  &.good .flash-indicator:before {
+    content: @icon-checkmark;
+    color: @green;
+  }
+
+  &.bad .flash-indicator:before {
+    content: @icon-close;
+    color: @red;
+  }
+
+  &.warning,
+  &.pending {
+    .flash-indicator:before {
+      content: @icon-warning;
+      color: @orange;
+    }
+  }
+}
+
+#flash_actions {
+  margin: 0 5px;
+  font-weight: bold;
+  font-size: small;
+
+  a[data-action] {
+    text-decoration: underline;
+  }
+}
+
+#flash_content {
+  margin-left: 24px;
+}
+
+#flash_wrap {
+  position: fixed;
+  top:  0;
+  left: 0;
+  width: 100%;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+#flash {
+  position: relative;
+  padding: 5px 30px 5px 10px;
+  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, .5);
+
+  font-size: 14px;
+  max-width: 640px;
+}

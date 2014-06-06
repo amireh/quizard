@@ -1,0 +1,86 @@
+@_perspective: 320px;
+
+@keyframes          anime-crazy-flip { 0% { } 100% { transform: rotate(360deg); } }
+@-webkit-keyframes  anime-crazy-flip { 0% { } 100% { -webkit-transform: rotate(360deg); } }
+@-moz-keyframes     anime-crazy-flip { 0% { } 100% { -moz-transform: rotate(360deg); } }
+@-o-keyframes       anime-crazy-flip { 0% { } 100% { -o-transform: rotate(360deg); } }
+
+.crazy-flip {
+  .animate(crazy-flip, 1500ms cubic-bezier(.175,.885,.32,1.275) infinite alternate);
+}
+
+@-webkit-keyframes "anime-flip-in-y" {
+ 0% {
+   -webkit-transform: rotateY(180deg);
+  opacity: 0;
+ }
+ 40% {
+   -webkit-transform: rotateY(-10deg);
+ }
+ 70% {
+   -webkit-transform: rotateY(10deg);
+ }
+ 100% {
+   -webkit-transform: rotateY(0deg);
+   opacity: 1;
+ }
+
+}
+
+.flip-in-y {
+  .animate("flip-in-y"; 1s normal both 1);
+  /*-webkit-backface-visibility: hidden;*/
+  -webkit-perspective: 1000;
+/*  -webkit-backface-visibility: visible !important;
+  -moz-backface-visibility: visible !important;
+  -o-backface-visibility: visible !important;
+  backface-visibility: visible !important;*/
+}
+
+@-webkit-keyframes "anime-flip-out-y" {
+   0% {
+     -webkit-transform: perspective(@_perspective) rotateY(0deg);
+     opacity: 1;
+   }
+   100% {
+    -webkit-transform: perspective(@_perspective) rotateY(180deg);
+    opacity: 0;
+   }
+}
+
+
+.flip-out-y {
+  .animate("flip-out-y"; 1s normal both 1);
+  -webkit-backface-visibility: visible !important;
+  -moz-backface-visibility: visible !important;
+  -o-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+}
+
+@keyframes anime-flip-y {
+  0%   {  }
+  75%  { transform: rotateY(1deg); }
+  100% { transform: rotateY(359deg); }
+}
+
+@-webkit-keyframes anime-flip-y {
+  0%   {  }
+  75%  { -webkit-transform: rotateY(1deg); }
+  100% { -webkit-transform: rotateY(359deg); }
+}
+
+@-moz-keyframes anime-flip-y {
+  0%   {  }
+  75%  { -moz-transform: rotateY(1deg); }
+  100% { -moz-transform: rotateY(359deg); }
+}
+
+@-o-keyframes anime-flip-y {
+  0%   {  }
+  75%  { -o-transform: rotateY(1deg); }
+  100% { -o-transform: rotateY(359deg); }
+}
+
+.flip-y {
+  .animate(flip-y; 2.5s ease infinite normal);
+}

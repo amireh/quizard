@@ -1,0 +1,10 @@
+@deg: 359deg;
+
+@keyframes          anime-rotate { 0% { transform: rotate(0); } 100% { transform: rotate(@deg); } }
+@-webkit-keyframes  anime-rotate { 0% { -webkit-transform: rotate(0); } 100% { -webkit-transform: rotate(@deg);  } }
+@-moz-keyframes     anime-rotate { 0% { -moz-transform: rotate(0); } 100% { -moz-transform: rotate(@deg); } }
+@-o-keyframes       anime-rotate { 0% { -o-transform: rotate(0); } 100% { -o-transform: rotate(@deg); } }
+
+.anime-rotate {
+  .animate(rotate, 2s linear infinite);
+}

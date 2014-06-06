@@ -1,0 +1,69 @@
+@toolbar-font-size: 11px;
+@toolbar-icon-size: 16px;
+
+.toolbar {
+  line-height: 28px;
+  height: @toolbar-height;
+  font-size: @toolbar-font-size;
+  font-weight: bold;
+
+  .pull-right {
+    float: right;
+  }
+
+  [disabled] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .toolbar-btn {
+    .appearance(none);
+
+    display: inline-block;
+    text-align: center;
+    border: none;
+    padding: 0 @whitespace;
+    height: 40px;
+    line-height: 39px;
+    margin: 0 0 0 0;
+    background: none;
+    box-shadow: -1px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    color: inherit;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:hover, &.active {
+      text-decoration: none;
+      background: #fff;
+    }
+
+    &:active, &.active, &:focus {
+      outline: none;
+      cursor: auto;
+    }
+
+    [class*="icon"]:before,
+    [class*="emblem"]:before {
+      font-size: @toolbar-icon-size;
+    }
+
+    .icon-plus:before { font-size: 11px; }
+  }
+
+  .dropdown-toggle.with-caret {
+    &:after {
+      .iconify(@icon-arrow-down);
+      font-size: @toolbar-icon-size;
+    }
+  }
+
+  .spacer {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+}

@@ -1,0 +1,44 @@
+
+.list-view {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  cursor: auto;
+
+  .list-item {
+    &:hover {
+      background: rgba(0,0,0,0.05);
+    }
+
+    padding: 0 @whitespace;
+    line-height: 29px;
+    height: 30px;
+    // font-size: 11px;
+    font-weight: bold;
+  }
+
+  .list-separator {
+    padding: 0 @whitespace;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    color: #aaa;
+  }
+
+  .list-actions {
+    cursor: default;
+    padding: 10px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+
+    &:before {
+      left: -10px;
+      right: -10px;
+      top: 0;
+      bottom: 0;
+      position: absolute;
+      content: '';
+      background: rgba(0, 0, 0, 0.1);
+      z-index: -1;
+    }
+  }
+}

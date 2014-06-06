@@ -1,0 +1,40 @@
+/**
+ * Here's an example markup to fully utilize the progress bars:
+ *
+ * <!-- you can choose from red, orange, blue, or green for colors -->
+ * <div class="progress-bar progress-green">
+ *
+ *   <!-- this is the actual colored bar, set width to the ratio -->
+ *   <div class="bar" style="width: 70%"></div>
+ *
+ *   <!-- this will add a "70%" static string on the side of the bar -->
+ *   <span class="ratio">70%</span>
+ *
+ * </div>
+ */
+.progress-bar {
+  position: relative;
+  height: 15px;
+  line-height: 15px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.025);
+  .kickass-shadow;
+
+  .bar {
+    display: block;
+    height: 100%;
+    .transition(width 0.5s ease-in 0s);
+  }
+
+  .ratio {
+    font-size: 9px;
+    position: absolute;
+    right: 5px;
+    top: 1px;
+  }
+
+  &.progress-red .bar { background-color: @red; }
+  &.progress-orange .bar { background-color: @orange; }
+  &.progress-blue .bar { background-color: @blue; }
+  &.progress-green .bar { background-color: @lime-button; }
+}

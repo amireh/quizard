@@ -1,0 +1,17 @@
+@-webkit-keyframes "anime-fade-in-vertical" {
+  0%   { opacity: 0;   -webkit-transform: translateY(0); }
+  50%  { opacity: 0.5; -webkit-transform: translateY(30px); }
+  100% { opacity: 1;   -webkit-transform: translateY(0);}
+}
+.fade-in-vertical {
+  .animate("fade-in-vertical"; 0.5s ease both 1);
+}
+
+@-webkit-keyframes "anime-fade-out-vertical" {
+  0%   { opacity: 1;   -webkit-transform: translateY(0); }
+  50%  { opacity: 0.5; -webkit-transform: translateY(30px); }
+  100% { opacity: 0;   -webkit-transform: translateY(0);}
+}
+.fade-out-vertical {
+  .animate("fade-out-vertical"; 0.5s ease both 1);
+}
