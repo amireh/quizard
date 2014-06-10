@@ -13,12 +13,6 @@ define([
       TrackableMixin
     ],
 
-    events: {
-      willTransition: function(transition) {
-        RouteMixins.SecondaryTransitions.willTransition.call(this, transition);
-      }
-    },
-
     mount: function(component, options) {
       return this.trigger('render', component, options);
     },

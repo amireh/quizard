@@ -1,5 +1,9 @@
 /** @jsx React.DOM */
-define([ 'react' ], function(React) {
+define([
+  'react',
+  'jsx!./navigation/account_picker',
+  'jsx!./navigation/course_picker'
+], function(React, AccountPicker, CoursePicker) {
   /**
    * @internal
    *
@@ -48,9 +52,9 @@ define([ 'react' ], function(React) {
     render: function() {
       var style = {};
 
-      if (!isActive(this.props.for)) {
-        style.display = 'none';
-      }
+      // if (!isActive(this.props.for)) {
+      //   style.display = 'none';
+      // }
 
       return (
         <ul className="navbar-subnav" style={style}>
@@ -84,7 +88,12 @@ define([ 'react' ], function(React) {
 
       return(
         <nav id="navbar">
-          <Link icon="icon-home" href="/app">Dashboard</Link>
+          <AccountPicker
+            accounts={this.props.accounts}
+            activeAccountId={this.props.activeAccountId} />
+          <CoursePicker
+            courses={this.props.courses}
+            activeCourseId={this.props.activeCourseId} />
 
           <Link icon="icon-android" href="/app/users">Users</Link>
           <SubNav for="/app/users">

@@ -54,7 +54,7 @@ define([
      *
      * @return {String|undefined}
      */
-    activeAccountId: function() {
+    getActiveAccountId: function() {
       return activeAccountId;
     },
 

@@ -37,6 +37,10 @@ define([
           match('/enroll').to('userEnroll');
         });
 
+        match('/quizzes').to('quizzes', function(match) {
+          match('/take').to('takeQuiz');
+        });
+
         // 404
         match('/*rogueRoute').to('notFound');
       });

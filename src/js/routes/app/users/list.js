@@ -12,6 +12,7 @@ define([
 
     enter: function() {
       this.listenTo(UserStore, 'change', this.updateProps);
+      this.listenTo(AccountStore, 'change', this.updateProps);
       this.updateProps();
     },
 

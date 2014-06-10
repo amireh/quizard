@@ -43,13 +43,16 @@ define([
           {this.props.loading && <LoadingBar />}
 
           <MenuBar
-            accounts={this.props.accounts}
-            activeAccountId={this.props.activeAccountId}
             authenticated={this.props.authenticated}
             email={this.props.user.email}
             name={this.props.user.name} />
 
           <Navigation
+            accounts={this.props.accounts}
+            courses={this.props.courses}
+            activeAccountId={this.props.activeAccountId}
+            activeCourseId={this.props.activeCourseId}
+
             active={this.props.navbar.item}
             activeChild={this.props.navbar.child} />
 

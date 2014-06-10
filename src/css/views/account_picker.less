@@ -1,11 +1,13 @@
-.account-picker {
-  @height: @menubar-height + 2px;
+.account-picker, .course-picker {
+  @height: 42px;
   @font-size: 11px;
+  @width: @navbar-width;
 
-  display: inline-block;
+  // display: inline-block;
   position: relative;
-  width: @navbar-width;
+  width: @width;
   font-size: @font-size;
+  margin-bottom: 10px;
 
   .heading {
     .disable-selection;
@@ -19,20 +21,12 @@
   }
 
   .btn-dropdown {
-    border: none;
-    border-right: 1px solid transparent;
-    // border-radius: 2px 0 0 2px;
     border-radius: 0;
     height: @height - 2px;
     line-height: @height - 2px;
     box-shadow: none;
     font-size: @font-size;
     position: relative;
-    z-index: 11;
-
-    &.open {
-      border-right-color: #ddd;
-    }
   }
 
   .btn-dropdown-anchor, .heading {
@@ -40,8 +34,12 @@
     line-height: @height - 2px;
   }
 
+  .dropdown.open > .dropdown-menu {
+    z-index: 12;
+  }
+
   .dropdown-menu {
-    min-width: @navbar-width - 1px;
+    min-width: @width;
     max-width: 480px;
     // margin-left: -1px;
     padding-top: 0;
@@ -67,13 +65,5 @@
       line-height: 30px;
       border: none;
     }
-  }
-
-  .account-balance {
-    position: absolute;
-    right: -140px;
-    top: 0;
-    width: 120px;
-    line-height: @height - 2px;
   }
 }

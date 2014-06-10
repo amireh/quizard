@@ -20,9 +20,10 @@ define([
     enter: function() {
       this.clearStatus();
 
-      this.updateProps();
       this.listenTo(AccountStore, 'change', this.updateProps);
       this.listenTo(CourseStore, 'change', this.updateProps);
+
+      this.updateProps();
     },
 
     exit: function() {
@@ -34,7 +35,8 @@ define([
 
       props.user = SessionStore.get();
       props.accounts = AccountStore.getAll();
-      props.activeAccountId = AccountStore.activeAccountId();
+      props.activeAccountId = AccountStore.getActiveAccountId();
+      props.activeCourseId = CourseStore.getActiveCourseId();
       props.courses = CourseStore.getAll();
 
       this.update(props);

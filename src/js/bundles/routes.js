@@ -10,4 +10,5 @@ define([
   'routes/app/users/index',
   'routes/app/users/list',
   'routes/app/users/enroll',
+  'routes/app/quizzes',
 ], function() {});

@@ -28,14 +28,6 @@ define([
               <li className="divider"></li>
 
               <li>
-                <a href="/settings" className="dropdown-item">
-                  Settings
-                </a>
-              </li>
-
-              <li className="divider"></li>
-
-              <li>
                 <a
                   data-online="disable"
                   href="/app/logout"

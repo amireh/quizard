@@ -1,24 +1,21 @@
 /** @jsx React.DOM */
 define([
   'react',
-  'jsx!./menu_bar/account_picker',
   'jsx!./menu_bar/settings',
-], function(React, AccountPicker, Settings) {
+], function(React, Settings) {
   var StatusBar = React.createClass({
     getDefaultProps: function() {
       return {
         name: null,
         email: null,
-        accounts: []
+        accounts: [],
+        courses: [],
       };
     },
 
     render: function() {
       return(
         <header id="menubar">
-          <AccountPicker
-            accounts={this.props.accounts}
-            activeAccountId={this.props.activeAccountId} />
           <div className="pull-right">
             {
               this.props.authenticated ?

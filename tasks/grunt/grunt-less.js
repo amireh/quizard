@@ -1,11 +1,11 @@
 module.exports = {
   options: {
-    strictImports: true
+    strictImports: false
   },
   production: {
     options: {
       paths: [ 'src/css' ],
-      compress: true
+      compress: false
     },
     files: {
       'www/dist/quizard.css': 'src/css/app.less'
