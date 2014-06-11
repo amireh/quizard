@@ -1,15 +1,16 @@
 #statusbar {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  right: 0;
   height: @statusbar-height;
-  left: @navbar-width + @region-spacing;
+  width: @content-width - 2*(@whitespace);
+  margin-left: @whitespace;
+  // margin-left: @navbar-width + @region-spacing;
   overflow-y: auto;
   overflow-x: hidden;
 
-  padding: 5px @whitespace;
+  padding: 5px 0;
 
-  background: @region-bg;
+  background: white;
   border-radius: @radius;
-  box-shadow: 0 0 1px 0 @shadow;
+  border-top: 1px solid @low-contrast-border;
 }

@@ -1,14 +1,13 @@
 #main {
-  // margin: 0 auto;
+  margin: @region-spacing auto;
   width: 960px;
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  left: 50%;
-  margin-left: -480px;
-}
-
-body.guest #main {
-  width: 480px;
-  margin-left: -240px;
+  position: relative;
+  padding-left: @navbar-width + @region-spacing;
+  padding-bottom: @statusbar-height + @region-spacing;
+  // position: absolute;
+  // top: 10px;
+  // bottom: 10px;
+  // left: 50%;
+  // margin-left: -480px;
+  // overflow: auto;
 }

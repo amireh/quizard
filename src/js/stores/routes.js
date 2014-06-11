@@ -19,7 +19,13 @@ define(function(require) {
     goToQuiz: function(payload, onChange, onError) {
       var url = [
         '/courses', payload.courseId, 'quizzes', payload.quizId
-      ].join('/');
+      ];
+
+      if (payload.quizAction) {
+        url.push(payload.quizAction);
+      }
+
+      url = url.join('/');
 
       transitionTo(url, onChange, function(error) {
         if (error.status === 404) {

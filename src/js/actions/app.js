@@ -1,8 +1,5 @@
-define([ 'core/dispatcher', 'constants', 'pixy' ],
-function(Dispatcher, K, Pixy) {
+define([ 'core/dispatcher', 'constants' ],
+function(Dispatcher, K) {
   return {
-    closeDialog: function() {
-      Pixy.routeMap.root.trigger('remove', dialog, 'dialogs');
-    }
   };
 });

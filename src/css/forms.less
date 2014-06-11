@@ -126,7 +126,10 @@ label.skinned-radio {
   }
 
   input:focus + span {
-    outline: 1px solid #ccc;
+    outline: 1px dotted #ccc;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: -10px;
   }
 
   input + span:before {
@@ -149,12 +152,6 @@ label.skinned-radio {
   span {
     display: inline-block;
     pointer-events: none;
-  }
-}
-
-@media screen and (min-width: 481px) {
-  label.skinned-radio:hover input + span:before {
-    content: '\e438';
   }
 }
 
@@ -215,4 +212,39 @@ label.skinned-radio {
   line-height: 48px;
   width: 100%;
   height: inherit;
+}
+
+.input-spanner, .input-block {
+  width: 100%;
+  display: block;
+}
+
+form {
+  /*margin: 0 0 20px;*/
+}
+fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+fieldset label {
+  display: block;
+}
+
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: @whitespace;
+  font-size: 13.5px;
+  font-weight: bold;
+  line-height: 30px;
+  border: 0;
+  border-bottom: 1px solid @low-contrast-border;
+}
+
+legend small {
+  font-size: 11.5px;
+  font-weight: normal;
+  color: @mute-fg;
 }

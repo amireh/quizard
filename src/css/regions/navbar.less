@@ -2,25 +2,23 @@
   @actions-height: 30px;
   @actions-margin: @region-spacing;
 
-  position: absolute;
+  position: fixed;
   z-index: 2;
   overflow: hidden;
   white-space: nowrap;
+  margin-left: -1 * (@navbar-width + @region-spacing);
 
-  top: 0;
   right: auto;
-  bottom: 0;
-  left: 0;
+  top: @region-spacing;
+  bottom: @region-spacing;
+  // left: 0;
 
   width: @navbar-width;
 
   color: #666;
-  // background: rgba(255,255,255,0.9);
-  // box-shadow: 2px 2px 4px @shade;
   font-size: 16.5px;
   line-height: 42px;
 
-  // background: #555;
   .disable-selection();
 
   .navbar-links {
@@ -52,7 +50,7 @@
 
   &:hover, &:focus, &.active {
     text-decoration: none;
-    background: rgba(0,0,0,0.05);
+    background: @shade;
 
     &:before {
       opacity: 1;
@@ -100,7 +98,7 @@
   font-size: 16.5px;
   line-height: 30px;
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-  color: #888;
+  color: @mute-fg;
 
   i {
     position: absolute;;

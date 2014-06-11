@@ -4,7 +4,7 @@ define([ 'react' ], function(React) {
     render: function() {
       return(
         <div>
-          <header><h2>Quizard</h2></header>
+          <header className="content-header">Quizard</header>
         </div>
       );
     }

@@ -62,10 +62,11 @@ function(Pixy, AppStore, SessionStore, K) {
       });
     },
 
-    goToQuiz: function(courseId, quizId) {
+    goToQuiz: function(courseId, quizId, quizAction) {
       return dispatcher.dispatch(K.ROUTE_GO_TO_QUIZ, {
         courseId: courseId,
-        quizId: quizId
+        quizId: quizId,
+        quizAction: quizAction
       }).index;
     }
   };

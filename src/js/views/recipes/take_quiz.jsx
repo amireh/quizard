@@ -28,8 +28,8 @@ define(function(require) {
           {this.state.error && <Alert onDismiss={this.clearError}>{this.state.error}</Alert> }
           {!this.state.error &&
             <p>
-            {"Before we could get started, you need to specify which quiz in \
-              what course to take."}
+              Before we could get started, you need to specify which quiz in
+              what course to take.
             </p>
           }
 
@@ -74,7 +74,7 @@ define(function(require) {
         this.setState({ error: 'You must enter the id of the quiz.' });
       }
       else {
-        this.trackAction(RouteActions.goToQuiz(courseId, quizId));
+        this.trackAction(RouteActions.goToQuiz(courseId, quizId, 'take'));
       }
 
       return false;

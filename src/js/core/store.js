@@ -43,6 +43,12 @@ define(function(require) {
       return this.collection.toProps();
     },
 
+    getActiveItem: function() {
+      if (this.activeItemId) {
+        return this.get(this.activeItemId);
+      }
+    },
+
     getActiveItemId: function() {
       return this.activeItemId;
     },

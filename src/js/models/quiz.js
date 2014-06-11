@@ -20,9 +20,14 @@ define(function(require) {
       var quiz = this;
 
       this.questions = new Collection([], {
+        comparator: function(model) {
+          return model.get('position');
+        },
+
         url: function() {
           return quiz.url() + '/questions';
         },
+
         model: QuizQuestion
       });
     },
@@ -32,6 +37,9 @@ define(function(require) {
 
       props.id = this.get('id') + '';
       props.name = this.get('title');
+      props.questions = this.questions.toProps().filter(function(question) {
+        return question.type !== 'text_only_question';
+      });
 
       return props;
     }

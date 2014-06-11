@@ -5,7 +5,7 @@ define(function(require) {
 
   new Route('course', {
     model: function(params) {
-      return CourseStore.find(params.id).then(function(model) {
+      return CourseStore.find(params.course_id).then(function(model) {
         CourseActions.activate(model.id);
         return model;
       });

@@ -66,7 +66,7 @@ define([ 'underscore', 'jquery', 'rsvp' ], function(_, $, RSVP) {
       options.url = [ CORSOptions.host, options.url ].join('');
     }
 
-    options.headers = extend({}, options.headers, headers);
+    options.headers = extend({}, headers, options.headers);
 
     for (var i = 0; i < mutators.length; ++i) {
       mutators[i](options);

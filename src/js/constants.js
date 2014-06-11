@@ -31,5 +31,7 @@ define([], function() {
     RECIPE_TAKE_QUIZ: '/recipes/take_quiz',
 
     ROUTE_GO_TO_QUIZ: 'ROUTE_GO_TO_QUIZ',
+
+    QUIZ_TAKING_SET: 'QUIZ_TAKING_SET'
   };
 });
