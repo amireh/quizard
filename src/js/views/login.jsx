@@ -36,7 +36,6 @@ define([
           onClose={this.props.onClose}
           title='Sign in to Canvas'
           autoFocus='[name="apiToken"]'
-          closable={false}
           thin={true}>
 
           <p>Fill in your Canvas API token to proceed.</p>

@@ -24,30 +24,24 @@ define([
 
   router.map(function(match) {
     match('/').to('root', function(match) {
-      match('/welcome').to('guestIndex');
+      match('/').to('index');
       match('/login').to('login');
+      match('/logout').to('logout');
 
-      match('/app').to('app', function(match) {
-        match('/').to('appIndex');
-        match('/logout').to('logout');
+      // Recipes
+      match('/recipes/enroll_students').to('enrollStudentsRecipe');
+      match('/recipes/take_quiz').to('takeQuizRecipe');
 
-        match('/users').to('users', function(match) {
-          match('/').to('userIndex');
-          match('/list').to('userList');
-          match('/enroll').to('userEnroll');
+      // App
+      match('/courses/:id').to('course', function(match) {
+        match('/quizzes/:id').to('quiz', function(match) {
+          match('/').to('quizShow');
+          match('/take').to('takeQuiz');
         });
-
-        match('/quizzes').to('quizzes', function(match) {
-          match('/').to('quizIndex');
-          match('/:id').to('quiz', function(match) {
-            match('/').to('showQuiz');
-            match('/take').to('takeQuiz');
-          });
-        });
-
-        // 404
-        match('/*rogueRoute').to('notFound');
       });
+
+      // 404
+      match('/*rogueRoute').to('notFound');
     });
   });
 });

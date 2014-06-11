@@ -116,7 +116,9 @@ define([ 'react' ], function(React) {
       });
 
       return (
-        <div className={[ klasses, this.props.className ].join(' ')}>
+        <div
+          className={[ klasses, this.props.className ].join(' ')}
+          style={this.props.style}>
           {this.renderHeader()}
 
           <section className="dialog-main">

@@ -1,14 +1,14 @@
 define([
   'routes/base',
-  'jsx!views/app/users/enroll'
+  'jsx!views/users/index'
 ], function(Route, View) {
-  new Route('userEnroll', {
+  new Route('userIndex', {
     views: [{ component: View }],
+
     enter: function() {
       this.update({
         navbar: {
-          item: '/app/users',
-          child: '/app/users/enroll'
+          item: '/app/users'
         }
       });
     }

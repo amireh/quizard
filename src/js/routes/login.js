@@ -1,6 +1,6 @@
 define([
   'routes/secondary',
-  'jsx!views/guest/login',
+  'jsx!views/login',
   'stores/sessions',
   'constants'
 ], function(SecondaryRoute, Dialog, Store, K) {

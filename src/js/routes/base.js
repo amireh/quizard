@@ -1,8 +1,9 @@
 define([
   'ext/pixy',
   'pixy/mixins/routes',
-  'mixins/routes/trackable'
-], function(Pixy, RouteMixins, TrackableMixin) {
+  'mixins/routes/trackable',
+  'mixins/routes/nav_highlighter'
+], function(Pixy, RouteMixins, TrackableMixin, NavHighlighterMixin) {
   var Route = Pixy.Route.extend({
     mixins: [
       RouteMixins.AccessPolicy,
@@ -10,7 +11,8 @@ define([
       RouteMixins.Loading,
       RouteMixins.Renderer,
       RouteMixins.Props,
-      TrackableMixin
+      TrackableMixin,
+      NavHighlighterMixin
     ],
 
     mount: function(component, options) {

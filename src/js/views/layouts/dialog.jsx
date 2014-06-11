@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
-define([
-  'ext/react',
-  'jquery',
-  'actions/routes'
-], function(React, $, Actions) {
+define(function(require) {
+  var $ = require('jquery');
+  var React = require('ext/react');
+  var Actions = require('actions/routes');
+
   var DialogLayout = React.createClass({
     mixins: [ React.addons.StackedLayoutMixin ],
 

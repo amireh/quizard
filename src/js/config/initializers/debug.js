@@ -73,4 +73,5 @@ function(CONFIG, RSVP, diff) {
   DEBUG.expose('core/session', 'session');
   DEBUG.expose('stores/accounts', 'accountStore');
   DEBUG.expose('stores/users', 'userStore');
+  DEBUG.expose('stores/courses', 'courseStore');
 });

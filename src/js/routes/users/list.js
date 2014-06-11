@@ -1,6 +1,6 @@
 define([
   'routes/base',
-  'jsx!views/app/users/list',
+  'jsx!views/users/list',
   'stores/accounts',
   'stores/users',
 ], function(Route, View, AccountStore, UserStore) {

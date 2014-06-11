@@ -1,58 +1,25 @@
 /** @jsx React.DOM */
-define([
-  'react',
-  'jsx!./dialog',
-  'jsx!./guest',
-  'jsx!./app',
-  'jsx!views/loading',
-  'modules/notifier',
-  'util/debug_log'
-], function(React,
-  DialogLayout,
-  GuestLayout,
-  AppLayout,
-  LoadingScreen,
-  Notifier,
-  debugLog) {
-
+define(function(require) {
+  var React = require('react');
+  var DialogLayout = require('jsx!./dialog');
+  var AppLayout = require('jsx!./app');
+  var LoadingScreen = require('jsx!views/loading');
+  var Notifier = require('modules/notifier');
+  var debugLog = require('util/debug_log');
   var log = debugLog('RootLayout');
-
-  var getChildLayout = function(props) {
-    return props.authenticated ? AppLayout : GuestLayout;
-  };
-
-  var setChildLayout = function(props) {
-    var childLayout = getChildLayout(props || this.props);
-
-    this.setState({
-      childLayout: childLayout
-    });
-  };
 
   var RootLayout = React.createClass({
     mixins: [ React.addons.LayoutManagerMixin ],
 
     statics: {
-      getLayout: function(name, props, state) {
+      getLayout: function(name/*, props, state*/) {
         if (name === 'dialogs') {
           return DialogLayout;
         }
-        else if (name === 'guest') {
-          return GuestLayout;
-        }
-        else if (name === 'member') {
+        else {
           return AppLayout;
         }
-        else {
-          return getChildLayout(props);
-        }
       }
-    },
-
-    getInitialState: function() {
-      return {
-        childLayout: getChildLayout(this.props)
-      };
     },
 
     getDefaultProps: function() {
@@ -63,7 +30,7 @@ define([
     },
 
     componentWillReceiveProps: function(nextProps) {
-      var prop, childLayout;
+      var prop;
 
       //>>excludeStart("production", pragmas.production);
       /* global DEBUG: false */
@@ -81,14 +48,6 @@ define([
       if (this.props.authenticated !== nextProps.authenticated) {
         console.info('Authentication status has changed:',
           nextProps.authenticated);
-
-        childLayout = getChildLayout(this.props);
-
-        if (childLayout) {
-          this.clearLayout(getChildLayout(this.props));
-        }
-
-        setChildLayout.call(this, nextProps);
       }
     },
 
@@ -123,9 +82,7 @@ define([
             this.renderLayout(DialogLayout, { key: 'dialogLayout' })
           }
 
-          <div id="main">
-            {this.renderLayout(this.state.childLayout, { key: 'childLayout' })}
-          </div>
+          {this.renderLayout(AppLayout, { key: 'appLayout' })}
 
           {this.props.transitioning && <LoadingScreen />}
         </div>

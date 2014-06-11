@@ -12,13 +12,7 @@ define([
     },
 
     getCurrentLayoutName: function() {
-      return SessionStore.isActive() ?
-        K.PRIVATE_LAYOUT_NAME :
-        K.PUBLIC_LAYOUT_NAME;
-    },
-
-    getRootRoute: function() {
-      return Pixy.routeMap.root;
+      return 'appLayout';
     },
 
     getDefaultWindowTitle: function() {

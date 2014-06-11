@@ -12,13 +12,19 @@ define([ 'react' ], function(React) {
     },
 
     render: function() {
+      var className = 'alert';
+
       if (this.state.dismissed) {
         return <div />;
       }
 
+      if (!this.props.className) {
+        className += ' alert-danger';
+      }
+
       return(
         this.transferPropsTo(
-          <p className="alert">
+          <p className={className}>
             {this.props.children}
             {' '}
             <a className="type-smaller" onClick={this.dismiss}>Dismiss</a>

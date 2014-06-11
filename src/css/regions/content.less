@@ -1,6 +1,6 @@
 #content {
   position: absolute;
-  top: @menubar-height + @region-spacing;
+  top: 0;
   right: 0;
   bottom: @statusbar-height + @region-spacing;
   left: @navbar-width + @region-spacing;
@@ -9,11 +9,7 @@
 
   padding: @whitespace;
 
-  background: #f4f4f4;
+  background: @region-bg;
   border-radius: @radius;
   box-shadow: 0 1px 3px -1px @shadow;
-}
-
-body.guest #content {
-  left: 0;
 }

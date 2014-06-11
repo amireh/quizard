@@ -24,13 +24,12 @@ define([], function() {
     ACCOUNT_ACTIVATE: 'ACCOUNT_ACTIVATE',
     COURSE_ACTIVATE: 'COURSE_ACTIVATE',
 
-    PUBLIC_LAYOUT_NAME: 'guest',
-    PRIVATE_LAYOUT_NAME: 'member',
-
-    DEFAULT_PUBLIC_ROUTE: '/welcome',
-    DEFAULT_PRIVATE_ROUTE: '/app',
-
     QUIZ_LOAD_MORE: 'QUIZ_LOAD_MORE',
-    QUIZ_ACTIVATE: 'QUIZ_ACTIVATE'
+    QUIZ_ACTIVATE: 'QUIZ_ACTIVATE',
+
+    RECIPE_ENROLL_STUDENTS: '/recipes/enroll_students',
+    RECIPE_TAKE_QUIZ: '/recipes/take_quiz',
+
+    ROUTE_GO_TO_QUIZ: 'ROUTE_GO_TO_QUIZ',
   };
 });

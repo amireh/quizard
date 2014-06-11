@@ -1,9 +1,5 @@
 /** @jsx React.DOM */
-define([
-  'react',
-  'jsx!./navigation/account_picker',
-  'jsx!./navigation/course_picker'
-], function(React, AccountPicker, CoursePicker) {
+define([ 'react', 'constants' ], function(React, K) {
   /**
    * @internal
    *
@@ -14,26 +10,17 @@ define([
   var activeLink;
 
   /**
-   * @internal
-   *
-   * The [href] attribute of the active .navbar-subnav link
-   *
-   * This will only make sense if activeLink is set.
-   */
-  var activeChild;
-
-  /**
    * @internal Test if a link is currently active.
    */
-  var isActive = function(href, isChild) {
-    return href === (isChild ? activeChild : activeLink);
+  var isActive = function(href) {
+    return href === activeLink;
   };
 
   var Link = React.createClass({
     render: function() {
       var klasses = {
-        'navbar-link': !this.props.isChild,
-        'active': isActive(this.props.href, this.props.isChild)
+        'navbar-link': true,
+        'active': isActive(this.props.href)
       };
 
       if (this.props.icon) {
@@ -48,67 +35,47 @@ define([
     }
   });
 
-  var SubNav = React.createClass({
-    render: function() {
-      var style = {};
-
-      // if (!isActive(this.props.for)) {
-      //   style.display = 'none';
-      // }
-
-      return (
-        <ul className="navbar-subnav" style={style}>
-          {this.props.children}
-        </ul>
-      );
-    }
-  });
-
-  var SubLink = React.createClass({
-    render: function() {
-      return (
-        <li>
-          <Link href={this.props.href} isChild={true}>{this.props.children}</Link>
-        </li>
-      );
-    }
-  });
-
   var Navigation = React.createClass({
     getDefaultProps: function() {
       return {
-        active: undefined,
-        activeChild: undefined
+        active: undefined
       };
     },
 
     render: function() {
+      var linksClassName = React.addons.classSet({
+        'navbar-links': true,
+        'disabled': !this.props.authenticated
+      });
+
       activeLink = this.props.active;
-      activeChild = this.props.activeChild;
 
       return(
         <nav id="navbar">
-          <AccountPicker
-            accounts={this.props.accounts}
-            activeAccountId={this.props.activeAccountId} />
-          <CoursePicker
-            courses={this.props.courses}
-            activeCourseId={this.props.activeCourseId} />
+          <section className={linksClassName}>
+            <Link icon="icon-home" href="/">Home</Link>
 
-          <Link icon="icon-android" href="/app/users">Users</Link>
-          <SubNav for="/app/users">
-            <SubLink href="/app/users/list">
-              View users
-            </SubLink>
+            <h4 className="navbar-heading">
+              Recipes
+            </h4>
 
-            <SubLink href="/app/users/enroll">
-              Enroll a student
-            </SubLink>
-          </SubNav>
+            <Link icon="icon-android" href={K.RECIPE_ENROLL_STUDENTS}>
+              Enroll students
+            </Link>
 
-          <Link icon="icon-wand" href="/app/quizzes">
-            Quizzes
-          </Link>
+            <Link icon="icon-wand" href={K.RECIPE_TAKE_QUIZ}>
+              Take a quiz
+            </Link>
+          </section>
+
+          <section className="navbar-actions">
+            {this.props.authenticated &&
+              <a href="/logout">Logout</a>
+            }
+            {!this.props.authenticated &&
+              <a className="btn btn-primary" href="/login">Login</a>
+            }
+          </section>
         </nav>
       );
     }

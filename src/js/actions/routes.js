@@ -8,13 +8,9 @@ function(Pixy, AppStore, SessionStore, K) {
   };
 
   var home = function() {
-    var destination = SessionStore.isActive() ?
-      K.DEFAULT_PRIVATE_ROUTE :
-      K.DEFAULT_PUBLIC_ROUTE;
-
     console.debug('RouteActions: going home.');
 
-    return transitionTo(destination).promise;
+    return transitionTo('/').promise;
   };
 
   var goToDestinationOrHome = function(destination) {
@@ -66,8 +62,11 @@ function(Pixy, AppStore, SessionStore, K) {
       });
     },
 
-    goToQuiz: function(quizId) {
-      return transitionTo('/app/quizzes/' + quizId);
+    goToQuiz: function(courseId, quizId) {
+      return dispatcher.dispatch(K.ROUTE_GO_TO_QUIZ, {
+        courseId: courseId,
+        quizId: quizId
+      }).index;
     }
   };
 });

@@ -1,16 +1,10 @@
 define([
   'routes/base',
   'stores/quizzes',
-  'jsx!views/app/quizzes/take'
+  'jsx!views/quizzes/take'
 ], function(Route, QuizStore, View) {
   new Route('takeQuiz', {
     views: [{ component: View }],
-
-    enter: function() {
-      this.updateProps();
-    },
-
-    updateProps: function() {
-    }
+    navLink: '/take_quiz'
   });
 });

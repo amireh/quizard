@@ -1,11 +1,12 @@
-define([
-  'ext/pixy',
-  'underscore',
-  'constants',
-  'models/quiz',
-  'stores/courses'
-], function(Pixy, _, K, Quiz, CourseStore) {
+define(function(require) {
   var store, activeQuizId;
+
+  var Pixy = require('ext/pixy');
+  var Store = require('core/store');
+  var _ = require('underscore');
+  var K = require('constants');
+  var Quiz = require('models/quiz');
+  var CourseStore = require('stores/courses');
 
   var collection = new Pixy.Collection(undefined, {
     model: Quiz,
@@ -14,6 +15,7 @@ define([
       var activeCourseId = CourseStore.getActiveCourseId();
 
       if (!activeCourseId) {
+        console.assert(false, 'You are attempting to load a quiz but no course is activated.');
         return undefined;
       }
 
@@ -27,66 +29,19 @@ define([
     }
   });
 
-  var loadMore = function(done, error) {
-    debugger
-    collection.fetchNext().then(function() {
-      done('data');
-    }, error);
-  };
+  store = new Store('QuizStore', {
+    collection: collection,
 
-  var activate = function(payload, onChange, onError) {
-    var quizId = payload.id;
-    var quiz;
-    var done = function() {
-      activeQuizId = quizId;
-      onChange();
-    };
-
-    quiz = collection.get(quizId);
-
-    if (!quiz) {
-      quiz = collection.add([{ id: quizId }]).get(quizId);
-      quiz.fetch().then(done, onError);
-    } else {
-      done();
-    }
-  };
-
-  store = new Pixy.Store('QuizStore', {
     fetch: function() {
       return collection.fetch().then(function() {
         return store.getAll();
       }, this.emitActionError.bind(this));
     },
 
-    getAll: function() {
-      return collection.toProps();
-    },
-
-    getActiveQuiz: function() {
-      if (!activeQuizId) {
-        return;
-      }
-
-      return collection.get(activeQuizId).toProps();
-    },
-
-    getActiveQuizId: function() {
-      return activeQuizId;
-    },
-
-    hasMore: function() {
-      return collection.meta.hasMore;
-    },
-
     onAction: function(action, payload, onChange, onError) {
       switch(action) {
-        case K.QUIZ_LOAD_MORE:
-          loadMore(onChange, onError);
-        break;
-
         case K.QUIZ_ACTIVATE:
-          activate(payload, onChange, onError);
+          this.activate(payload, onChange, onError);
         break;
       }
     }

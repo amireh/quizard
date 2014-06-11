@@ -1,11 +1,11 @@
 .account-picker, .course-picker {
   @height: 42px;
   @font-size: 11px;
-  @width: @navbar-width;
+  // @width: @navbar-width;
 
   // display: inline-block;
   position: relative;
-  width: @width;
+  // width: @width;
   font-size: @font-size;
   margin-bottom: 10px;
 
@@ -22,16 +22,17 @@
 
   .btn-dropdown {
     border-radius: 0;
-    height: @height - 2px;
-    line-height: @height - 2px;
+    // height: @height - 2px;
+    // line-height: @height - 2px;
     box-shadow: none;
     font-size: @font-size;
     position: relative;
   }
 
   .btn-dropdown-anchor, .heading {
-    height: @height - 2px;
-    line-height: @height - 2px;
+    // height: @height - 2px;
+    // line-height: @height - 2px;
+    line-height: inherit;
   }
 
   .dropdown.open > .dropdown-menu {
@@ -39,7 +40,7 @@
   }
 
   .dropdown-menu {
-    min-width: @width;
+    // min-width: @width;
     max-width: 480px;
     // margin-left: -1px;
     padding-top: 0;

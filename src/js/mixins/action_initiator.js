@@ -34,8 +34,23 @@ define([ 'underscore' ], function(_) {
     },
 
     trackAction: function(service) {
+      var actionIndex;
+
+      if (typeof service === 'object') {
+        actionIndex = service.actionIndex;
+      }
+      else if (typeof service === 'number') {
+        actionIndex = service;
+      }
+      else {
+        console.warn(
+          'ActionInitiatorMixin: unable to extract actionIndex from',
+          'service object:', service);
+        return;
+      }
+
       this.setState({
-        actionIndex: service.actionIndex
+        actionIndex: actionIndex
       });
     }
   }

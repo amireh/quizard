@@ -1,10 +1,13 @@
 #navbar {
+  @actions-height: 30px;
+  @actions-margin: @region-spacing;
+
   position: absolute;
   z-index: 2;
   overflow: hidden;
   white-space: nowrap;
 
-  top: @menubar-height + @region-spacing;
+  top: 0;
   right: auto;
   bottom: 0;
   left: 0;
@@ -19,7 +22,25 @@
 
   // background: #555;
   .disable-selection();
-  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+
+  .navbar-links {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: @actions-height + @actions-margin;
+  }
+
+  .navbar-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: @actions-height;
+    line-height: @actions-height;
+    font-size: 13.5px;
+    padding: 0 @whitespace;
+  }
 }
 
 .navbar-link {
@@ -27,21 +48,18 @@
   display: block;
   color: inherit;
   padding: 0 @whitespace;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
 
   &:hover, &:focus, &.active {
     text-decoration: none;
     background: rgba(0,0,0,0.05);
 
-    &:before, i {
+    &:before {
       opacity: 1;
     }
   }
 
-  // &.active {
-  //   font-weight: bold;
-  // }
-
-  &:before, i {
+  &:before {
     display: block;
     position: absolute;
     right: @whitespace;
@@ -77,10 +95,15 @@
   }
 }
 
-.navbar-header {
-  padding: 0 @whitespace;
-  text-transform: uppercase;
-  font-size: 11px;
+.navbar-heading {
+  margin: 10px @whitespace;
+  font-size: 16.5px;
   line-height: 30px;
-  text-shadow: 0 1px 0 white;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  color: #888;
+
+  i {
+    position: absolute;;
+    right: @whitespace;
+  }
 }
