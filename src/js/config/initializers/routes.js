@@ -38,7 +38,11 @@ define([
         });
 
         match('/quizzes').to('quizzes', function(match) {
-          match('/take').to('takeQuiz');
+          match('/').to('quizIndex');
+          match('/:id').to('quiz', function(match) {
+            match('/').to('showQuiz');
+            match('/take').to('takeQuiz');
+          });
         });
 
         // 404

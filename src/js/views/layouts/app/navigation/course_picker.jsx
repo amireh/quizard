@@ -25,7 +25,6 @@ function(React, _, CourseActions, Dropdown) {
     getDefaultProps: function() {
       return {
         courses: [],
-        courses: [],
         activeCourseId: null
       };
     },

@@ -109,16 +109,6 @@ define([
           <Link icon="icon-wand" href="/app/quizzes">
             Quizzes
           </Link>
-
-          <SubNav for="/app/quizzes">
-            <SubLink href="/app/quizzes/create">
-              Create a quiz
-            </SubLink>
-
-            <SubLink href="/app/quizzes/take">
-              Take a quiz
-            </SubLink>
-          </SubNav>
         </nav>
       );
     }

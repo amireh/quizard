@@ -28,6 +28,9 @@ define([], function() {
     PRIVATE_LAYOUT_NAME: 'member',
 
     DEFAULT_PUBLIC_ROUTE: '/welcome',
-    DEFAULT_PRIVATE_ROUTE: '/app'
+    DEFAULT_PRIVATE_ROUTE: '/app',
+
+    QUIZ_LOAD_MORE: 'QUIZ_LOAD_MORE',
+    QUIZ_ACTIVATE: 'QUIZ_ACTIVATE'
   };
 });

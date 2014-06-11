@@ -64,6 +64,10 @@ function(Pixy, AppStore, SessionStore, K) {
         route: url || '/',
         layer: layer
       });
+    },
+
+    goToQuiz: function(quizId) {
+      return transitionTo('/app/quizzes/' + quizId);
     }
   };
 });

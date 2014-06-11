@@ -1,8 +1,9 @@
 define([
   'ext/pixy',
   'constants',
-  'models/course'
-], function(Pixy, K, Course) {
+  'models/course',
+  'util/noop'
+], function(Pixy, K, Course, NOOP) {
   var store, activeCourseId;
   var collection = new Pixy.Collection(undefined, {
     model: Course,
@@ -28,9 +29,18 @@ define([
 
   store = new Pixy.Store('CourseStore', {
     fetch: function() {
+      var cachedId = localStorage.activeCourseId;
+
+      activeCourseId = undefined;
+      localStorage.removeItem('activeCourseId');
+
       return collection.fetch().then(function() {
-        return store.getAll();
-      });
+        if (cachedId) {
+          activate({ id: cachedId }, this.emitChange.bind(this), NOOP);
+        }
+
+        return this.getAll();
+      }.bind(this));
     },
 
     getAll: function() {
