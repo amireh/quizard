@@ -1,12 +1,12 @@
-define([ 'ext/underscore', 'ext/pixy', 'humane', 'when' ],
-function(_, Pixy, humane, when, ConfirmationDialog) {
+define([ 'ext/underscore', 'ext/pixy', 'humane', 'rsvp' ],
+function(_, Pixy, humane, RSVP, ConfirmationDialog) {
   'use strict';
 
   var Notifier = Pixy.Object.extend({
     module: 'notifier',
 
     message: function(text, options) {
-      var messageRenderer = when.defer();
+      var messageRenderer = RSVP.defer();
 
       humane.remove(function() {
         var log = humane.log(text, _.extend({}, {

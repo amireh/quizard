@@ -1,9 +1,8 @@
 define(function(require) {
-  var store, activeQuizId;
+  var store;
 
   var Pixy = require('ext/pixy');
   var Store = require('core/store');
-  var _ = require('underscore');
   var K = require('constants');
   var Quiz = require('models/quiz');
   var CourseStore = require('stores/courses');
@@ -36,6 +35,14 @@ define(function(require) {
       return collection.fetch().then(function() {
         return store.getAll();
       }, this.emitActionError.bind(this));
+    },
+
+    fetchQuestions: function(quizId) {
+      var quiz = collection.get(quizId);
+
+      return quiz.questions.fetch().then(function() {
+        return this.get(quizId);
+      }.bind(this));
     },
 
     onAction: function(action, payload, onChange, onError) {

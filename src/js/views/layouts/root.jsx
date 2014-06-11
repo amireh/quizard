@@ -6,6 +6,8 @@ define(function(require) {
   var LoadingScreen = require('jsx!views/loading');
   var Notifier = require('modules/notifier');
   var debugLog = require('util/debug_log');
+  var ErrorDialog = require('jsx!views/error_dialog');
+  var Actions = require('actions/routes');
   var log = debugLog('RootLayout');
 
   var RootLayout = React.createClass({
@@ -49,6 +51,10 @@ define(function(require) {
         console.info('Authentication status has changed:',
           nextProps.authenticated);
       }
+
+      if (nextProps.error) {
+        this.add(ErrorDialog, 'dialogs');
+      }
     },
 
     componentDidUpdate: function() {
@@ -64,7 +70,7 @@ define(function(require) {
       }
 
       if (this.props.error) {
-        Notifier.error(this.props.error || 'Something went wrong.');
+        // Notifier.error(this.props.error || 'Something went wrong.');
 
         this.setProps({
           error: null
@@ -79,7 +85,10 @@ define(function(require) {
         <div>
           {
             !DialogLayout.isEmpty(undefined, this.state) &&
-            this.renderLayout(DialogLayout, { key: 'dialogLayout' })
+            this.renderLayout(DialogLayout, {
+              key: 'dialogLayout',
+              onClose: this.closeDialog
+            })
           }
 
           {this.renderLayout(AppLayout, { key: 'appLayout' })}
@@ -87,6 +96,11 @@ define(function(require) {
           {this.props.transitioning && <LoadingScreen />}
         </div>
       );
+    },
+
+    closeDialog: function() {
+      this.remove(this.getLayoutChildren(DialogLayout)[0], 'dialogs');
+      Actions.backToPrimaryView();
     }
   });
 

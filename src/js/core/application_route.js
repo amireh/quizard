@@ -102,11 +102,15 @@ define([
             }
           break;
           default:
+            var promise;
+
             if (!transition.pivotHandler) {
-              RouteActions.home();
+              promise = RouteActions.home();
+            } else {
+              promise = transition.promise;
             }
 
-            transition.promise.finally(function() {
+            promise.finally(function() {
               this.events.update.call(this, { error: error, loading: false });
             }.bind(this));
         }

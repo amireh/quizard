@@ -3,6 +3,7 @@ define(function(require) {
   var $ = require('jquery');
   var React = require('ext/react');
   var Actions = require('actions/routes');
+  var AppActions = require('actions/app');
 
   var DialogLayout = React.createClass({
     mixins: [ React.addons.StackedLayoutMixin ],

@@ -5,7 +5,10 @@ define([
   new Route('quiz', {
     model: function(params) {
       this.setStatus('Loading Quiz#' + params.id);
-      return QuizStore.find(params.id);
+
+      return QuizStore.find(params.id).then(function(quiz) {
+        return QuizStore.fetchQuestions(quiz.id);
+      });
     },
 
     afterModel: function() {
