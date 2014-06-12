@@ -34,6 +34,7 @@ define([], function() {
 
     QUIZ_TAKING_SET: 'QUIZ_TAKING_SET',
     QUIZ_TAKING_TAKE: 'QUIZ_TAKING_TAKE',
+    QUIZ_TAKING_ADD_ANSWER: 'QUIZ_TAKING_ADD_ANSWER',
 
     QUIZ_TAKING_STATUS_IDLE: 106,
 
@@ -48,5 +49,10 @@ define([], function() {
     // Turning it in.
     QUIZ_TAKING_STATUS_TURNING_IN: 104,
     QUIZ_TAKING_STATUS_TURNING_IN_FAILED: 105,
+
+    FREE_FORM_INPUT_QUESTIONS: [
+      'essay_question',
+      'short_answer_question'
+    ],
   };
 });

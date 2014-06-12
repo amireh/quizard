@@ -5,12 +5,15 @@ define(function(require) {
   var K = require('constants');
   var QuizTakingActions = require('actions/quiz_taking');
   var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
+  var ShortAnswerRenderer = require('jsx!./take/short_answer');
   var SaveButton = require('jsx!components/save_button');
   var merge = _.merge;
   var findBy = _.findBy;
 
   var Renderers = {
-    multiple_choice_question: MultipleChoiceRenderer
+    multiple_choice_question: MultipleChoiceRenderer,
+    true_false_question: MultipleChoiceRenderer,
+    short_answer_question: ShortAnswerRenderer
   };
 
   var TakeQuiz = React.createClass({

@@ -3,6 +3,8 @@ define(function(require) {
   var Quiz = require('models/quiz');
   var QuizData = require('json!fixtures/quiz');
   var QuizQuestionData = require('json!fixtures/quiz_questions');
+  var _ = require('ext/underscore');
+  var findBy = _.findBy;
 
   describe('Models.QuizTaker', function() {
     var subject, quiz;
@@ -82,7 +84,65 @@ define(function(require) {
       });
     });
 
-    describe('#prepareAnswers', function() {
+    describe('#generateResponses', function() {
+      it('should provide an answer to a Multiple-Choice question', function() {
+        var responses = subject.generateResponses([ { id: 'self' } ]);
+        var myResponses = responses[0].responses;
+
+        expect(myResponses[0].answer).toBe('3866');
+      });
+
+      describe('ShortAnswer', function() {
+        it('should provide the "Other Answer" option', function() {
+          var question = findBy(subject.questions, { type: 'short_answer_question' });
+          var answer = findBy(question.answers, { id: 'other' });
+
+          expect(answer).toBeTruthy();
+        });
+
+        it('should provide the "No Answer" option', function() {
+          var question = findBy(subject.questions, { type: 'short_answer_question' });
+          var answer = findBy(question.answers, { id: 'none' });
+
+          expect(answer).toBeTruthy();
+        });
+
+        it('should yield the answer text for a known answer', function() {
+          var question = findBy(subject.questions, { type: 'short_answer_question' });
+          var answer = findBy(question.answers, { id: '4684' });
+          var responses;
+
+          expect(answer).toBeTruthy();
+          subject.setResponseRatio(answer.id, 100);
+          responses = subject.generateResponses([{ id: 'self' }]);
+          expect(findBy(responses[0].responses, { id: question.id }).answer).
+            toEqual('Something');
+        });
+
+        it('should yield random text for the "Other Answer" answer', function() {
+          var question = findBy(subject.questions, { type: 'short_answer_question' });
+          var answer = findBy(question.answers, { id: 'other' });
+          var responses;
+
+          expect(answer).toBeTruthy();
+          subject.setResponseRatio(answer.id, 100);
+          responses = subject.generateResponses([{ id: 'self' }]);
+          expect(findBy(responses[0].responses, { id: question.id }).answer.length).
+            toBeGreaterThan(1);
+        });
+
+        it('should yield an empty string for the "No Answer" answer', function() {
+          var question = findBy(subject.questions, { type: 'short_answer_question' });
+          var answer = findBy(question.answers, { id: 'none' });
+          var responses;
+
+          expect(answer).toBeTruthy();
+          subject.setResponseRatio(answer.id, 100);
+          responses = subject.generateResponses([{ id: 'self' }]);
+          expect(findBy(responses[0].responses, { id: question.id }).answer).
+            toEqual('');
+        });
+      });
     });
   });
 });

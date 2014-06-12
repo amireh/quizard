@@ -42,9 +42,11 @@ define(function(require) {
     var answerIt = function(quizSubmission) {
       setStatus(K.QUIZ_TAKING_STATUS_ANSWERING);
 
-      quizTaker.prepareAnswers();
+      // todo: multiple-user support
+      var students = [{ id: 'self' }];
+      var studentResponses = quizTaker.generateResponses(students);
 
-      return QuizSubmissions.saveAnswers(quizSubmission, quizTaker.toJSON());
+      return QuizSubmissions.saveAnswers(quizSubmission, studentResponses[0].responses);
     };
 
     var turnItIn = function(quizSubmission) {
@@ -63,6 +65,13 @@ define(function(require) {
         onChange();
       });
   };
+
+  var addAnswer = function(payload, onChange, onError) {
+    var questionId = payload.questionId;
+
+    quizTaker.addCustomAnswer(questionId).then(onChange, onError);
+  };
+
 
   store = new Pixy.Store('quizTakingStore', {
     status: K.QUIZ_TAKING_STATUS_IDLE,
@@ -92,6 +101,10 @@ define(function(require) {
 
         case K.QUIZ_TAKING_TAKE:
           take(onChange, onError);
+        break;
+
+        case K.QUIZ_TAKING_ADD_ANSWER:
+          addAnswer(payload, onChange, onError);
         break;
       }
     },
