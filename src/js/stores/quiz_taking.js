@@ -68,7 +68,7 @@ define(function(require) {
     status: K.QUIZ_TAKING_STATUS_IDLE,
 
     build: function(quiz) {
-      quizTaker = new QuizTaker(quiz);
+      quizTaker = new QuizTaker({}, { quiz: quiz });
       this.emitChange();
     },
 

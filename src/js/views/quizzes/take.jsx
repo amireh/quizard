@@ -7,6 +7,7 @@ define(function(require) {
   var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
   var SaveButton = require('jsx!components/save_button');
   var merge = _.merge;
+  var findBy = _.findBy;
 
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer
@@ -69,10 +70,14 @@ define(function(require) {
       );
     },
 
-    renderQuestion: function(quizQuestion) {
-      var renderer = Renderers[quizQuestion.type];
-      var question = merge({}, quizQuestion,
-        this.props.quizTaking.questions[quizQuestion.id]);
+    renderQuestion: function(questionProps) {
+      var question;
+      var renderer = Renderers[questionProps.type];
+      var questionState = findBy(this.props.quizTaking.questions, {
+        id: questionProps.id
+      });
+
+      question = merge({}, questionProps, questionState);
 
       return (
         <fieldset key={question.id}>

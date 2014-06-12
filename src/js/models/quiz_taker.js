@@ -1,10 +1,27 @@
 define(function(require) {
   var Pixy = require('pixy');
+  var RSVP = require('rsvp');
   var _ = require('ext/underscore');
-  var find = _.find;
   var each = _.each;
+  var find = _.find;
   var findBy = _.findBy;
   var Model = Pixy.Model;
+  var setResponseRatio = require('./quiz_taker/response_ratio_calculator');
+
+  var buildQuestion = function(question) {
+    var buildAnswer = function(answer) {
+      return {
+        id: '' + answer.id,
+        responseRatio: answer.weight === 100 ? 100 : 0
+      };
+    };
+
+    return {
+      id: '' + question.id,
+      answerType: 'random',
+      answers: question.answers.map(buildAnswer)
+    };
+  };
 
   /**
    * @class Models.Quiz
@@ -14,18 +31,10 @@ define(function(require) {
   return Model.extend({
     name: 'QuizTaker',
 
-
-    initialize: function(quiz) {
-      console.assert(quiz, 'You must assign a quiz to the quiz taker.');
-      this.quiz = quiz;
-      this.questions = quiz.questions.reduce(function(hash, question) {
-        hash[question.id] = {
-          answers: question.answers.map(function(answer) {
-            return { id: answer.id };
-          })
-        };
-        return hash;
-      }, {});
+    initialize: function(attrs, options) {
+      console.assert(options.quiz, 'You must assign a quiz to the quiz taker.');
+      this.quiz = options.quiz;
+      this.questions = this.quiz.questions.map(buildQuestion);
     },
 
     set: function(attrs) {
@@ -40,6 +49,16 @@ define(function(require) {
       return true;
     },
 
+    setResponseRatio: function(answerId, ratio) {
+      var question = this._findByAnswer(answerId);
+
+      console.assert(question, 'Unable to find a question with answer:', answerId);
+
+      setResponseRatio(answerId, question.answers, ratio);
+
+      return true;
+    },
+
     prepareAnswers: function() {},
 
     toJSON: function() {
@@ -49,20 +68,12 @@ define(function(require) {
 
     handleAttribute: function(attr, value, attrs) {
       if (attr === 'answerType') {
-        this.questions[attrs.questionId].answerType = value;
+        this._findQuestion(attrs.questionId).then(function(question) {
+          question.answerType = value;
+        });
       }
       else if (attr === 'responseRatio') {
-        var answer;
-        var answerId = attrs.answerId;
-
-        each(this.questions, function(question) {
-          if (!answer) {
-            answer = findBy(question.answers, { id: answerId });
-          }
-        });
-
-        console.assert(answer, 'Unable to find answer:', answerId);
-        answer.responseRatio = value;
+        this.setResponseRatio(attrs.answerId, value);
       }
     },
 
@@ -72,6 +83,41 @@ define(function(require) {
       props.questions = this.questions;
 
       return props;
+    },
+
+    _findQuestion: function(questionId) {
+      var svc = RSVP.defer();
+      var question = findBy(this.questions, { id: questionId });
+
+      if (question) {
+        svc.resolve(question);
+      }
+
+      return svc.promise;
+    },
+
+    _findByAnswer: function(answerId) {
+      var questionId, question;
+      var locator = { id: '' + answerId };
+
+      return find(this.questions, function(question) {
+        return !!findBy(question.answers, locator);
+      });
+    },
+
+    _findAnswer: function(answerId) {
+      var answer;
+      var locator = { id: '' + answerId };
+
+      this.questions.some(function(question) {
+        answer = findBy(question.answers, locator);
+
+        if (answer) {
+          return true
+        }
+      });
+
+      return answer;
     }
   });
 });

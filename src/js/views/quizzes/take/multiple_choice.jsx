@@ -4,6 +4,7 @@ define(function(require) {
   var Radio = require('jsx!components/radio');
   var TooltipsMixin = require('mixins/views/tooltips');
   var QuizTakingActions = require('actions/quiz_taking');
+  var random = require('underscore').random;
   var GUID = 0;
 
   var MultipleChoice = React.createClass({
@@ -47,7 +48,9 @@ define(function(require) {
             {
               this.props.answerType === 'random' &&
               <div className="margined">
-                <button className="btn btn-default btn-mini">Randomize ratios</button>
+                <button
+                  onClick={this.generateRandomRatios}
+                  className="btn btn-default btn-mini">Randomize ratios</button>
               </div>
             }
           </div>
@@ -106,11 +109,9 @@ define(function(require) {
     },
 
     renderDistributionRandomizer: function(answer) {
-      var ratio = 0;
-
       return (
         <label className="form-label">
-          {ratio}
+          {answer.responseRatio}
         </label>
       );
     },
@@ -123,7 +124,7 @@ define(function(require) {
             type="number"
             min="0"
             max="100"
-            value={answer.responseRatio || 0}
+            value={answer.responseRatio}
             onChange={this.setResponseRatio.bind(null, answer.id)} />
         </label>
       );
@@ -134,6 +135,16 @@ define(function(require) {
         responseRatio: e.target.value,
         answerId: answerId
       });
+    },
+
+    generateRandomRatios: function(e) {
+      e.preventDefault();
+
+      var answerSz = this.props.answers.length;
+      var randomAnswer = this.props.answers[random(0, answerSz-1)];
+      var randomRatio = random(0, 100);
+
+      this.setResponseRatio(randomAnswer.id, { target: { value: randomRatio }});
     }
   });
 
