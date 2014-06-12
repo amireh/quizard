@@ -118,9 +118,22 @@ define(function(require) {
     renderDistributionPicker: function(answer) {
       return (
         <label className="form-label">
-          <input className="form-input" type="number" min="0" max="100" />
+          <input
+            className="form-input"
+            type="number"
+            min="0"
+            max="100"
+            value={answer.responseRatio || 0}
+            onChange={this.setResponseRatio.bind(null, answer.id)} />
         </label>
       );
+    },
+
+    setResponseRatio: function(answerId, e) {
+      QuizTakingActions.set({
+        responseRatio: e.target.value,
+        answerId: answerId
+      });
     }
   });
 

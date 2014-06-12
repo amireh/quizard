@@ -1,7 +1,7 @@
 module.exports = {
   unit: {
     options : {
-      timeout: 10000,
+      timeout: 1000,
       outfile: 'tests.html',
 
       host: 'http://127.0.0.1:<%= grunt.config.get("connect.tests.options.port") %>/',
@@ -21,14 +21,10 @@ module.exports = {
 
       version: '2.0.0',
 
-      styles: [ 'www/dist/pibi.css', 'test/overrides.css' ],
+      styles: [ 'www/dist/quizard.css', 'test/overrides.css' ],
 
       helpers: [
-        'test/support/jasmine/jasmine_sinon.js',
-        'test/support/phantomjs_polyfills.js',
-        'test/support/route_tests.js',
-        'test/vendor/*.js',
-        'test/helpers/test_fixtures.js'
+        'test/vendor/*.js'
       ],
 
       specs: [

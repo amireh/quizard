@@ -19,7 +19,7 @@
   cursor: pointer;
 
   border-radius: @radius;
-  border: 1px solid transparent;
+  border: 0 solid transparent;
   color: @foreground;
   // .kickass-shadow();
 
@@ -56,6 +56,7 @@
   background-color: @shade;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.2),
     0 1px 2px rgba(0,0,0,.15);
+  border-width: 1px;
   border-color: #ccc;
 
   &.btn-bordered {

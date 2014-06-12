@@ -1,9 +1,10 @@
 /** @jsx React.DOM */
 define(function(require) {
   var React = require('react');
-  var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
   var _ = require('underscore');
-  var extend = _.extend;
+  var QuizTakingActions = require('actions/quiz_taking');
+  var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
+  var merge = _.merge;
 
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer
@@ -31,13 +32,17 @@ define(function(require) {
           <section className="quiz-questions">
             {this.props.quiz.questions.map(this.renderQuestion)}
           </section>
+
+          <div className="form-actions">
+            <input type="submit" className="btn btn-success" value="Take it" />
+          </div>
         </form>
       );
     },
 
     renderQuestion: function(quizQuestion) {
       var renderer = Renderers[quizQuestion.type];
-      var question = extend({}, quizQuestion,
+      var question = merge({}, quizQuestion,
         this.props.quizTaking.questions[quizQuestion.id]);
 
       return (
@@ -63,6 +68,8 @@ define(function(require) {
 
     onSubmit: function(e) {
       e.preventDefault();
+
+      QuizTakingActions.take();
     }
   });
 

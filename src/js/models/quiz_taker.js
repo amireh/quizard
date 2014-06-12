@@ -1,5 +1,9 @@
 define(function(require) {
   var Pixy = require('pixy');
+  var _ = require('ext/underscore');
+  var find = _.find;
+  var each = _.each;
+  var findBy = _.findBy;
   var Model = Pixy.Model;
 
   /**
@@ -15,7 +19,11 @@ define(function(require) {
       console.assert(quiz, 'You must assign a quiz to the quiz taker.');
       this.quiz = quiz;
       this.questions = quiz.questions.reduce(function(hash, question) {
-        hash[question.id] = {};
+        hash[question.id] = {
+          answers: question.answers.map(function(answer) {
+            return { id: answer.id };
+          })
+        };
         return hash;
       }, {});
     },
@@ -32,9 +40,29 @@ define(function(require) {
       return true;
     },
 
+    prepareAnswers: function() {},
+
+    toJSON: function() {
+      // TODO
+      return [];
+    },
+
     handleAttribute: function(attr, value, attrs) {
       if (attr === 'answerType') {
         this.questions[attrs.questionId].answerType = value;
+      }
+      else if (attr === 'responseRatio') {
+        var answer;
+        var answerId = attrs.answerId;
+
+        each(this.questions, function(question) {
+          if (!answer) {
+            answer = findBy(question.answers, { id: answerId });
+          }
+        });
+
+        console.assert(answer, 'Unable to find answer:', answerId);
+        answer.responseRatio = value;
       }
     },
 

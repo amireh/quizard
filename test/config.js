@@ -15,6 +15,6 @@ requirejs.config({
   },
 
   deps: [
-    'json', 'router'
+    'json', 'router', 'pixy', 'pixy-jasmine'
   ]
 });
