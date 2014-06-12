@@ -1,5 +1,7 @@
 define(function(require) {
   var Pixy = require('pixy');
+  var result = require('underscore').result;
+
   var Model = Pixy.Model;
   /**
    * @class Models.Quiz
@@ -11,7 +13,7 @@ define(function(require) {
 
     url: function() {
       var id = this.get('id') || 'self';
-      return this.quiz.url() + '/submissions/' + id;
+      return [ result(this.quiz, 'url'), 'submissions', id ].join('/');
     },
 
     initialize: function(attrs, options) {

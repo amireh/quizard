@@ -44,7 +44,7 @@ define([ 'react' ], function(React) {
 
     getDefaultProps: function() {
       return {
-        className: 'default',
+        type: 'default',
         resetAfter: 1000,
         overlay: false,
         paddedOverlay: false,
@@ -75,7 +75,7 @@ define([ 'react' ], function(React) {
         'state-error': this.state.buttonState === STATE_ERROR
       };
 
-      className['btn-' + this.props.className] = true;
+      className['btn-' + this.props.type] = true;
       console.debug('SaveButton: ', this.state.buttonState);
 
       return (

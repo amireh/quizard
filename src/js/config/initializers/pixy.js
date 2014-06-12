@@ -1,10 +1,17 @@
 define([
   'ext/pixy',
+  'ext/jquery/ajax',
+  'config',
   'stores/sessions',
   'constants',
   'store'
-], function(Pixy, SessionStore, K, Store) {
+], function(Pixy, ajax, Config, SessionStore, K, Store) {
   'use strict';
+
+  Pixy.ajax = ajax({
+    host:     Config.apiHost,
+    timeout:  Config.xhr.timeout
+  });
 
   Pixy.configure({
     isAuthenticated: function() {

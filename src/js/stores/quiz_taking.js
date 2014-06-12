@@ -12,12 +12,22 @@ define(function(require) {
     store.emitChange();
   };
 
+  /**
+   * Take a quiz!
+   *
+   * This does three things:
+   *
+   *  1. it prepares the quiz submission by either locating the current, untaken
+   *     one, or by creating a new one if possible
+   *  2. it answers the submission using the QuizTaker module
+   *  3. it turns it in
+   */
   var take = function(onChange, onError) {
-    var failureEmitter = function(message) {
+    var failureEmitter = function(statusCode) {
       return function(apiError) {
         console.warn('API operation failure:', apiError, apiError.stack);
-        setStatus('Failure: ' + message);
-        onError(message);
+        setStatus(statusCode);
+        onError(statusCode);
 
         throw apiError;
       };
@@ -48,17 +58,26 @@ define(function(require) {
       .catch(failureEmitter(K.QUIZ_TAKING_STATUS_ANSWERING_FAILED))
       .then(turnItIn)
       .catch(failureEmitter(K.QUIZ_TAKING_STATUS_TURNING_IN_FAILED))
-      .then(onChange);
+      .then(function() {
+        setStatus(K.QUIZ_TAKING_STATUS_IDLE);
+        onChange();
+      });
   };
 
   store = new Pixy.Store('quizTakingStore', {
+    status: K.QUIZ_TAKING_STATUS_IDLE,
+
     build: function(quiz) {
       quizTaker = new QuizTaker(quiz);
       this.emitChange();
     },
 
     toProps: function() {
-      return quizTaker.toProps();
+      var props = quizTaker.toProps();
+
+      props.status = this.status;
+
+      return props;
     },
 
     onAction: function(action, payload, onChange, onError) {

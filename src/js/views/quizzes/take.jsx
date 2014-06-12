@@ -1,9 +1,11 @@
 /** @jsx React.DOM */
 define(function(require) {
-  var React = require('react');
+  var React = require('ext/react');
   var _ = require('underscore');
+  var K = require('constants');
   var QuizTakingActions = require('actions/quiz_taking');
   var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
+  var SaveButton = require('jsx!components/save_button');
   var merge = _.merge;
 
   var Renderers = {
@@ -11,6 +13,14 @@ define(function(require) {
   };
 
   var TakeQuiz = React.createClass({
+    mixins: [ React.mixins.ActionInitiator ],
+
+    getInitialState: function() {
+      return {
+        succeeded: undefined
+      };
+    },
+
     getDefaultProps: function() {
       return {
         quiz: {
@@ -20,6 +30,21 @@ define(function(require) {
           questions: {}
         }
       };
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+      var thisProps = this.props;
+      var done =
+        thisProps.quizTaking.status === K.QUIZ_TAKING_STATUS_TURNING_IN &&
+        nextProps.quizTaking.status === K.QUIZ_TAKING_STATUS_IDLE;
+
+      if (done) {
+        this.refs.saveButton.markDone(true);
+      }
+    },
+
+    onStoreError: function() {
+      this.refs.saveButton.markDone(false);
     },
 
     render: function() {
@@ -34,7 +59,11 @@ define(function(require) {
           </section>
 
           <div className="form-actions">
-            <input type="submit" className="btn btn-success" value="Take it" />
+            <SaveButton
+              ref="saveButton"
+              onClick={this.onSubmit}
+              type="success"
+              children="Take it" />
           </div>
         </form>
       );

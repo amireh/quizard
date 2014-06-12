@@ -1,12 +1,17 @@
 define(function(require) {
   var Pixy = require('pixy');
   var RSVP = require('rsvp');
-  var ajax = Pixy.ajax;
+  var result = require('underscore').result;
+  var ajax = require('core/ajax');
   var QuizSubmission = require('models/quiz_submission');
   var store;
 
   var urlForQuestions = function(submission) {
     return [ '', 'quiz_submissions', submission.id, 'questions' ].join('/');
+  };
+
+  var toJSON = function(data) {
+    return JSON.stringify(data);
   };
 
   store = new Pixy.Store('quizSubmissionStore', {
@@ -41,13 +46,13 @@ define(function(require) {
     create: function(quiz, user, attempt) {
       // TODO: masquerading support
       return ajax({
-        url: quiz.url() + '/submissions',
+        url: result(quiz, 'url') + '/submissions',
         type: 'POST',
-        data: {
+        data: toJSON({
           attempt: attempt
-        }
+        })
       }).then(function(payload) {
-        return new QuizSubmission(payload, { parse: true });
+        return new QuizSubmission(payload, { quiz: quiz, parse: true });
       });
     },
 
@@ -55,10 +60,10 @@ define(function(require) {
       return ajax({
         url: urlForQuestions(quizSubmission),
         type: 'POST',
-        data: JSON.stringify({
+        data: toJSON({
           attempt: quizSubmission.attempt(),
           validation_token: quizSubmission.validationToken(),
-          quiz_questions: [answers]
+          quiz_questions: answers
         })
       }).then(function() { return quizSubmission; });
     },
@@ -66,7 +71,11 @@ define(function(require) {
     turnIn: function(quizSubmission) {
       return ajax({
         url: quizSubmission.url() + '/complete',
-        type: 'POST'
+        type: 'POST',
+        data: toJSON({
+          attempt: quizSubmission.attempt(),
+          validation_token: quizSubmission.validationToken()
+        })
       });
     }
   });

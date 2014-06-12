@@ -41,6 +41,8 @@ define(function(require) {
         return question.type !== 'text_only_question';
       });
 
+      props.url = this.url();
+
       return props;
     }
   });

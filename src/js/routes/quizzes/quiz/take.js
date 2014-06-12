@@ -21,8 +21,40 @@ define(function(require) {
 
     updateProps: function() {
       this.update({
+        status: this.statusLabel(QuizTakingStore.status),
         quizTaking: QuizTakingStore.toProps()
       });
+    },
+
+    statusLabel: function(statusCode) {
+      var status;
+
+      switch(statusCode) {
+        case K.QUIZ_TAKING_STATUS_IDLE:
+          status = 'Idle.';
+        break;
+        case K.QUIZ_TAKING_STATUS_PREPARING:
+          status = 'Preparing submission.';
+        break;
+        case K.QUIZ_TAKING_STATUS_PREPARATION_FAILED:
+          status = 'Submission preparation failed.';
+        break;
+        case K.QUIZ_TAKING_STATUS_ANSWERING:
+          status = 'Answering quiz questions...';
+        break;
+        case K.QUIZ_TAKING_STATUS_ANSWERING_FAILED:
+          status = 'Answering quiz questions failed.';
+        break;
+        case K.QUIZ_TAKING_STATUS_TURNING_IN:
+          status = 'Turning the submission in...';
+        break;
+        case K.QUIZ_TAKING_STATUS_TURNING_IN_FAILED:
+          status = 'Turning the submission in failed.';
+        break;
+        default:
+      }
+
+      return status;
     }
   });
 });
