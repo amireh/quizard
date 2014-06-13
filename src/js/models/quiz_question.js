@@ -16,14 +16,16 @@ define(function(require) {
   var mkUnknownAnswer = function(id, attrs) {
     return extend({
       id: [ K.QUESTION_UNKNOWN_ANSWER, id ].join('_'),
-      text: K.QUESTION_UNKNOWN_ANSWER_TEXT
+      text: K.QUESTION_UNKNOWN_ANSWER_TEXT,
+      isUnknown: true
     }, attrs);
   };
 
   var mkMissingAnswer = function(id, attrs) {
     return extend({
       id: [ K.QUESTION_MISSING_ANSWER, id ].join('_'),
-      text: K.QUESTION_MISSING_ANSWER_TEXT
+      text: K.QUESTION_MISSING_ANSWER_TEXT,
+      isMissing: true
     }, attrs);
   };
 
@@ -62,8 +64,8 @@ define(function(require) {
       // who should answer randomly for free-form input questions
       if (contains(K.FREE_FORM_INPUT_QUESTIONS, type)) {
         answerSets.forEach(function(set) {
-          answers.push(mkUnknownAnswer(id + '_' + set.id));
-          answers.push(mkMissingAnswer(id + '_' + set.id));
+          set.answers.push(mkUnknownAnswer(id + '_' + set.id));
+          set.answers.push(mkMissingAnswer(id + '_' + set.id));
         });
       }
 
@@ -95,12 +97,6 @@ define(function(require) {
       attrs.pointsPossible = payload.points_possible;
 
       return attrs;
-    },
-
-    getNextAnswer: function(answerSet) {
-      return find(answerSet.answers, function(answer) {
-        return answer.remainingRespondents > 0;
-      });
     },
 
     toProps: function() {

@@ -37,9 +37,17 @@ define(function(require) {
 
       it('should generate the "Unknown" answer', function() {
         subject = createQuestion('short_answer_question');
-        expect(pluck(subject.get('answerSets')[0].answers, 'id').sort()).toEqual([
-          '1797', '4684', 'none_15_auto', 'other_15_auto'
-        ]);
+        expect(pluck(subject.get('answerSets')[0].answers, 'id').sort()).
+          toContain('none_15_auto', 'other_15_auto');
+
+      });
+
+      it('should generate the "Unknown" answer for questions with answer sets', function() {
+        subject = createQuestion('fill_in_multiple_blanks_question');
+        expect(pluck(subject.get('answerSets')[0].answers, 'id').sort()).
+          toContain('none_16_color1', 'other_16_color1');
+        expect(pluck(subject.get('answerSets')[1].answers, 'id').sort()).
+          toContain('none_16_color2', 'other_16_color2');
       });
     });
 

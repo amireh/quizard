@@ -1,9 +1,22 @@
 define(function(require) {
-  var contains = require('underscore').contains;
+  var _ = require('underscore');
+  var contains = _.contains;
+  var find = _.find;
   var MultipleChoiceLike = [
     'multiple_choice_question',
     'true_false_question'
   ];
+
+  var pullAndMarkAnswer = function(answerSet) {
+    return find(answerSet.answers, function(answer) {
+      var remaining = answer.remainingRespondents;
+
+      if (remaining > 0) {
+        answer.remainingRespondents -= 1;
+        return true;
+      }
+    });
+  };
 
   return function pickAnswer(question) {
     var answerSets = question.get('answerSets');
@@ -14,14 +27,14 @@ define(function(require) {
 
     if (contains(MultipleChoiceLike, questionType)) {
       answerSet = answerSets[0];
-      answer = question.getNextAnswer(answerSet);
+      answer = pullAndMarkAnswer(answerSet);
 
       answer.remainingRespondents -= 1;
       return answer.id;
     }
     else if (questionType === 'short_answer_question') {
       answerSet = answerSets[0];
-      answer = question.getNextAnswer(answerSet);
+      answer = pullAndMarkAnswer(answerSet);
 
       if (answer.id.substr(0,4) === 'none') {
         return '';
@@ -35,16 +48,24 @@ define(function(require) {
     }
     else if (questionType === 'fill_in_multiple_blanks_question') {
       value = answerSets.reduce(function(blanks, answerSet) {
-        answer = question.getNextAnswer(answerSet);
+        var text;
 
-        blanks[answerSet.id] = answer.text;
+        answer = pullAndMarkAnswer(answerSet);
+
+        // kuz if we want the student not to answer this blank, we leave it
+        // empty
+        if (!answer.isMissing) {
+          text = answer.text;
+        }
+
+        blanks[answerSet.id] = text;
 
         return blanks;
       }, {});
     }
     else if (questionType === 'multiple_dropdowns_question') {
       value = answerSets.reduce(function(variables, answerSet) {
-        answer = question.getNextAnswer(answerSet);
+        answer = pullAndMarkAnswer(answerSet);
 
         variables[answerSet.id] = answer.id;
 

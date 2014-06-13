@@ -11,7 +11,6 @@ define(function(require) {
     questions.each(function(question) {
       if (!answerSet) {
         answerSet = find(question.get('answerSets'), function(_answerSet) {
-          console.debug('Looking for', answerId, 'in', pluck(_answerSet.answers, 'id'));
           return findBy(_answerSet.answers, locator);
         });
       }
