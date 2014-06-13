@@ -33,8 +33,12 @@ define([], function() {
     ROUTE_GO_TO_QUIZ: 'ROUTE_GO_TO_QUIZ',
 
     QUIZ_TAKING_SET: 'QUIZ_TAKING_SET',
+    QUIZ_TAKING_SET_RESPONSE_RATIO: 'QUIZ_TAKING_SET_RESPONSE_RATIO',
     QUIZ_TAKING_TAKE: 'QUIZ_TAKING_TAKE',
     QUIZ_TAKING_ADD_ANSWER: 'QUIZ_TAKING_ADD_ANSWER',
+    QUIZ_TAKING_ADD_ANSWER_TO_VARIANT: 'QUIZ_TAKING_ADD_ANSWER_TO_VARIANT',
+    QUIZ_TAKING_ADD_VARIANT: 'QUIZ_TAKING_ADD_VARIANT',
+    QUIZ_TAKING_REMOVE_VARIANT: 'QUIZ_TAKING_REMOVE_VARIANT',
 
     QUIZ_TAKING_STATUS_IDLE: 106,
 
@@ -71,5 +75,16 @@ define([], function() {
     QUESTION_MISSING_ANSWER_TEXT: 'No Answer',
     QUESTION_UNKNOWN_ANSWER: 'other',
     QUESTION_UNKNOWN_ANSWER_TEXT: 'Something Else',
+
+    VARIANT_HELP_TOOLTIP: [
+      'Variants are combinations of answers that students will respond with.',
+      'You can have as many variants as needed to cover all possible answers.'
+    ].join(' '),
+
+    MANUAL_RESPONSE_DISTRIBUTION_TOOLTIP: [
+      'This option allows you to specify the ratio of',
+      'responses each answer should receive *almost* exactly.'
+    ].join(' '),
+
   };
 });

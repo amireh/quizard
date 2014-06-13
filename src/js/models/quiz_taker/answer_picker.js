@@ -7,8 +7,8 @@ define(function(require) {
     'true_false_question'
   ];
 
-  var pullAndMarkAnswer = function(answerSet) {
-    return find(answerSet.answers, function(answer) {
+  var pullAndMarkAnswer = function(answers) {
+    return find(answers, function(answer) {
       var remaining = answer.remainingRespondents;
 
       if (remaining > 0) {
@@ -20,21 +20,23 @@ define(function(require) {
 
   return function pickAnswer(question) {
     var answerSets = question.get('answerSets');
+    var variants = question.get('variants');
     var questionType = question.get('type');
     var answerSet;
     var answer;
     var value;
+    var variant;
 
     if (contains(MultipleChoiceLike, questionType)) {
       answerSet = answerSets[0];
-      answer = pullAndMarkAnswer(answerSet);
+      answer = pullAndMarkAnswer(answerSet.answers);
 
       answer.remainingRespondents -= 1;
       return answer.id;
     }
     else if (questionType === 'short_answer_question') {
       answerSet = answerSets[0];
-      answer = pullAndMarkAnswer(answerSet);
+      answer = pullAndMarkAnswer(answerSet.answers);
 
       if (answer.id.substr(0,4) === 'none') {
         return '';
@@ -50,7 +52,7 @@ define(function(require) {
       value = answerSets.reduce(function(blanks, answerSet) {
         var text;
 
-        answer = pullAndMarkAnswer(answerSet);
+        answer = pullAndMarkAnswer(answerSet.answers);
 
         // kuz if we want the student not to answer this blank, we leave it
         // empty
@@ -65,7 +67,7 @@ define(function(require) {
     }
     else if (questionType === 'multiple_dropdowns_question') {
       value = answerSets.reduce(function(variables, answerSet) {
-        answer = pullAndMarkAnswer(answerSet);
+        answer = pullAndMarkAnswer(answerSet.answers);
 
         variables[answerSet.id] = answer.id;
 
@@ -73,7 +75,11 @@ define(function(require) {
       }, {});
     }
     else if (questionType === 'multiple_answers_question') {
-      // TODO
+      variant = pullAndMarkAnswer(variants);
+
+      if (variant) {
+        value = variant.answerIds;
+      }
     }
 
     return value;

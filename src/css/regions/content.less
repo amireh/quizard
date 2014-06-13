@@ -25,11 +25,10 @@
 
     div > label.skinned-radio, .whatisthis {
       display: inline-block;
-      line-height: 28px;
+      line-height: inherit;
     }
 
     .whatisthis {
-      margin: 0 0 0 5px;
       vertical-align: middle;
       color: @link_fg;
       font-size: 11.5px;
@@ -39,41 +38,50 @@
 
     ul.question-answers {
       margin: @whitespace 0;
+    }
 
-      li.question-answer {
-        @actionbar-height: 40px;
+    li.question-answer {
+      @actionbar-height: 40px;
 
-        display: inline-block;
-        width: 100px + 2*@whitespace;
-        vertical-align: bottom;
-        margin-right: @whitespace;
-        background: @shade;
-        padding: @whitespace;
-        border-bottom: 5px solid darken(@shade, 10%);
+      display: inline-block;
+      width: 100px + 2*@whitespace;
+      vertical-align: bottom;
+      margin-right: @whitespace;
+      background: @shade;
+      padding: @whitespace;
+      border-bottom: 5px solid darken(@shade, 10%);
 
-        position: relative; // for actionbars
-        margin-bottom: @actionbar-height;
+      position: relative; // for actionbars
+      margin-bottom: @actionbar-height;
 
-        &.correct-answer {
-          border-bottom-color: @active;
-        }
+      &.correct-answer {
+        border-bottom-color: @active;
+      }
 
-        .actionbar {
-          height: @actionbar-height;
-          text-align: center;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          padding: 5px 0;
-          line-height: @actionbar-height - 10px;
-        }
+      .actionbar {
+        height: @actionbar-height;
+        text-align: center;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 5px 0;
+        line-height: @actionbar-height - 10px;
       }
     }
 
+    .question-variant li.question-answer {
+      margin-bottom: 0;
+    }
+
     .question-controls {
-      padding-top: @whitespace;
       margin-top: @whitespace;
+      display: block; // to override what .btn-group does to those who have it
+    }
+
+    input[readonly] {
+      color: @mute-fg;
+      background: @shade;
     }
   }
 }

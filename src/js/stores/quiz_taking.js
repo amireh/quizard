@@ -73,6 +73,36 @@ define(function(require) {
     quizTaker.addCustomAnswer(questionId).then(onChange, onError);
   };
 
+  var addAnswerToVariant = function(payload, onChange, onError) {
+    if (quizTaker.addAnswerToVariant(payload.questionId, payload.variantId, payload.answerId)) {
+      onChange();
+    } else {
+      onError();
+    }
+  };
+
+  var setResponseRatio = function(payload, onChange, onError) {
+    var options = payload.options || {};
+    var questionId = payload.questionId;
+    var answerId = payload.answerId;
+    var ratio = payload.ratio;
+    var rc;
+
+    if (options.variant) {
+      rc = quizTaker.setVariantResponseRatio(questionId, answerId, ratio);
+    }
+    else {
+      rc = quizTaker.setResponseRatio(questionId, answerId, ratio);
+    }
+
+    if (rc) {
+      onChange();
+      Quizzes.emitChange();
+    } else {
+      onError(quizTaker.validationError);
+    }
+  };
+
 
   store = new Pixy.Store('quizTakingStore', {
     status: K.QUIZ_TAKING_STATUS_IDLE,
@@ -101,12 +131,38 @@ define(function(require) {
           }
         break;
 
+        case K.QUIZ_TAKING_SET_RESPONSE_RATIO:
+          setResponseRatio(payload, onChange, onError);
+        break;
+
         case K.QUIZ_TAKING_TAKE:
           take(onChange, onError);
         break;
 
         case K.QUIZ_TAKING_ADD_ANSWER:
           addAnswer(payload, onChange, onError);
+        break;
+
+        case K.QUIZ_TAKING_ADD_VARIANT:
+          if (quizTaker.addVariantToQuestion(payload.questionId)) {
+            onChange();
+            Quizzes.emitChange();
+          } else {
+            onError();
+          }
+        break;
+
+        case K.QUIZ_TAKING_REMOVE_VARIANT:
+          if (quizTaker.removeVariantFromQuestion(payload.questionId, payload.variantId)) {
+            onChange();
+            Quizzes.emitChange();
+          } else {
+            onError();
+          }
+        break;
+
+        case K.QUIZ_TAKING_ADD_ANSWER_TO_VARIANT:
+          addAnswerToVariant(payload, onChange, onError);
         break;
       }
     },

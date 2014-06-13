@@ -62,7 +62,11 @@ define(function() {
       });
 
       if (remainder > 0) {
-        set(otherAnswers[0], get(otherAnswers[0]) + remainder);
+        if (otherAnswers.length) {
+          set(otherAnswers[0], get(otherAnswers[0]) + remainder);
+        } else {
+          set(answer, get(answer) + remainder);
+        }
       }
     }
   };

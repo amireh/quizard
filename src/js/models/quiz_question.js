@@ -6,8 +6,9 @@ define(function(require) {
   var where = _.where;
   var uniq = _.uniq;
   var extend = _.extend;
-  var find = _.find;
   var contains = _.contains;
+  var uniqueId = _.uniqueId;
+  var remove = _.remove;
 
   var extractBlanks = function(answers) {
     return uniq(pluck(answers, 'blank_id'));
@@ -27,6 +28,15 @@ define(function(require) {
       text: K.QUESTION_MISSING_ANSWER_TEXT,
       isMissing: true
     }, attrs);
+  };
+
+  var buildVariant = function() {
+    return {
+      id: uniqueId(),
+      responseRatio: 0,
+      remainingRespondents: 0,
+      answerIds: []
+    };
   };
 
   var QuizQuestion = Pixy.Model.extend({
@@ -96,6 +106,12 @@ define(function(require) {
       attrs.autoGradable = contains(K.MANUALLY_GRADED_QUESTIONS, type);
       attrs.pointsPossible = payload.points_possible;
 
+      if (type === 'multiple_answers_question') {
+        // Start out with a default empty variant
+        attrs.variants = [ buildVariant() ];
+        attrs.variants[0].responseRatio = 100;
+      }
+
       return attrs;
     },
 
@@ -106,12 +122,44 @@ define(function(require) {
         'text',
         'answerType',
         'answerSets',
+        'variants',
         'position'
       ]);
 
       // which is basically everything.. duh
 
       return props;
+    },
+
+    addVariant: function() {
+      this.get('variants').push(buildVariant());
+    },
+
+    removeVariant: function(variantId) {
+      var variants = this.get('variants');
+
+      if (variants.length === 1) {
+        return false;
+      }
+
+      variants = remove(variants, { id: variantId });
+
+      if (variants.length === 1) {
+        variants[0].responseRatio = 100;
+      }
+
+      this.set('variants', variants);
+    },
+
+    getResponsePool: function() {
+      if (this.get('type') === 'multiple_answers_question') {
+        return this.get('variants');
+      }
+      else {
+        return this.get('answerSets').reduce(function(answers, set) {
+          return answers.concat(set.answers);
+        }, []);
+      }
     }
   });
 

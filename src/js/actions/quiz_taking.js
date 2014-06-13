@@ -5,6 +5,25 @@ function(Dispatcher, K) {
       return Dispatcher.dispatch(K.QUIZ_TAKING_SET, attrs).index;
     },
 
+    /**
+     *
+     * @param {String} answerId
+     * @param {Number} ratio
+     *
+     * @param {Object} [options={}]
+     * @param {Boolean} options.variant
+     *        Pass as true if this is a response ratio for a Multiple-Answers
+     *        question variant.
+     */
+    setResponseRatio: function(questionId, answerId, ratio, options) {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_SET_RESPONSE_RATIO, {
+        questionId: questionId,
+        answerId: answerId,
+        ratio: ratio,
+        options: options
+      }).index;
+    },
+
     take: function() {
       return Dispatcher.dispatch(K.QUIZ_TAKING_TAKE).index;
     },
@@ -12,6 +31,27 @@ function(Dispatcher, K) {
     addAnswer: function(questionId) {
       return Dispatcher.dispatch(K.QUIZ_TAKING_ADD_ANSWER, {
         questionId: questionId
+      }).index;
+    },
+
+    addAnswerToVariant: function(questionId, variantId, answerId) {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_ADD_ANSWER_TO_VARIANT, {
+        questionId: questionId,
+        variantId: variantId,
+        answerId: answerId
+      }).index;
+    },
+
+    addVariant: function(questionId) {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_ADD_VARIANT, {
+        questionId: questionId
+      }).index;
+    },
+
+    removeVariant: function(questionId, variantId) {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_REMOVE_VARIANT, {
+        questionId: questionId,
+        variantId: variantId
       }).index;
     }
   };

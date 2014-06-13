@@ -7,6 +7,7 @@ define(function(require) {
   var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
   var ShortAnswerRenderer = require('jsx!./take/short_answer');
   var FIMBRenderer = require('jsx!./take/fill_in_multiple_blanks');
+  var MultipleAnswersRenderer = require('jsx!./take/multiple_answers');
   var SaveButton = require('jsx!components/save_button');
   var merge = _.merge;
   var findBy = _.findBy;
@@ -16,6 +17,7 @@ define(function(require) {
     true_false_question: MultipleChoiceRenderer,
     short_answer_question: ShortAnswerRenderer,
     fill_in_multiple_blanks_question: FIMBRenderer,
+    multiple_answers_question: MultipleAnswersRenderer,
   };
 
   var TakeQuiz = React.createClass({
