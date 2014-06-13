@@ -18,7 +18,7 @@ define(function(require) {
     return extend({
       id: [ K.QUESTION_UNKNOWN_ANSWER, id ].join('_'),
       text: K.QUESTION_UNKNOWN_ANSWER_TEXT,
-      isUnknown: true
+      unknown: true
     }, attrs);
   };
 
@@ -26,7 +26,7 @@ define(function(require) {
     return extend({
       id: [ K.QUESTION_MISSING_ANSWER, id ].join('_'),
       text: K.QUESTION_MISSING_ANSWER_TEXT,
-      isMissing: true
+      missing: true
     }, attrs);
   };
 

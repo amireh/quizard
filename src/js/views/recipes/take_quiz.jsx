@@ -5,7 +5,6 @@ define(function(require) {
   var Alert = require('jsx!components/alert');
   var CoursePicker = require('jsx!components/course_picker');
   var RouteActions = require('actions/routes');
-  var QuizActions = require('actions/quizzes');
 
   var TakeQuizRecipe = React.createClass({
     mixins: [ React.addons.LinkedStateMixin, React.mixins.ActionInitiator ],

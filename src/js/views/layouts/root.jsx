@@ -4,7 +4,6 @@ define(function(require) {
   var DialogLayout = require('jsx!./dialog');
   var AppLayout = require('jsx!./app');
   var LoadingScreen = require('jsx!views/loading');
-  var Notifier = require('modules/notifier');
   var debugLog = require('util/debug_log');
   var ErrorDialog = require('jsx!views/error_dialog');
   var Actions = require('actions/routes');

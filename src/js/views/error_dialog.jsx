@@ -10,7 +10,6 @@ define(function(require) {
     },
 
     componentDidMount: function() {
-      var error = this.props.error;
       this.setState({ error: this.extractErrorMessage(this.props.error) });
     },
 

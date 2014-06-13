@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 define(function(require) {
   var React = require('ext/react');
-  var _ = require('underscore');
   var K = require('constants');
   var QuizTakingActions = require('actions/quiz_taking');
   var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
@@ -9,8 +8,6 @@ define(function(require) {
   var FIMBRenderer = require('jsx!./take/fill_in_multiple_blanks');
   var MultipleAnswersRenderer = require('jsx!./take/multiple_answers');
   var SaveButton = require('jsx!components/save_button');
-  var merge = _.merge;
-  var findBy = _.findBy;
 
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer,

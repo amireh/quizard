@@ -6,7 +6,6 @@ define([
   'jsx!components/chosen'
 ],
 function(React, _, CourseActions, Chosen) {
-  var findBy = _.findBy;
   var chosenOptions = {
     width: '100%'
   };
@@ -37,10 +36,6 @@ function(React, _, CourseActions, Chosen) {
     },
 
     render: function() {
-      var activeCourse = findBy(this.props.courses, {
-        id: this.props.activeCourseId
-      }) || { name: 'Choose a course' };
-
       return (
         <Chosen
           synchronize

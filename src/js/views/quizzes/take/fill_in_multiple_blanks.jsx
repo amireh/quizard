@@ -2,16 +2,16 @@
 define(function(require) {
   var React = require('react');
   var TooltipsMixin = require('mixins/views/tooltips');
-  var HasAnswersMixin = require('jsx!./has_answers_mixin');
-  var Radio = require('jsx!components/radio');
-  var random = require('underscore').random;
+  var RatiosMixin = require('jsx!./mixins/response_ratios');
+  var RatioControls = require('jsx!./components/ratio_controls');
+  var RatioRandomizer = require('jsx!./components/ratio_randomizer');
+  var AnswerSet = require('jsx!./components/answer_set');
+  var Answer = require('jsx!./components/answer');
 
   var FillInMultipleBlanks = React.createClass({
-    mixins: [ React.addons.LinkedStateMixin, TooltipsMixin, HasAnswersMixin ],
+    mixins: [ TooltipsMixin, RatiosMixin ],
 
     render: function() {
-      var guid = this.props.id;
-
       return (
         <div>
           <div className="question-answer-sets">
@@ -19,30 +19,38 @@ define(function(require) {
           </div>
 
           <div className="question-controls">
-            <Radio
-              spanner
-              onChange={this.setAnswerType}
-              value="random"
-              checked={this.props.answerType === 'random'}
-              name={'answerType' + guid}
-              label="Answer randomly" />
-
-            <div>
-              <Radio
-                onChange={this.setAnswerType}
-                value="manual"
-                checked={this.props.answerType === 'manual'}
-                name={'answerType' + guid}
-                label="Specify answer distribution manually" />
-
-                <em className="whatisthis" title={
-                    "This option allows you to specify exactly the ratio of " +
-                    "responses each answer should receive"
-                  }>What is this?
-                </em>
-            </div>
+            <RatioControls
+              id={this.props.id}
+              answerType={this.props.answerType} />
           </div>
         </div>
+      );
+    },
+
+    renderAnswerSet: function(answerSet) {
+      return (
+        <AnswerSet key={answerSet.id} id={answerSet.id}>
+          {answerSet.answers.map(this.renderAnswer)}
+
+          {this.props.answerType === 'random' &&
+            <div key="randomizer" className="margined">
+              <RatioRandomizer
+                id={this.props.id}
+                answers={answerSet.answers}  />
+            </div>
+          }
+        </AnswerSet>
+      );
+    },
+
+    renderAnswer: function(answer) {
+      return (
+        <Answer
+          key={answer.id} id={answer.id} text={answer.text}
+          correct={answer.correct}
+          missing={answer.missing}
+          unknown={answer.unknown}
+          children={this.renderRatio(answer)} />
       );
     }
   });

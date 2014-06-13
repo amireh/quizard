@@ -5,7 +5,8 @@ define(function(require) {
   var Checkbox = require('jsx!components/checkbox');
   var TooltipsMixin = require('mixins/views/tooltips');
   var RatiosMixin = require('jsx!./mixins/response_ratios');
-  var RatioControlsMixin = require('jsx!./components/ratio_controls');
+  var RatioRandomizer = require('jsx!./components/ratio_randomizer');
+  var RatioControls = require('jsx!./components/ratio_controls');
   var Actions = require('actions/quiz_taking');
   var getAnswers = function(props) {
     return props.answerSets[0].answers;
@@ -33,8 +34,12 @@ define(function(require) {
               Add a variant
             </button>
 
-            {this.renderRatioRandomizer(this.props.variants, { variant: true })}
-            {this.renderRatioControls()}
+            <RatioRandomizer
+              id={this.props.id}
+              answers={this.props.variants}
+              variant />
+
+            <RatioControls id={this.props.id} answerType={this.props.answerType} />
           </div>
         </div>
       );
@@ -66,7 +71,7 @@ define(function(require) {
 
           {this.renderRatio(variant, { variant: true })}
         </section>
-      )
+      );
     },
 
     renderAnswer: function(variant, answer) {
@@ -80,7 +85,7 @@ define(function(require) {
             value={answer.id}
             label={answer.text} />
         </li>
-      )
+      );
     },
 
     addVariant: function(e) {

@@ -41,9 +41,10 @@ define(function(require) {
 
     renderAnswer: function(answer) {
       return (
-        <Answer key={answer.id} text={answer.text} correct={answer.correct}>
-          {this.renderRatio(answer)}
-        </Answer>
+        <Answer
+          key={answer.id} id={answer.id} text={answer.text}
+          correct={answer.correct}
+          children={this.renderRatio(answer)} />
       );
     }
   });

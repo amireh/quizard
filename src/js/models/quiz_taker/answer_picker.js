@@ -56,7 +56,7 @@ define(function(require) {
 
         // kuz if we want the student not to answer this blank, we leave it
         // empty
-        if (!answer.isMissing) {
+        if (answer && !answer.missing) {
           text = answer.text;
         }
 

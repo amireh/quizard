@@ -15,7 +15,9 @@ define(function(require) {
     render: function() {
       var className = classSet({
         'question-answer': true,
-        'correct-answer': this.props.correct
+        'correct-answer': this.props.correct,
+        'unknown-answer': this.props.unknown,
+        'missing-answer': this.props.missing,
       });
 
       return (

@@ -10,8 +10,7 @@ define(function(require) {
     getDefaultProps: function() {
       return {
         id: undefined,
-        answerType: undefined,
-        children: false
+        answerType: undefined
       };
     },
 
@@ -21,8 +20,6 @@ define(function(require) {
       return(
         <div className="question-ratio-controls">
           <header>How should we distribute the responses?</header>
-
-          {this.props.children}
 
           <Radio
             spanner
