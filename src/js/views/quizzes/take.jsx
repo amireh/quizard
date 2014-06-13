@@ -3,19 +3,8 @@ define(function(require) {
   var React = require('ext/react');
   var K = require('constants');
   var QuizTakingActions = require('actions/quiz_taking');
-  var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
-  var ShortAnswerRenderer = require('jsx!./take/short_answer');
-  var FIMBRenderer = require('jsx!./take/fill_in_multiple_blanks');
-  var MultipleAnswersRenderer = require('jsx!./take/multiple_answers');
   var SaveButton = require('jsx!components/save_button');
-
-  var Renderers = {
-    multiple_choice_question: MultipleChoiceRenderer,
-    true_false_question: MultipleChoiceRenderer,
-    short_answer_question: ShortAnswerRenderer,
-    fill_in_multiple_blanks_question: FIMBRenderer,
-    multiple_answers_question: MultipleAnswersRenderer,
-  };
+  var Question = require('jsx!./take/question');
 
   var TakeQuiz = React.createClass({
     mixins: [ React.mixins.ActionInitiator ],
@@ -72,27 +61,17 @@ define(function(require) {
       );
     },
 
-    renderQuestion: function(question) {
-      var renderer = Renderers[question.type];
-
+    renderQuestion: function(question, index) {
       return (
-        <fieldset key={question.id}>
-          <legend>
-            Question {question.position}
-            <small className="stick-right">{question.type.replace(/_question$/, '').titleize()}</small>
-          </legend>
-
-          {question.text ?
-            <div dangerouslySetInnerHTML={{ __html: question.text }} /> :
-            <p><em>No question text available.</em></p>
-          }
-
-          {
-            renderer ?
-              renderer(question) :
-              <em>Question type is not supported yet.</em>
-          }
-        </fieldset>
+        <Question
+          key={question.id}
+          id={question.id}
+          type={question.type}
+          text={question.text}
+          position={index+1}
+          answerType={question.answerType}
+          answerSets={question.answerSets}
+          variants={question.variants} />
       );
     },
 
