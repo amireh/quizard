@@ -6,6 +6,7 @@ define(function(require) {
   var QuizTakingActions = require('actions/quiz_taking');
   var MultipleChoiceRenderer = require('jsx!./take/multiple_choice');
   var ShortAnswerRenderer = require('jsx!./take/short_answer');
+  var FIMBRenderer = require('jsx!./take/fill_in_multiple_blanks');
   var SaveButton = require('jsx!components/save_button');
   var merge = _.merge;
   var findBy = _.findBy;
@@ -13,7 +14,8 @@ define(function(require) {
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer,
     true_false_question: MultipleChoiceRenderer,
-    short_answer_question: ShortAnswerRenderer
+    short_answer_question: ShortAnswerRenderer,
+    fill_in_multiple_blanks_question: FIMBRenderer,
   };
 
   var TakeQuiz = React.createClass({
@@ -30,9 +32,7 @@ define(function(require) {
         quiz: {
           questions: [],
         },
-        quizTaking: {
-          questions: {}
-        }
+        quizTaking: {}
       };
     },
 
@@ -73,14 +73,8 @@ define(function(require) {
       );
     },
 
-    renderQuestion: function(questionProps) {
-      var question;
-      var renderer = Renderers[questionProps.type];
-      var questionState = findBy(this.props.quizTaking.questions, {
-        id: questionProps.id
-      });
-
-      question = merge({}, questionProps, questionState);
+    renderQuestion: function(question) {
+      var renderer = Renderers[question.type];
 
       return (
         <fieldset key={question.id}>

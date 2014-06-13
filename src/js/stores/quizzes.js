@@ -51,6 +51,10 @@ define(function(require) {
           this.activate(payload, onChange, onError);
         break;
       }
+    },
+
+    reset: function() {
+      this.collection.reset();
     }
   });
 

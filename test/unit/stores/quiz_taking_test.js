@@ -2,15 +2,19 @@ define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
   var Store = require('stores/quiz_taking');
+  var Quizzes = require('stores/quizzes');
   var Quiz = require('models/quiz');
   var XHR = require('fixtures/xhr.js');
 
   describe('Stores.QuizTaking', function() {
     var onChange, onError;
-    var quiz = new Quiz({ id: '1' });
+    var quiz;
 
     beforeEach(function() {
       Store.reset();
+      Quizzes.reset();
+
+      quiz = Quizzes.collection.push({ id: '1' });
 
       spyOn(quiz, 'url').and.returnValue('/courses/1/quizzes/1');
     });
@@ -25,7 +29,7 @@ define(function(require) {
       });
 
       it('should take a quiz for the first time', function() {
-        Store.build(quiz);
+        Store.build(quiz.toProps());
 
         this.respondWith('GET',
           '/api/v1/courses/1/quizzes/1/submissions/self',

@@ -2,6 +2,7 @@ define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
   var QuizTaker = require('models/quiz_taker');
+  var Quizzes = require('stores/quizzes');
   var QuizSubmissions = require('stores/quiz_submissions');
   var store, quizTaker;
 
@@ -77,12 +78,12 @@ define(function(require) {
     status: K.QUIZ_TAKING_STATUS_IDLE,
 
     build: function(quiz) {
-      quizTaker = new QuizTaker({}, { quiz: quiz });
+      quizTaker = new QuizTaker({}, { quiz: Quizzes.collection.get(quiz.id) });
       this.emitChange();
     },
 
     toProps: function() {
-      var props = quizTaker.toProps();
+      var props = {};
 
       props.status = this.status;
 
@@ -94,6 +95,7 @@ define(function(require) {
         case K.QUIZ_TAKING_SET:
           if (quizTaker.set(payload)) {
             onChange();
+            Quizzes.emitChange();
           } else {
             onError(quizTaker.validationError);
           }

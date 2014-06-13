@@ -51,8 +51,25 @@ define([], function() {
     QUIZ_TAKING_STATUS_TURNING_IN_FAILED: 105,
 
     FREE_FORM_INPUT_QUESTIONS: [
+      'fill_in_multiple_blanks_question',
       'essay_question',
       'short_answer_question'
     ],
+
+    QUESTIONS_WITH_ANSWER_SETS: [
+      'fill_in_multiple_blanks_question',
+      'multiple_dropdowns_question',
+      'matching_question',
+    ],
+
+    MANUALLY_GRADED_QUESTIONS: [
+      'essay_question',
+      'file_upload_question'
+    ],
+
+    QUESTION_MISSING_ANSWER: 'none',
+    QUESTION_MISSING_ANSWER_TEXT: 'No Answer',
+    QUESTION_UNKNOWN_ANSWER: 'other',
+    QUESTION_UNKNOWN_ANSWER_TEXT: 'Something Else',
   };
 });

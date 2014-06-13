@@ -31,5 +31,8 @@ define([
   Pixy.Cache.setAdapter(Store);
   Pixy.Cache.setAvailable(Store.enabled);
 
+  Pixy.Collection.setDefaultOptions('add', { parse: true });
+  Pixy.Collection.setDefaultOptions('set', { parse: true });
+
   Pixy.Registry.options.mute = true;
 });

@@ -1,33 +1,123 @@
-define([ 'ext/pixy' ], function(Pixy) {
-  var ManualGradingQuestions = [
-    'essay_question',
-    'file_upload_question'
-  ];
+define(function(require) {
+  var Pixy = require('ext/pixy');
+  var K = require('constants');
+  var _ = require('underscore');
+  var pluck = _.pluck;
+  var where = _.where;
+  var uniq = _.uniq;
+  var extend = _.extend;
+  var find = _.find;
+  var contains = _.contains;
 
-  /**
-   * @class Models.Quiz
-   *
-   * The Admin or one of them students.
-   */
-  return Pixy.Model.extend({
+  var extractBlanks = function(answers) {
+    return uniq(pluck(answers, 'blank_id'));
+  };
+
+  var mkUnknownAnswer = function(id, attrs) {
+    return extend({
+      id: [ K.QUESTION_UNKNOWN_ANSWER, id ].join('_'),
+      text: K.QUESTION_UNKNOWN_ANSWER_TEXT
+    }, attrs);
+  };
+
+  var mkMissingAnswer = function(id, attrs) {
+    return extend({
+      id: [ K.QUESTION_MISSING_ANSWER, id ].join('_'),
+      text: K.QUESTION_MISSING_ANSWER_TEXT
+    }, attrs);
+  };
+
+  var QuizQuestion = Pixy.Model.extend({
     name: 'QuizQuestion',
 
     urlRoot: function() {
       return this.collection.url(true);
     },
 
+    parse: function(payload) {
+      var attrs = {};
+      var id = ''+payload.id;
+      var type = payload.question_type;
+      var answers = payload.answers || [];
+      var answerSets = [];
+
+      // Wrap all answers in "answerSets" to normalize access between
+      // question types that have multiple sets (like blanks) and those that
+      // don't
+      if (contains(K.QUESTIONS_WITH_ANSWER_SETS, type)) {
+        answerSets = extractBlanks(answers).map(function(blankId) {
+          return {
+            id: blankId,
+            answers: where(answers, { blank_id: blankId })
+          };
+        });
+      } else {
+        answerSets.push({
+          id: 'auto',
+          answers: answers
+        });
+      }
+
+      // Generate answers for students who should skip the question, and those
+      // who should answer randomly for free-form input questions
+      if (contains(K.FREE_FORM_INPUT_QUESTIONS, type)) {
+        answerSets.forEach(function(set) {
+          answers.push(mkUnknownAnswer(id + '_' + set.id));
+          answers.push(mkMissingAnswer(id + '_' + set.id));
+        });
+      }
+
+      // Now we stringify ids and decorate answers
+      answerSets.forEach(function(set) {
+        var responseRatioDistributed = false;
+
+        set.answers.forEach(function(answer) {
+          answer.id = ''+answer.id;
+          answer.correct = answer.weight === 100;
+          answer.remainingRespondents = 0;
+          answer.responseRatio = 0;
+
+          if (answer.correct && !responseRatioDistributed) {
+            responseRatioDistributed = true;
+            answer.responseRatio = 100;
+          }
+
+          delete answer.weight;
+        });
+      });
+
+      attrs.id = id;
+      attrs.type = payload.question_type;
+      attrs.text = payload.question_text;
+      attrs.answerType = 'random';
+      attrs.answerSets = answerSets;
+      attrs.autoGradable = contains(K.MANUALLY_GRADED_QUESTIONS, type);
+      attrs.pointsPossible = payload.points_possible;
+
+      return attrs;
+    },
+
+    getNextAnswer: function(answerSet) {
+      return find(answerSet.answers, function(answer) {
+        return answer.remainingRespondents > 0;
+      });
+    },
+
     toProps: function() {
       var props = this.pick([
-        'answers', 'matches', 'formulas', 'variables', 'position'
+        'id',
+        'type',
+        'text',
+        'answerType',
+        'answerSets',
+        'position'
       ]);
 
-      props.id = this.get('id') + '';
-      props.type = this.get('question_type');
-      props.text = this.get('question_text');
-      props.pointsPossible = this.get('points_possible');
-      props.autoGradable = ManualGradingQuestions.indexOf(props.type) === -1;
+      // which is basically everything.. duh
 
       return props;
     }
   });
+
+  return QuizQuestion;
 });

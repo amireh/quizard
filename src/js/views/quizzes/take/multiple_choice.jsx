@@ -8,7 +8,7 @@ define(function(require) {
     mixins: [ React.addons.LinkedStateMixin, TooltipsMixin, HasAnswersMixin ],
 
     render: function() {
-      return this.renderAnswers();
+      return this.renderAnswerSets();
     }
   });
 

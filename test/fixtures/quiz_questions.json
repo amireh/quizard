@@ -424,5 +424,155 @@
       }
     ],
     "matching_answer_incorrect_matches": "Home.\nJanuary 1st, 1960."
+  },
+  {
+    "assessment_question_id": 23,
+    "id": 21,
+    "position": 11,
+    "quiz_group_id": null,
+    "quiz_id": 8,
+    "question_name": "Question",
+    "question_type": "numerical_question",
+    "question_text": "<p>[Numerical:Exact] What's 9 plus 3, 2.5 minus 1, or 4 minus zero?</p>",
+    "points_possible": 4,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [
+      {
+        "id": 4343,
+        "text": "",
+        "comments": "",
+        "weight": 100,
+        "numerical_answer_type": "exact_answer",
+        "exact": 12,
+        "margin": 0
+      },
+      {
+        "id": 6959,
+        "text": "",
+        "comments": "",
+        "weight": 100,
+        "numerical_answer_type": "range_answer",
+        "start": 3,
+        "end": 6
+      },
+      {
+        "id": 8617,
+        "text": "",
+        "comments": "",
+        "weight": 100,
+        "numerical_answer_type": "exact_answer",
+        "exact": 4,
+        "margin": 0
+      },
+      {
+        "id": 6704,
+        "text": "",
+        "comments": "",
+        "weight": 100,
+        "numerical_answer_type": "exact_answer",
+        "exact": 1.5,
+        "margin": 1
+      }
+    ],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+  },
+  {
+    "assessment_question_id": 50,
+    "id": 53,
+    "position": 12,
+    "quiz_group_id": null,
+    "quiz_id": 8,
+    "question_name": "FQuestion",
+    "question_type": "calculated_question",
+    "question_text": "<p>Formula: what is 5 plus [x]?</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [
+      {
+        "weight": 100,
+        "variables": [
+          {
+            "name": "x",
+            "value": 4
+          }
+        ],
+        "answer": 9,
+        "id": 5842
+      },
+      {
+        "weight": 100,
+        "variables": [
+          {
+            "name": "x",
+            "value": 9
+          }
+        ],
+        "answer": 14,
+        "id": 771
+      },
+      {
+        "weight": 100,
+        "variables": [
+          {
+            "name": "x",
+            "value": 4
+          }
+        ],
+        "answer": 9,
+        "id": 2705
+      },
+      {
+        "weight": 100,
+        "variables": [
+          {
+            "name": "x",
+            "value": 10
+          }
+        ],
+        "answer": 15,
+        "id": 9184
+      }
+    ],
+    "variables": [
+      {
+        "name": "x",
+        "min": 1,
+        "max": 10,
+        "scale": 0
+      }
+    ],
+    "formulas": [
+      {
+        "formula": "x + 5"
+      }
+    ],
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+  },
+  {
+    "assessment_question_id": 51,
+    "id": 54,
+    "position": 13,
+    "quiz_group_id": null,
+    "quiz_id": 8,
+    "question_name": "FUQuestion",
+    "question_type": "file_upload_question",
+    "question_text": "<p>File Upload: what's that you look like?</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
   }
 ]
