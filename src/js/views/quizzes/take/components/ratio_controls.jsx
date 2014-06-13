@@ -6,13 +6,23 @@ define(function(require) {
   var Radio = require('jsx!components/radio');
   var GUID = 0;
 
-  var RatioControlsMixin = {
-    renderRatioControls: function() {
+  var RatioControls = React.createClass({
+    getDefaultProps: function() {
+      return {
+        id: undefined,
+        answerType: undefined,
+        children: false
+      };
+    },
+
+    render: function() {
       var guid = ++GUID;
 
       return(
         <div className="question-ratio-controls">
           <header>How should we distribute the responses?</header>
+
+          {this.props.children}
 
           <Radio
             spanner
@@ -47,7 +57,7 @@ define(function(require) {
         questionId: this.props.id
       });
     },
-  };
+  });
 
-  return RatioControlsMixin;
+  return RatioControls;
 });

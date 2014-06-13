@@ -4,8 +4,11 @@ define(function(require) {
   var merge = _.merge;
   var defaults = {
     position: {
-      my: 'top center',
-      at: 'bottom center'
+      my: 'bottom center',
+      at: 'top center'
+    },
+    show: {
+      delay: false
     }
   };
 

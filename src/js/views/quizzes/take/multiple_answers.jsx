@@ -5,14 +5,14 @@ define(function(require) {
   var Checkbox = require('jsx!components/checkbox');
   var TooltipsMixin = require('mixins/views/tooltips');
   var RatiosMixin = require('jsx!./mixins/response_ratios');
-  var RatioControlsMixin = require('jsx!./mixins/ratio_controls');
+  var RatioControlsMixin = require('jsx!./components/ratio_controls');
   var Actions = require('actions/quiz_taking');
   var getAnswers = function(props) {
     return props.answerSets[0].answers;
   };
 
   var MultipleAnswers = React.createClass({
-    mixins: [ TooltipsMixin, RatiosMixin, RatioControlsMixin ],
+    mixins: [ TooltipsMixin, RatiosMixin ],
 
     getDefaultProps: function() {
       return {
