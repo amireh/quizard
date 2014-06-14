@@ -96,6 +96,8 @@ define([], function() {
     ].join(' '),
 
     DEFAULT_ID_PREFIX: 'quizard',
+    STUDENT_EMAIL_DOMAIN: 'quizard.com',
+    STUDENT_PASSWORD: 'quizard_student_password',
 
     STATUS_IDLE: 'idle',
     STATUS_BUSY: 'busy',

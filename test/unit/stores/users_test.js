@@ -34,6 +34,8 @@ define(function(require) {
           prefix: 'quizard'
         }, onChange, onError);
 
+        this.flush();
+
         expect(this.requests.length).toEqual(1);
         expect(this.requests[0].url).toEqual('/api/v1/accounts/1/users');
         expect(this.requests[0].requestBody).toEqual(JSON.stringify({
@@ -95,6 +97,135 @@ define(function(require) {
           remaining: 0
         });
 
+      });
+
+      it('should work for multiple students', function() {
+        Users.on('change:status', onStatusChange);
+        Users.onAction(K.USER_MASS_ENROLL, {
+          studentCount: 2,
+          prefix: 'quizard',
+          idRange: 0
+        }, onChange, onError);
+
+        this.flush();
+
+        // Regionstration of user 1 (loginId: "quizard_1")
+        expect(this.requests.length).toEqual(1);
+        expect(this.requests[0].url).toEqual('/api/v1/accounts/1/users');
+        expect(this.requests[0].requestBody).toEqual(JSON.stringify({
+          user: {
+            name: 'quizard_1',
+          },
+          pseudonym: {
+            unique_id: 'quizard_1@quizard.com',
+            password: 'quizard_1_password',
+            send_confirmation: false
+          }
+        }));
+
+        this.respondTo(this.requests[0], 200, {
+          "id": 1,
+          "name": "quizard_1",
+          "sortable_name": "quizard_1",
+          "short_name": "quizard_1",
+          "login_id": "quizard_1@quizard.io",
+          "locale": null
+        });
+
+        expect(onError).not.toHaveBeenCalled();
+        expect(onChange).not.toHaveBeenCalled();
+        expect(onStatusChange).toHaveBeenCalled();
+        expect(Users.getProgressLog()).toEqual({
+          exOperation: 'registration',
+          nextOperation: 'enrollment',
+          item: '1',
+          complete: 1,
+          remaining: 3
+        });
+
+        // Enrollment of user1
+        expect(this.requests.length).toEqual(2);
+        expect(this.requests[1].url).toEqual('/api/v1/courses/1/enrollments');
+        expect(this.requests[1].requestBody).toEqual(JSON.stringify({
+          enrollment: {
+            user_id: '1',
+            type: K.USER_STUDENT_ENROLLMENT,
+            enrollment_state: 'active',
+            notify: false
+          }
+        }));
+
+        this.respondTo(this.requests[1], 200, EnrollmentFixture);
+
+        expect(onError).not.toHaveBeenCalled();
+        expect(onChange).not.toHaveBeenCalled();
+        expect(onStatusChange).toHaveBeenCalled();
+        expect(Users.getProgressLog()).toEqual({
+          exOperation: 'enrollment',
+          nextOperation: 'registration',
+          item: '1',
+          complete: 2,
+          remaining: 2
+        });
+
+        // Registration of user 2 (loginId: "quizard_2")
+        expect(this.requests.length).toEqual(3);
+        expect(this.requests[2].url).toEqual('/api/v1/accounts/1/users');
+        expect(this.requests[2].requestBody).toEqual(JSON.stringify({
+          user: {
+            name: 'quizard_2',
+          },
+          pseudonym: {
+            unique_id: 'quizard_2@quizard.com',
+            password: 'quizard_2_password',
+            send_confirmation: false
+          }
+        }));
+
+        this.respondTo(this.requests[2], 200, {
+          "id": 2,
+          "name": "quizard_2",
+          "sortable_name": "quizard_2",
+          "short_name": "quizard_2",
+          "login_id": "quizard_2@quizard.io",
+          "locale": null
+        });
+
+        expect(onStatusChange).toHaveBeenCalled();
+        expect(Users.getProgressLog()).toEqual({
+          exOperation: 'registration',
+          nextOperation: 'enrollment',
+          item: '2',
+          complete: 3,
+          remaining: 1
+        });
+
+        // Enrollment of user 2
+        expect(this.requests.length).toEqual(4);
+        expect(this.requests[3].url).toEqual('/api/v1/courses/1/enrollments');
+        expect(this.requests[3].requestBody).toEqual(JSON.stringify({
+          enrollment: {
+            user_id: '2',
+            type: K.USER_STUDENT_ENROLLMENT,
+            enrollment_state: 'active',
+            notify: false
+          }
+        }));
+
+        this.respondTo(this.requests[3], 200, EnrollmentFixture);
+
+        expect(onStatusChange).toHaveBeenCalled();
+        expect(Users.getProgressLog()).toEqual({
+          exOperation: 'enrollment',
+          nextOperation: undefined,
+          item: '2',
+          complete: 4,
+          remaining: 0
+        });
+
+        // Done
+        expect(onError).not.toHaveBeenCalled();
+        expect(onChange).toHaveBeenCalled();
       });
     });
   });

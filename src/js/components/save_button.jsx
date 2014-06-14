@@ -76,7 +76,6 @@ define([ 'react' ], function(React) {
       };
 
       className['btn-' + this.props.type] = true;
-      console.debug('SaveButton: ', this.state.buttonState);
 
       return (
         <button
@@ -91,7 +90,6 @@ define([ 'react' ], function(React) {
     },
 
     reset: function() {
-      console.debug('SaveButton: resetting');
       this.setState({
         buttonState: STATE_IDLE
       });
@@ -104,8 +102,6 @@ define([ 'react' ], function(React) {
     },
 
     markDone: function(success) {
-      console.debug('SaveButton: Marking as done:', success);
-
       this.setState({
         buttonState: success ? STATE_SUCCESS : STATE_ERROR
       });

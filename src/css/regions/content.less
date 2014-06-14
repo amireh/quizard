@@ -10,6 +10,17 @@
     width: 320px;
   }
 
+  .two-columns {
+    .column {
+      display: inline-block;
+      vertical-align: top;
+
+      & + .column {
+        margin-left: 55px;
+      }
+    }
+  }
+
   .whatisthis {
     vertical-align: middle;
     color: @link_fg;
@@ -110,6 +121,11 @@
 
     .form-label .form-input {
       margin-top: @whitespace;
+    }
+
+    .form-input[type="number"] {
+      width: 48px;
+      margin-right: 5px;
     }
   }
 }

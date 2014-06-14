@@ -16,26 +16,36 @@ define(function(require) {
       TooltipsMixin
     ],
 
+    tooltipOptions: {
+      position: {
+        my: 'top center',
+        at: 'bottom center'
+      }
+    },
+
     getInitialState: function() {
       return {
-        prefix: undefined,
+        idPrefix: K.DEFAULT_ID_PREFIX,
+        idRange: 0
       };
     },
 
     getDefaultProps: function() {
       return {
-        userStatus: {}
+        userStatus: {
+          code: K.STATUS_IDLE
+        }
       };
     },
 
     componentWillReceiveProps: function(nextProps) {
       var thisProps = this.props;
       var done =
-        thisProps.userStatus.code === K.USER_ENROLLING &&
+        thisProps.userStatus.code !== K.STATUS_IDLE &&
         nextProps.userStatus.code === K.STATUS_IDLE;
 
       if (done) {
-        this.refs.saveButton.markDone(true);
+        this.refs.saveButton.markDone(!this.state.storeError);
       }
     },
 
@@ -45,95 +55,103 @@ define(function(require) {
 
     render: function() {
       return(
-        <div id="enroll-students" className="column">
-
+        <div id="enroll-students">
           {this.state.storeError &&
             <Alert
               onDismiss={this.clearStoreError}
               className="alert-danger">{this.getStoreError()}</Alert>
           }
-          <form onSubmit={this.onSubmit} className="vertical-form">
-            <fieldset>
-              <legend>Account</legend>
-              <p>
-                Users in Canvas must be registered within a specific account.
-                If you happen to have more than one account, please specify
-                the correct one.
-              </p>
 
-              <AccountPicker
-                accounts={this.props.accounts}
-                activeAccountId={this.props.activeAccountId} />
-            </fieldset>
+          <form onSubmit={this.onSubmit} noValidate className="vertical-form two-columns">
+            <div className="column">
+              <fieldset>
+                <legend>Account</legend>
+                <p>
+                  Users in Canvas must be registered within a specific account.
+                  If you happen to have more than one account, please specify
+                  the correct one.
+                </p>
 
-            <fieldset>
-              <legend>Course</legend>
-              <p>
-                This would be the course we'll be enrolling the students in.
-              </p>
+                <AccountPicker
+                  accounts={this.props.accounts}
+                  activeAccountId={this.props.activeAccountId} />
+              </fieldset>
 
-              <CoursePicker
-                courses={this.props.courses}
-                activeCourseId={this.props.activeCourseId} />
-            </fieldset>
+              <fieldset>
+                <legend>Course</legend>
+                <p>
+                  This would be the course we'll be enrolling the students in.
+                </p>
 
-            <fieldset>
-              <legend>Student information</legend>
+                <CoursePicker
+                  courses={this.props.courses}
+                  activeCourseId={this.props.activeCourseId} />
+              </fieldset>
+            </div>
 
-              <label className="form-label">
-                ID Prefix
+            <div className="column">
+              <fieldset>
+                <legend>Student information</legend>
 
-                {' '}
+                <label className="form-label">
+                  ID Prefix
 
-                <em className="whatisthis" children="What is this?" title={
-                  'Set a prefix that will be used for all the names and emails ' +
-                  'of the enrolled students. (Quizard will automatically ' +
-                  'generate one for you if you leave this blank.)'
-                } />
+                  {' '}
 
-                <div className="column">
-                  <input
-                    type="text"
-                    placeholder="quizard_"
-                    valueLink={this.linkState('prefix')}
-                    className="form-input input-spanner" />
-                </div>
-              </label>
+                  <em className="whatisthis" children="What is this?" title={
+                    'Set a prefix that will be used for all the names and emails ' +
+                    'of the enrolled students. (Quizard will automatically ' +
+                    'generate one for you if you leave this blank.)'
+                  } />
 
-              <label className="form-label">
-                Number of students
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="quizard_"
+                      valueLink={this.linkState('idPrefix')}
+                      className="form-input input-spanner" />
+                  </div>
+                </label>
 
-                <div className="column">
-                  <input
-                    type="number"
-                    min="0"
-                    max="5000"
-                    valueLink={this.linkState('studentCount')}
-                    className="form-input" />
-                  <small className="add-on">Between 1 and 5000</small>
-                </div>
-              </label>
+                <label className="form-label">
+                  Number of students
 
-              <label className="form-label">
-                ID Range
+                  <div>
+                    <input
+                      type="number"
+                      min="0"
+                      max="5000"
+                      valueLink={this.linkState('studentCount')}
+                      className="form-input" />
+                    <small className="add-on">Between 1 and 5000</small>
+                  </div>
+                </label>
 
-                {' '}
+                <label className="form-label">
+                  ID Range
 
-                <em className="whatisthis" children="What is this?" title={
-                  'The number that Quizard should start from for generating ' +
-                  'IDs for students.'
-                } />
+                  {' '}
 
-                <div className="column">
-                  <input
-                    type="number"
-                    min="0"
-                    max="5000"
-                    valueLink={this.linkState('idRange')}
-                    className="form-input" />
-                </div>
-              </label>
-            </fieldset>
+                  <em className="whatisthis" children="What is this?" title={
+                    'The number that Quizard should start from for generating ' +
+                    'IDs for students.'
+                  } />
+
+                  <div>
+                    <input
+                      type="number"
+                      min="0"
+                      max="5000"
+                      pattern="^[0-9]{1,4}$"
+                      valueLink={this.linkState('idRange')}
+                      className="form-input" />
+                  </div>
+                </label>
+
+                <p>Student credentials will look something like this:</p>
+                {this.generateLoginIdExample()}
+              </fieldset>
+            </div>
 
             <SaveButton ref="saveButton" onClick={this.onSubmit} type="primary">
               Enroll Students
@@ -148,8 +166,29 @@ define(function(require) {
 
       e.preventDefault();
 
-      svc = Actions.massEnroll(this.state.studentCount, this.state.prefix, this.state.idRange);
+      svc = Actions.massEnroll(this.state.studentCount, this.state.idPrefix, this.state.idRange);
       this.trackAction(svc);
+    },
+
+    generateLoginIdExample: function() {
+      var id = [
+        this.state.idPrefix,
+        Math.abs(parseInt(this.state.idRange, 10) || 0)
+      ].join('_');
+
+      var example = {
+        loginId: id,
+        email: [ id, K.STUDENT_EMAIL_DOMAIN ].join('@'),
+        password: K.STUDENT_PASSWORD
+      };
+
+      return (
+        <ul>
+          <li>Login: <code>{example.loginId}</code></li>
+          <li>Email: <code>{example.email}</code></li>
+          <li>Password: <code>{example.password}</code></li>
+        </ul>
+      );
     }
   });
 

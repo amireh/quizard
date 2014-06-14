@@ -39,7 +39,7 @@ function(CONFIG, RSVP, diff) {
     try {
       output = JSON.stringify(diff.rusDiff(a, b));
     } catch(e) {
-      console.warn('Unable to diff:', e.message);
+      // console.warn('Unable to diff:', e.message);
       // console.warn(e.stack);
 
       // console.debug(typeof a, typeof b);

@@ -1,6 +1,5 @@
 define(function(require) {
   var Pixy = require('ext/pixy');
-  var _ = require('underscore');
   var K = require('constants');
   var Accounts = require('stores/accounts');
   var Courses = require('stores/courses');
@@ -11,14 +10,13 @@ define(function(require) {
   var collection;
   var progressLog = {};
   var status = { code: K.STATUS_IDLE };
-  var guid = 0;
 
   var trackCollection = function() {
     collection = Accounts.getUserCollection();
   };
 
   var setStatus = function(inStatus) {
-    console.debug('UserStore Status:', inStatus.code, inStatus.message);
+    console.debug('> UserStore Status:', inStatus.code, inStatus.message);
 
     status = inStatus;
     store.emitChange('status', inStatus);
@@ -70,7 +68,7 @@ define(function(require) {
     }, { wait: true, parse: true, validate: false });
   };
 
-  var enroll = function(id, courseId, collection) {
+  var enroll = function(id, courseId) {
     setStatus({
       code: K.USER_ENROLLING,
       message: 'Enrolling user ' + id + ' into course#' + courseId + '.'
@@ -91,15 +89,15 @@ define(function(require) {
   };
 
   var massEnroll = function(payload, onChange, onError) {
-    var id, aborted;
+    var loginId, userId;
     var studentCount = parseInt(payload.studentCount || '', 10);
     var courseId = Courses.getActiveCourseId();
-    var accountId = Accounts.getActiveAccountId();
     var prefix = payload.prefix || K.DEFAULT_ID_PREFIX;
     var emitProgress = function(attrs) {
       progressLog = attrs;
       store.trigger('change:progressLog');
     };
+    var guid = 0;
 
     if (!studentCount || studentCount < K.USER_MIN_ENROLL) {
       return onError('You must want to enroll at least one student.');
@@ -108,47 +106,71 @@ define(function(require) {
       return onError("You can enroll as many as " + K.USER_MAX_ENROLL + " students, no more.");
     }
 
-    guid = parseInt(payload.idRange || guid, 10);
+    guid = parseInt(payload.idRange, 10) || guid;
     prefix = prefix.replace(/_+$/, '');
 
     console.debug("I'll be enrolling", studentCount, "students within the course", courseId);
 
-    id = ++guid + '';
-
     setStatus({
       code: K.STATUS_BUSY,
-      message: 'Preparing to register and enroll' + studentCount + ' students.'
+      message: 'Preparing to register and enroll ' + studentCount + ' students.'
     });
 
-    signup(prefix, id, Accounts.getUserCollection()).then(function(user) {
-      emitProgress({
-        exOperation: 'registration',
-        nextOperation: 'enrollment',
-        item: id,
-        complete: 1,
-        remaining: 1
-      });
+    var studentIndex;
+    var fireStarter = RSVP.defer();
+    var operationCount = studentCount * 2;
+    var operationIndex = 0;
+    var lastPromise = fireStarter.promise;
 
-      return enroll(user.get('id'), courseId);
-    }).then(function() {
+    for (studentIndex = 0; studentIndex < studentCount; ++studentIndex) {
+
+      lastPromise = lastPromise.then(function() {
+        loginId = ++guid + '';
+        console.debug('Operating as', loginId);
+        console.debug('\tSigning up as', loginId);
+        return signup(prefix, loginId, Accounts.getUserCollection());
+      }).then(function(user) {
+        userId = user.get('id');
+
+        console.debug('\t\tEnrolling', userId, 'as', genUserId(prefix, loginId));
+
+        emitProgress({
+          exOperation: 'registration',
+          nextOperation: 'enrollment',
+          item: loginId,
+          complete: ++operationIndex,
+          remaining: operationCount - operationIndex
+        });
+
+        return enroll(userId, courseId)
+      }).then(function() {
+        var remaining = operationCount - (++operationIndex);
+
+        console.debug('\t\t\tEnrollment of', genUserId(prefix, loginId), 'was successful.');
+
+        emitProgress({
+          exOperation: 'enrollment',
+          nextOperation: (remaining === 0) ? undefined : 'registration',
+          item: loginId,
+          complete: operationIndex,
+          remaining: remaining
+        });
+
+        return true;
+      });
+    }
+
+    lastPromise.then(function() {
       setStatus({
         code: K.STATUS_IDLE,
         message: 'All ' + studentCount + ' students have been enrolled.'
-      });
-
-      emitProgress({
-        exOperation: 'enrollment',
-        nextOperation: undefined,
-        item: id,
-        complete: 2,
-        remaining: 0
       });
 
       onChange();
     }).catch(function(apiError) {
       var errorCode;
       var errorMessage;
-      var userId = genUserId(prefix, id);
+      var userId = genUserId(prefix, loginId);
 
       apiError = apiError || {};
 
@@ -194,6 +216,9 @@ define(function(require) {
         message: errorMessage
       });
     });
+
+    // get cooking
+    fireStarter.resolve();
   };
 
   store = new Pixy.Store('UserStore', {
