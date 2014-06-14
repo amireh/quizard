@@ -23,7 +23,7 @@ define(function(require) {
       itemCount: 0,
 
       action: undefined,
-
+      failed: false,
       ETA: 0
     },
 
@@ -35,22 +35,31 @@ define(function(require) {
       extend(this, this.defaults, attrs);
     },
 
-    mark: function(nextAction) {
+    mark: function(nextAction, nextItem) {
       var emitChange = this.trigger.bind(this, 'change');
 
       this.logCompletedAction(this.action);
 
       if (!nextAction) {
+        console.debug('Operation: complete.');
         return emitChange();
       }
 
       this.logAction(nextAction);
 
       this.action = nextAction;
+      this.item = nextItem;
       this.completed = this.completed + 1;
       this.ETA = this.getETA();
 
+      console.debug('Operation: new action', nextAction, this.getCompletionRatio() + '%');
+
       emitChange();
+    },
+
+    abort: function(error) {
+      this.failed = true;
+      this.error = error;
     },
 
     isComplete: function() {
@@ -88,7 +97,8 @@ define(function(require) {
     getProcessingRate: function() {
       var now, elapsed, elapsedSeconds;
 
-      if (this.count === 0) {
+      // Forget the first 10%
+      if (this.count === 0 || (0.1 > this.completed / this.count)) {
         return 0;
       }
 
@@ -129,7 +139,8 @@ define(function(require) {
     },
 
     toProps: function() {
-      var props = pick(this, 'count', 'completed', 'action', 'ETA');
+      var props = pick(this,
+        'count', 'completed', 'action', 'ETA', 'failed', 'item');
 
       props.ratio = this.getCompletionRatio();
       props.remaining = this.getRemainingCount();

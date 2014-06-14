@@ -55,13 +55,31 @@ define(function(require) {
       this.refs.saveButton.markDone(false);
     },
 
+    getStoreError: function() {
+      var errorCode = (this.state.storeError || {}).error;
+
+      switch(errorCode) {
+        case K.USER_ENROLLMENT_COUNT_TOO_LOW:
+          return 'You must want to enroll at least one student.';
+        break;
+        case K.USER_ENROLLMENT_COUNT_TOO_HIGH:
+          return "You can enroll as many as " + K.USER_MAX_ENROLL +
+            " students, no more."
+        break;
+        default:
+          return;
+      }
+    },
+
     render: function() {
+      var error = this.getStoreError();
+
       return(
         <div id="enroll-students">
-          {this.state.storeError &&
+          {error &&
             <Alert
               onDismiss={this.clearStoreError}
-              className="alert-danger">{this.getStoreError()}</Alert>
+              className="alert-danger">{error}</Alert>
           }
 
           <form onSubmit={this.onSubmit} noValidate className="vertical-form two-columns">

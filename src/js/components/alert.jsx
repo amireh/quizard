@@ -24,11 +24,11 @@ define([ 'react' ], function(React) {
 
       return(
         this.transferPropsTo(
-          <p className={className}>
+          <div className={className}>
             {this.props.children}
             {' '}
             <a className="type-smaller" onClick={this.dismiss}>Dismiss</a>
-          </p>
+          </div>
         )
       );
     },

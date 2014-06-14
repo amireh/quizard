@@ -25,7 +25,7 @@ define(function(require) {
   var OperationTracker = React.createClass({
     getInitialState: function() {
       return {
-        eta: 0
+        eta: 0,
       };
     },
 
@@ -65,6 +65,10 @@ define(function(require) {
       if (this.props.remaining === 0) {
         this.stop();
       }
+
+      if (this.props.failed) {
+        this.stop();
+      }
     },
 
     start: function() {
@@ -76,15 +80,15 @@ define(function(require) {
         clearInterval(this.etaTimer);
         this.etaTimer = null;
       }
+
+      this.refs.progressBar.stop();
     },
 
     render: function() {
       return(
         <div className="operation-tracker">
           <header>
-            <span className="operation-counter">
-              {this.props.remaining}/{this.props.count} items left
-            </span>
+            {this.renderRemainder()}
 
             <aside className="operation-eta stick-right">
               ETA: {secondsToTime(this.state.eta) || 'N/A'}
@@ -92,7 +96,8 @@ define(function(require) {
           </header>
 
           <ProgressBar
-            key="pbar"
+            ref="progressBar"
+            key="progressBar"
             APS={this.props.aps}
             progress={this.props.ratio} />
 
@@ -103,13 +108,23 @@ define(function(require) {
       );
     },
 
+    renderRemainder: function() {
+      return (
+        this.props.remaining === 0 ?
+        <span className="operation-counter" children="Done" /> :
+        <span className="operation-counter">
+          {this.props.remaining}/{this.props.count} items left
+        </span>
+      );
+    },
+
     renderLogEntry: function(logEntry) {
       return (
         <li key={logEntry.id}>
           {logEntry.message}
 
           <span className="operation-log-entry-elapsed">
-            [ {logEntry.elapsed}ms ]
+            {logEntry.elapsed}s
           </span>
         </li>
       );

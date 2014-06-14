@@ -68,6 +68,10 @@ function(Pixy, AppStore, SessionStore, K) {
         quizId: quizId,
         quizAction: quizAction
       }).index;
+    },
+
+    goToUserEnrollment: function() {
+      return transitionTo(K.RECIPE_ENROLL_STUDENTS);
     }
   };
 });

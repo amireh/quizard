@@ -73,9 +73,6 @@ define([ 'react' ], function(React) {
 
       if (shouldUpdate) {
         this.setProgress(nextProps.progress);
-      } else {
-        console.info('PBar: skipping progress update, ill get there very soon:', delta);
-        console.info('PBar:\ti move', proximityCoefficient, 'units per second');
       }
     },
 

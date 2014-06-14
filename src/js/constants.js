@@ -20,11 +20,16 @@ define([], function() {
 
     USER_CREATE: 'USER_CREATE',
     USER_LOAD_ALL: 'USER_LOAD_ALL',
+    // Event triggered when mass-enrollment is about to begin
+    USER_MASS_ENROLLMENT_STARTED: 'USER_MASS_ENROLLMENT_STARTED',
     USER_MASS_ENROLL: 'USER_MASS_ENROLL',
     USER_MIN_ENROLL: 1,
     USER_MAX_ENROLL: 5000,
     USER_STUDENT_ENROLLMENT: 'StudentEnrollment',
 
+    // Status codes for mass user enrollment
+    USER_ENROLLMENT_COUNT_TOO_LOW: 205,
+    USER_ENROLLMENT_COUNT_TOO_HIGH: 206,
     USER_REGISTERING: 200,
     USER_REGISTRATION_FAILED: 201,
     USER_ENROLLING: 202,
@@ -37,6 +42,7 @@ define([], function() {
     QUIZ_ACTIVATE: 'QUIZ_ACTIVATE',
 
     RECIPE_ENROLL_STUDENTS: '/recipes/enroll_students',
+    RECIPE_ENROLL_STUDENTS_PROGRESS: '/recipes/enroll_students/progress',
     RECIPE_TAKE_QUIZ: '/recipes/take_quiz',
 
     ROUTE_GO_TO_QUIZ: 'ROUTE_GO_TO_QUIZ',

@@ -1,6 +1,5 @@
 define(function(require) {
   var Route = require('routes/base');
-  var View = require('jsx!views/users/enroll');
   var K = require('constants');
   var RSVP = require('rsvp');
   var Accounts = require('stores/accounts');
@@ -8,7 +7,6 @@ define(function(require) {
   var Users = require('stores/users');
 
   new Route('enrollStudentsRecipe', {
-    views: [{ component: View }],
     navLink: K.RECIPE_ENROLL_STUDENTS,
 
     model: function() {

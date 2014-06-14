@@ -25,10 +25,6 @@ define(function(require) {
     store.emitChange('status', inStatus);
   };
 
-  var genUserId = function(prefix, id) {
-    return generateLogin(prefix, id);
-  };
-
   /**
    * Loads all users from all accounts.
    */
@@ -48,16 +44,18 @@ define(function(require) {
   };
 
   var signup = function(prefix, id, collection) {
-    var loginId = genUserId(prefix, id);
+    var loginId = generateLogin(prefix, id);
     var password = K.STUDENT_PASSWORD;
     var email = [ loginId, K.STUDENT_EMAIL_DOMAIN ].join('@');
-
+    var message = 'Signing up a student with a login id of "' + loginId + '".';
     var user = collection.push({});
 
     setStatus({
       code: K.USER_REGISTERING,
-      message: 'Signing up a student with a login id of "' + loginId + '".'
+      message: message
     });
+
+    operation.mark(message, loginId);
 
     return user.save({
       user: {
@@ -71,18 +69,18 @@ define(function(require) {
     }, { wait: true, parse: true, validate: false });
   };
 
-  var enroll = function(id, courseId) {
-    setStatus({
-      code: K.USER_ENROLLING,
-      message: 'Enrolling user ' + id + ' into course#' + courseId + '.'
-    });
+  var enroll = function(userId, courseId) {
+    var message = 'Enrolling student with user id [' + userId + ']';
+
+    setStatus({ code: K.USER_ENROLLING, message: message });
+    operation.mark(message, userId);
 
     return ajax({
       url: '/courses/' + courseId + '/enrollments',
       type: 'POST',
       data: JSON.stringify({
         enrollment: {
-          user_id: ''+id,
+          user_id: ''+userId,
           type: K.USER_STUDENT_ENROLLMENT,
           enrollment_state: 'active',
           notify: false
@@ -92,23 +90,23 @@ define(function(require) {
   };
 
   var massEnroll = function(payload, onChange, onError) {
-    var loginId, userId;
+    var loginId;
     var studentCount = parseInt(payload.studentCount || '', 10);
     var courseId = Courses.getActiveCourseId();
     var prefix = payload.prefix || K.DEFAULT_ID_PREFIX;
     var guid = 0;
 
     if (!studentCount || studentCount < K.USER_MIN_ENROLL) {
-      return onError('You must want to enroll at least one student.');
+      return onError(K.USER_ENROLLMENT_COUNT_TOO_LOW);
     }
     else if (studentCount && studentCount > K.USER_MAX_ENROLL) {
-      return onError("You can enroll as many as " + K.USER_MAX_ENROLL + " students, no more.");
+      return onError(K.USER_ENROLLMENT_COUNT_TOO_HIGH);
     }
 
     guid = parseInt(payload.idRange, 10) || guid;
     prefix = prefix.replace(/_+$/, '');
 
-    console.debug("I'll be enrolling", studentCount, "students within the course", courseId);
+    store.trigger(K.USER_MASS_ENROLLMENT_STARTED);
 
     setStatus({
       code: K.STATUS_BUSY,
@@ -125,6 +123,7 @@ define(function(require) {
       count: studentCount * 2,
       itemCount: studentCount
     });
+    operation.on('change', this.emitChange, this);
 
     for (studentIndex = 0; studentIndex < studentCount; ++studentIndex) {
       lastPromise = lastPromise.then(function() {
@@ -132,40 +131,13 @@ define(function(require) {
         console.debug('Operating as', loginId);
         console.debug('\tSigning up as', loginId);
 
-        operation.mark('registration');
-        store.emitChange();
 
         return signup(prefix, loginId, Accounts.getUserCollection());
       }).then(function(user) {
-        userId = user.get('id');
-
-        console.debug('\t\tEnrolling', userId, 'as', genUserId(prefix, loginId));
-
-        // setProgress({
-        //   exOperation: 'registration',
-        //   nextOperation: 'enrollment',
-        //   item: loginId,
-        //   complete: ++operationIndex,
-        //   remaining: operationCount - operationIndex
-        // });
-
-        operation.mark('enrollment');
-        store.emitChange();
-
-        return enroll(userId, courseId);
+        return enroll(user.get('id'), courseId);
       }).then(function() {
-        // var remaining = operationCount - (++operationIndex);
-
-        console.debug('\t\t\tEnrollment of', genUserId(prefix, loginId), 'was successful.');
-
-        // setProgress({
-        //   exOperation: 'enrollment',
-        //   nextOperation: (remaining === 0) ? undefined : 'registration',
-        //   item: loginId,
-        //   complete: operationIndex,
-        //   remaining: remaining
-        // });
-
+        console.debug('\t\t\tEnrollment of', generateLogin(prefix, loginId), 'was successful.');
+        store.emitChange();
         return true;
       });
     }
@@ -176,14 +148,13 @@ define(function(require) {
         message: 'All ' + studentCount + ' students have been enrolled.'
       };
 
-      operation.complete();
-      store.emitChange();
+      operation.mark();
 
       onChange();
     }).catch(function(apiError) {
       var errorCode;
       var errorMessage;
-      var userId = genUserId(prefix, loginId);
+      var userId = generateLogin(prefix, loginId);
 
       apiError = apiError || {};
 
@@ -191,35 +162,9 @@ define(function(require) {
 
       if (status.code === K.USER_REGISTERING) {
         errorCode = K.USER_REGISTRATION_FAILED;
-
-        if (apiError.status === 400) {
-          errorMessage = [
-            'Unable to register user with login "' + userId + "'.",
-            'This probably means you have already registered a similar user by' +
-            'Quizard. Try using a higher ID Range or a different ID Prefix.'
-          ].join(' ');
-        } else {
-          errorMessage = [
-            'Unable to register user with login "' + userId + "'.",
-            'Something went wrong internally.'
-          ].join(' ');
-        }
       }
       else if (status.code === K.USER_ENROLLING) {
         errorCode = K.USER_ENROLLMENT_FAILED;
-
-        if (apiError.status === 400) {
-          errorMessage = [
-            'Unable to enroll user with login "' + userId + "'.",
-            'This probably means you have already registered a similar user by' +
-            'Quizard. Try using a higher ID Range or a different ID Prefix.'
-          ].join(' ');
-        } else {
-          errorMessage = [
-            'Unable to enroll user with login "' + userId + "'.",
-            'Something went wrong internally.'
-          ].join(' ');
-        }
       }
 
       onError(errorCode);
@@ -228,6 +173,8 @@ define(function(require) {
         code: errorCode,
         message: errorMessage
       });
+
+      operation.abort(errorCode);
     });
 
     // get cooking
@@ -250,7 +197,9 @@ define(function(require) {
     },
 
     getCurrentOperation: function() {
-      return operation;
+      if (operation) {
+        return operation.toProps();
+      }
     },
 
     onAction: function(action, payload, onChange, onError) {

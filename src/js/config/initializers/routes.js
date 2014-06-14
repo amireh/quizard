@@ -29,7 +29,11 @@ define([
       match('/logout').to('logout');
 
       // Recipes
-      match('/recipes/enroll_students').to('enrollStudentsRecipe');
+      match('/recipes/enroll_students').to('enrollStudentsRecipe', function(match) {
+        match('/').to('enrollStudentsForm');
+        match('/progress').to('enrollStudentsProgress');
+      });
+
       match('/recipes/take_quiz').to('takeQuizRecipe');
 
       // App

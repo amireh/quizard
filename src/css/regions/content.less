@@ -141,29 +141,41 @@
       margin-right: 5px;
     }
   }
+}
 
-  .operation-tracker {
-    header {
-      position: relative;
-      line-height: 32px;
-      font-size: 14.5px
+.operation-tracker {
+  header {
+    position: relative;
+    line-height: 32px;
+    font-size: 14.5px
+  }
+
+  .operation-eta {
+    top: 0;
+  }
+
+  .progress-bar {
+    margin: @whitespace 0;
+  }
+
+  .operation-log {
+    margin-top: @whitespace;
+
+    li {
+      line-height: 24px;
+      font-size: 12.5px;
     }
 
-    .operation-eta {
-      top: 0;
-    }
-
-    .progress-bar {
-      margin: @whitespace 0;
-    }
-
-    .operation-log {
-      margin-top: @whitespace;
-
-      li {
-        line-height: 24px;
-        font-size: 12.5px;
-      }
+    .operation-log-entry-elapsed {
+      margin-left: 5px;
+      color: @mute-fg;
     }
   }
+}
+
+.dialog-title .course-name {
+  .ellipsify();
+  max-width: 310px;
+  display: inline-block;
+  vertical-align: top;
 }
