@@ -21,6 +21,19 @@ input[type="submit"]::-moz-focus-inner {
   border: none;
 }
 
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: @mute-fg;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: @mute-fg;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: @mute-fg;
+}
+
 form {
   position: relative;
 
@@ -52,6 +65,7 @@ textarea {
     padding: 4px 9px;
     height: auto;
     line-height: 2em;
+    vertical-align: middle;
   }
 
   .btn {
@@ -69,7 +83,7 @@ textarea {
   display: block;
   font-weight: bold;
   font-size: 13px;
-  margin: 10px 0;
+  margin: @whitespace 0;
 }
 
 input.spanner, .breaker {

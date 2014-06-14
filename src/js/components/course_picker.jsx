@@ -14,18 +14,11 @@ function(React, _, CourseActions, Chosen) {
    * @class Components.CoursePicker
    */
   var CoursePicker = React.createClass({
-    mixins: [ React.addons.LinkedStateMixin ],
     propTypes: {
       courses: React.PropTypes.arrayOf(React.PropTypes.shape({
         id: React.PropTypes.string,
         name: React.PropTypes.string
       }))
-    },
-
-    getInitialState: function() {
-      return {
-        courseId: null
-      };
     },
 
     getDefaultProps: function() {

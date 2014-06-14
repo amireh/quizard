@@ -11,6 +11,14 @@ function(Dispatcher, K) {
 
     loadAll: function() {
       return Dispatcher.dispatch(K.USER_LOAD_ALL);
+    },
+
+    massEnroll: function(studentCount, prefix, idRange) {
+      return Dispatcher.dispatch(K.USER_MASS_ENROLL, {
+        studentCount: studentCount,
+        prefix: prefix,
+        idRange: idRange
+      }).index;
     }
   };
 });

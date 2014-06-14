@@ -20,6 +20,15 @@ define([], function() {
 
     USER_CREATE: 'USER_CREATE',
     USER_LOAD_ALL: 'USER_LOAD_ALL',
+    USER_MASS_ENROLL: 'USER_MASS_ENROLL',
+    USER_MIN_ENROLL: 1,
+    USER_MAX_ENROLL: 5000,
+    USER_STUDENT_ENROLLMENT: 'StudentEnrollment',
+
+    USER_REGISTERING: 200,
+    USER_REGISTRATION_FAILED: 201,
+    USER_ENROLLING: 202,
+    USER_ENROLLMENT_FAILED: 203,
 
     ACCOUNT_ACTIVATE: 'ACCOUNT_ACTIVATE',
     COURSE_ACTIVATE: 'COURSE_ACTIVATE',
@@ -86,5 +95,9 @@ define([], function() {
       'responses each answer should receive *almost* exactly.'
     ].join(' '),
 
+    DEFAULT_ID_PREFIX: 'quizard',
+
+    STATUS_IDLE: 'idle',
+    STATUS_BUSY: 'busy',
   };
 });

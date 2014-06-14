@@ -78,7 +78,7 @@ define(function(require) {
     onSubmit: function(e) {
       e.preventDefault();
 
-      QuizTakingActions.take();
+      this.trackAction(QuizTakingActions.take());
     }
   });
 

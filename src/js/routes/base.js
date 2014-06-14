@@ -23,13 +23,6 @@ define([
       return this.trigger('remove', component, options);
     },
 
-    injectStoreError: function(actionIndex, storeError) {
-      this.trigger('storeError', {
-        actionIndex: actionIndex,
-        error: storeError
-      });
-    },
-
     setStatus: function(message) {
       this.update({ status: message });
     },

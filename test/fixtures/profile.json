@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "name": "ahmad@amireh.net",
+  "short_name": "ahmad@amireh.net",
+  "sortable_name": "[T] ahmad@amireh.net",
+  "login_id": "ahmad@amireh.net",
+  "title": null,
+  "bio": null,
+  "primary_email": "ahmad@amireh.net",
+  "integration_id": null,
+  "time_zone": "America/Denver",
+  "calendar": {
+    "ics": "http://localhost:3000/feeds/calendars/user_mrP2GadxzLjrTNFQQCzpMUOgG56Si6o0R2DrQQxN.ics"
+  }
+}

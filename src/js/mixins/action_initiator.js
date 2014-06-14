@@ -33,6 +33,10 @@ define([ 'underscore' ], function(_) {
       this.setState({ storeError: undefined });
     },
 
+    getStoreError: function() {
+      return this.state.storeError ? this.state.storeError.error : null;
+    },
+
     trackAction: function(service) {
       var actionIndex;
 

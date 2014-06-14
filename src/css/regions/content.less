@@ -6,6 +6,20 @@
     line-height: 40px;
   }
 
+  .column {
+    width: 320px;
+  }
+
+  .whatisthis {
+    vertical-align: middle;
+    color: @link_fg;
+    font-size: 11.5px;
+    cursor: pointer;
+    font-style: normal;
+    display: inline-block;
+    line-height: inherit;
+  }
+
   .quiz-questions {
     // Remove the spacing caused by the question text since we're injecting HTML
     legend + div > :first-child,
@@ -23,17 +37,9 @@
       padding-left: 0;
     }
 
-    div > label.skinned-radio, .whatisthis {
+    div > label.skinned-radio {
       display: inline-block;
       line-height: inherit;
-    }
-
-    .whatisthis {
-      vertical-align: middle;
-      color: @link_fg;
-      font-size: 11.5px;
-      cursor: pointer;
-      font-style: normal;
     }
 
     ul.question-answers {
@@ -86,6 +92,24 @@
     input[readonly] {
       color: @mute-fg;
       background: @shade;
+    }
+  }
+
+  #enroll-students {
+    fieldset + fieldset {
+      margin-top: @whitespace;
+    }
+
+    legend + p {
+      margin-top: 0;
+    }
+
+    legend + .form-label {
+      margin-top: 0;
+    }
+
+    .form-label .form-input {
+      margin-top: @whitespace;
     }
   }
 }
