@@ -34,7 +34,8 @@ define(function(require) {
         courses: Courses.getAll(),
         activeCourseId: Courses.getActiveCourseId(),
         userStatus: Users.getStatus(),
-        status: Users.getStatus().message
+        status: Users.getStatus().message,
+        enrollment: Users.getCurrentOperation()
       });
     }
   });

@@ -122,7 +122,12 @@ define([ 'react' ], function(React) {
           {this.renderHeader()}
 
           <section className="dialog-main">
-            <div className="dialog-content">{this.props.children}</div>
+            <div className="dialog-content">
+              {this.props.children.call ?
+                this.transferPropsTo(this.props.children()) :
+                this.props.children
+              }
+            </div>
           </section>
 
           {this.renderFooter()}
