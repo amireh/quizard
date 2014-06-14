@@ -40,11 +40,11 @@ define(function(require) {
         expect(this.requests[0].url).toEqual('/api/v1/accounts/1/users');
         expect(this.requests[0].requestBody).toEqual(JSON.stringify({
           user: {
-            name: 'quizard_1',
+            name: 'Quizard 1',
           },
           pseudonym: {
             unique_id: 'quizard_1@quizard.com',
-            password: 'quizard_1_password',
+            password: K.STUDENT_PASSWORD,
             send_confirmation: false
           }
         }));
@@ -114,11 +114,11 @@ define(function(require) {
         expect(this.requests[0].url).toEqual('/api/v1/accounts/1/users');
         expect(this.requests[0].requestBody).toEqual(JSON.stringify({
           user: {
-            name: 'quizard_1',
+            name: 'Quizard 1',
           },
           pseudonym: {
             unique_id: 'quizard_1@quizard.com',
-            password: 'quizard_1_password',
+            password: K.STUDENT_PASSWORD,
             send_confirmation: false
           }
         }));
@@ -173,11 +173,11 @@ define(function(require) {
         expect(this.requests[2].url).toEqual('/api/v1/accounts/1/users');
         expect(this.requests[2].requestBody).toEqual(JSON.stringify({
           user: {
-            name: 'quizard_2',
+            name: 'Quizard 2',
           },
           pseudonym: {
             unique_id: 'quizard_2@quizard.com',
-            password: 'quizard_2_password',
+            password: K.STUDENT_PASSWORD,
             send_confirmation: false
           }
         }));

@@ -8,6 +8,8 @@ define(function(require) {
   var AccountPicker = require('jsx!components/account_picker');
   var CoursePicker = require('jsx!components/course_picker');
   var TooltipsMixin = require('mixins/views/tooltips');
+  var generateLogin = require('util/generate_login');
+  var generateName = require('util/generate_name');
 
   var Enroll = React.createClass({
     mixins: [
@@ -171,13 +173,11 @@ define(function(require) {
     },
 
     generateLoginIdExample: function() {
-      var id = [
-        this.state.idPrefix,
-        Math.abs(parseInt(this.state.idRange, 10) || 0)
-      ].join('_');
+      var id = generateLogin(this.state.idPrefix, this.state.idRange);
 
       var example = {
         loginId: id,
+        name: generateName(id),
         email: [ id, K.STUDENT_EMAIL_DOMAIN ].join('@'),
         password: K.STUDENT_PASSWORD
       };
@@ -185,6 +185,7 @@ define(function(require) {
       return (
         <ul>
           <li>Login: <code>{example.loginId}</code></li>
+          <li>Name: <code>{example.name}</code></li>
           <li>Email: <code>{example.email}</code></li>
           <li>Password: <code>{example.password}</code></li>
         </ul>

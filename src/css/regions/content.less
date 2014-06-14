@@ -88,6 +88,19 @@
         right: 0;
         padding: 5px 0;
         line-height: @actionbar-height - 10px;
+
+        .form-label {
+          margin: 5px 0;
+
+          .form-input[type="number"] {
+            width: 37px;
+            text-align: center;
+
+            & + .add-on {
+              position: absolute
+            }
+          }
+        }
       }
     }
 

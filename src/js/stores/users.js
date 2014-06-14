@@ -5,6 +5,8 @@ define(function(require) {
   var Courses = require('stores/courses');
   var RSVP = require('rsvp');
   var ajax = require('core/ajax');
+  var generateLogin = require('util/generate_login');
+  var generateName = require('util/generate_name');
 
   var store;
   var collection;
@@ -23,7 +25,7 @@ define(function(require) {
   };
 
   var genUserId = function(prefix, id) {
-    return [ prefix, id ].join('_');
+    return generateLogin(prefix, id);
   };
 
   /**
@@ -45,20 +47,20 @@ define(function(require) {
   };
 
   var signup = function(prefix, id, collection) {
-    var name = genUserId(prefix, id);
-    var password = [ prefix, id, 'password' ].join('_');
-    var email = name + '@quizard.com';
+    var loginId = genUserId(prefix, id);
+    var password = K.STUDENT_PASSWORD;
+    var email = [ loginId, K.STUDENT_EMAIL_DOMAIN ].join('@');
 
     var user = collection.push({});
 
     setStatus({
       code: K.USER_REGISTERING,
-      message: 'Signing up a student with a login id of "' + name + '".'
+      message: 'Signing up a student with a login id of "' + loginId + '".'
     });
 
     return user.save({
       user: {
-        name: name,
+        name: generateName(loginId),
       },
       pseudonym: {
         unique_id: email,

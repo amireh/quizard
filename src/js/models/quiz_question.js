@@ -142,7 +142,7 @@ define(function(require) {
         return false;
       }
 
-      variants = remove(variants, { id: variantId });
+      remove(variants, { id: variantId });
 
       if (variants.length === 1) {
         variants[0].responseRatio = 100;
