@@ -123,7 +123,6 @@ define(function(require) {
       count: studentCount * 2,
       itemCount: studentCount
     });
-    operation.on('change', this.emitChange, this);
 
     for (studentIndex = 0; studentIndex < studentCount; ++studentIndex) {
       lastPromise = lastPromise.then(function() {
@@ -154,11 +153,8 @@ define(function(require) {
     }).catch(function(apiError) {
       var errorCode;
       var errorMessage;
-      var userId = generateLogin(prefix, loginId);
 
-      apiError = apiError || {};
-
-      console.warn('API operation failure:', apiError, apiError.stack);
+      console.warn('API operation failure:', apiError);
 
       if (status.code === K.USER_REGISTERING) {
         errorCode = K.USER_REGISTRATION_FAILED;
@@ -167,14 +163,13 @@ define(function(require) {
         errorCode = K.USER_ENROLLMENT_FAILED;
       }
 
+      operation.abort(errorCode);
       onError(errorCode);
 
       setStatus({
         code: errorCode,
         message: errorMessage
       });
-
-      operation.abort(errorCode);
     });
 
     // get cooking

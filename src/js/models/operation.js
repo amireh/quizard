@@ -139,8 +139,16 @@ define(function(require) {
     },
 
     toProps: function() {
-      var props = pick(this,
-        'count', 'completed', 'action', 'ETA', 'failed', 'item');
+      var props = pick(this, [
+        'count',
+        'completed',
+        'action',
+        'ETA',
+        'failed',
+        'item',
+        'itemCount',
+        'error'
+      ]);
 
       props.ratio = this.getCompletionRatio();
       props.remaining = this.getRemainingCount();

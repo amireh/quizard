@@ -27,6 +27,27 @@ define(function(require) {
       }
     },
 
+    componentDidMount: function() {
+      this.setState({ title: document.title });
+    },
+
+    componentDidUpdate: function(prevProps, prevState) {
+      var completion = parseInt(this.props.enrollment.ratio || 0, 10);
+
+      if (completion < 100) {
+        this.updateTitle('[' + completion + '%]');
+      } else {
+        this.resetTitle();
+      }
+    },
+
+    updateTitle: function(prefix) {
+      document.title = prefix + ' ' + this.state.title;
+    },
+    resetTitle: function() {
+      document.title = this.state.title;
+    },
+
     getError: function() {
       var loginId = this.props.enrollment.item;
 
@@ -68,7 +89,7 @@ define(function(require) {
 
       var title = (
         <div>
-          Enrolling {this.props.enrollment.count} students into
+          Enrolling {this.props.enrollment.itemCount} students into
           {' '}
           <span className="course-name" children={course.name} />
         </div>

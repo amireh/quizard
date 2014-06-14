@@ -142,6 +142,7 @@ define(function(require) {
                       min="0"
                       max="5000"
                       valueLink={this.linkState('studentCount')}
+                      autoFocus
                       className="form-input" />
                     <small className="add-on">Between 1 and 5000</small>
                   </div>

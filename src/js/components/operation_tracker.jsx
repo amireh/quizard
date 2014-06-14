@@ -113,7 +113,7 @@ define(function(require) {
         this.props.remaining === 0 ?
         <span className="operation-counter" children="Done" /> :
         <span className="operation-counter">
-          {this.props.remaining}/{this.props.count} items left
+          {this.props.remaining}/{this.props.count} operations left
         </span>
       );
     },
