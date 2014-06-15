@@ -21,6 +21,11 @@ en:
         id_range: >
           The number that Quizard should start from for generating IDs for
           students.
+  ns_load_students:
+    status: >
+      Loading __perPage__ students from page __page__.
+    status_no_more_students: >
+      Nothing to do, no more students to load.
 
   ns_operation_tracker:
     failures: 1 failure

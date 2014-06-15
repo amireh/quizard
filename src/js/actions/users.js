@@ -9,8 +9,11 @@ function(Dispatcher, K) {
       });
     },
 
-    loadAll: function() {
-      return Dispatcher.dispatch(K.USER_LOAD_ALL);
+    load: function(count, reset) {
+      return Dispatcher.dispatch(K.USER_LOAD, {
+        count: count,
+        reset: reset
+      });
     },
 
     massEnroll: function(studentCount, prefix, idRange, isAtomic) {

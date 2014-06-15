@@ -80,7 +80,7 @@ define([ 'react' ], function(React) {
       return (
         <button
           onClick={activate.bind(this)}
-          disabled={isLoading}
+          disabled={this.props.disabled || isLoading}
           className={classSet(className)}>
           {!isIdle && <span className="indicator"></span>}
           <span className="content">

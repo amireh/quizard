@@ -2,6 +2,7 @@ define(function(require) {
   var Route = require('routes/base');
   var K = require('constants');
   var QuizTakingStore = require('stores/quiz_taking');
+  var Users = require('stores/users');
   var View = require('jsx!views/quizzes/take');
 
   new Route('takeQuiz', {
@@ -22,7 +23,8 @@ define(function(require) {
     updateProps: function() {
       this.update({
         status: this.statusLabel(QuizTakingStore.status),
-        quizTaking: QuizTakingStore.toProps()
+        quizTaking: QuizTakingStore.toProps(),
+        studentCount: Users.getStudentCount()
       });
     },
 

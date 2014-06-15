@@ -16,6 +16,10 @@
         }
       }
     },
+    "ns_load_students": {
+      "status": "Loading __perPage__ students from page __page__.\n",
+      "status_no_more_students": "Nothing to do, no more students to load.\n"
+    },
     "ns_operation_tracker": {
       "failures": "1 failure",
       "failures_plural": "__count__ failures"

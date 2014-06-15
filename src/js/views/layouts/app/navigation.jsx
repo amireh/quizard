@@ -56,12 +56,20 @@ define([ 'react', 'constants' ], function(React, K) {
             <Link icon="icon-home" href="/">Home</Link>
 
             <h4 className="navbar-heading">
-              Recipes
+              Preparation
             </h4>
 
             <Link icon="icon-android" href={K.RECIPE_ENROLL_STUDENTS}>
               Enroll students
             </Link>
+
+            <Link icon="icon-search" href={K.RECIPE_LOAD_STUDENTS}>
+              Load students
+            </Link>
+
+            <h4 className="navbar-heading">
+              Recipes
+            </h4>
 
             <Link icon="icon-wand" href={K.RECIPE_TAKE_QUIZ}>
               Take a quiz

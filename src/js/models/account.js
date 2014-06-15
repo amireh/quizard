@@ -1,4 +1,8 @@
-define([ 'ext/pixy', 'models/user' ], function(Pixy, User) {
+define(function(require) {
+  var Pixy = require('pixy');
+  var User = require('./user');
+  var K = require('constants');
+
   var Account = Pixy.Model.extend({
     name: 'Account',
     urlRoot: '/accounts',
@@ -9,7 +13,12 @@ define([ 'ext/pixy', 'models/user' ], function(Pixy, User) {
       this.users = new Pixy.Collection(undefined, {
         model: User,
         url: function() {
-          return account.url() + '/users';
+          var query = [
+            'page=' + (this.meta.nextPage || 1),
+            'per_page=' + K.USER_MAX_PER_PAGE,
+          ].join('&');
+
+          return account.url() + '/users?' + query;
         }
       });
     },

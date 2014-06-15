@@ -2,6 +2,7 @@ define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
   var QuizTaker = require('models/quiz_taker');
+  var BatchedOperation = require('models/batched_operation');
   var Quizzes = require('stores/quizzes');
   var QuizSubmissions = require('stores/quiz_submissions');
   var store, quizTaker;
@@ -103,6 +104,26 @@ define(function(require) {
     }
   };
 
+  var setResponseCount = function(payload, onChange, onError) {
+    var count = payload.count;
+
+    if (count < K.USER_MIN_ENROLL) {
+      return onError();
+    }
+    else if (count > K.USER_MAX_ENROLL) {
+      return onError();
+    }
+
+    quizTaker.assignRespondents(count);
+
+    onChange();
+  };
+
+  var takeQuiz = new BatchedOperation({
+    runner: function(params) {
+
+    }
+  });
 
   store = new Pixy.Store('quizTakingStore', {
     status: K.QUIZ_TAKING_STATUS_IDLE,
@@ -116,6 +137,7 @@ define(function(require) {
       var props = {};
 
       props.status = this.status;
+      props.responseCount = quizTaker.responseCount;
 
       return props;
     },
@@ -133,6 +155,10 @@ define(function(require) {
 
         case K.QUIZ_TAKING_SET_RESPONSE_RATIO:
           setResponseRatio(payload, onChange, onError);
+        break;
+
+        case K.QUIZ_TAKING_SET_RESPONSE_COUNT:
+          setResponseCount(payload, onChange, onError);
         break;
 
         case K.QUIZ_TAKING_TAKE:

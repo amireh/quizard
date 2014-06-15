@@ -49,12 +49,6 @@ form {
   }
 }
 
-fieldset {
-  border: 0;
-  margin: 10px 0;
-  padding: 0;
-}
-
 textarea {
   resize: vertical;
 }
@@ -71,12 +65,6 @@ textarea {
 
   .btn {
     width: 100%;
-  }
-
-  .secondary-actions {
-    .btn {
-      margin-bottom: 5px;
-    }
   }
 }
 
@@ -239,14 +227,12 @@ label.skinned-radio {
   display: block;
 }
 
-form {
-  /*margin: 0 0 20px;*/
-}
 fieldset {
   padding: 0;
   margin: 0;
   border: 0;
 }
+
 fieldset label {
   display: block;
 }
@@ -273,4 +259,8 @@ legend small {
   padding: @whitespace 0;
   margin: @whitespace 0;
   border-top: 1px solid @shade;
+
+  .btn:disabled {
+    opacity: 0.5;
+  }
 }

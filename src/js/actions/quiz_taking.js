@@ -24,6 +24,12 @@ function(Dispatcher, K) {
       }).index;
     },
 
+    setResponseCount: function(count) {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_SET_RESPONSE_COUNT, {
+        count: count
+      }).index;
+    },
+
     take: function() {
       return Dispatcher.dispatch(K.QUIZ_TAKING_TAKE).index;
     },
@@ -53,6 +59,10 @@ function(Dispatcher, K) {
         questionId: questionId,
         variantId: variantId
       }).index;
+    },
+
+    loadStudents: function() {
+
     }
   };
 });

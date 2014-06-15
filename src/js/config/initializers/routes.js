@@ -34,6 +34,8 @@ define([
         match('/progress').to('enrollStudentsProgress');
       });
 
+      match('/recipes/load_students').to('loadStudentsRecipe');
+
       match('/recipes/take_quiz').to('takeQuizRecipe');
 
       // App

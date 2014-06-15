@@ -73,6 +73,7 @@ define(function(require) {
     },
 
     assignRespondents: function(studentCount) {
+      this.responseCount = studentCount;
       this.questions.forEach(function(question) {
         var remainder;
         var tally = 0;
@@ -94,8 +95,6 @@ define(function(require) {
 
     generateResponses: function(students) {
       var questions = this.questions;
-
-      this.assignRespondents(students.length);
 
       return students.map(function(student) {
         var studentResponses = questions.reduce(function(responses, question) {

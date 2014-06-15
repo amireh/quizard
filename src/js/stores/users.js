@@ -9,9 +9,14 @@ define(function(require) {
   var ajax = require('core/ajax');
   var generateLogin = require('util/generate_login');
   var generateName = require('util/generate_name');
+  var loadUsers = require('./operations/batched_load_users');
 
-  var store, collection, operation;
+  var store, operation;
   var status = K.STATUS_IDLE;
+
+  var getCollection = function() {
+    return Accounts.getUserCollection();
+  };
 
   var massEnrollment = new BatchedOperation({
     runner: function(context) {
@@ -60,10 +65,6 @@ define(function(require) {
     }
   });
 
-  var trackCollection = function() {
-    collection = Accounts.getUserCollection();
-  };
-
   var setStatus = function(inStatus) {
     console.debug('> UserStore Status:', inStatus);
 
@@ -74,21 +75,44 @@ define(function(require) {
   };
 
   /**
-   * Loads all users from all accounts.
+   * Loads all users in the active account.
    */
-  var loadAll = function(onChange) {
-    var collections = Accounts.getAll().map(function(account) {
-      return Accounts.getUserCollection(account.id);
+  var load = function(options, onChange, onError) {
+    var collection = getCollection();
+    var count, runnerCount;
+
+    if (!collection) {
+      return onError(K.ERROR_ACCOUNT_REQUIRED);
+    }
+
+    count = parseFloat(options.count);
+
+    if (!count || count < 0) {
+      return onError(K.USER_BAD_STUDENT_COUNT);
+    }
+
+    runnerCount = Math.ceil(count / K.USER_MAX_PER_PAGE, 10);
+
+    operation = new Operation({
+      count: runnerCount,
+      itemCount: runnerCount
     });
 
-    var fetches = collections.map(function(collection) {
-      return collection.fetch().then(function() {
-        onChange();
-        return store.getAll(collection);
-      });
-    });
+    setStatus(K.USER_LOADING);
 
-    return RSVP.all(fetches);
+    loadUsers.run(runnerCount, {
+      page: options.page,
+      reset: options.reset,
+      collection: collection,
+      operation: operation,
+      emitChange: store.emitChange.bind(store),
+    }).then(function() {
+      onChange();
+    }, function() {
+      onError();
+    }).then(function() {
+      setStatus(K.STATUS_IDLE);
+    });
   };
 
   var signup = function(prefix, id, accountId) {
@@ -168,14 +192,9 @@ define(function(require) {
   };
 
   store = new Pixy.Store('UserStore', {
-    fetch: function() {
-      return collection.fetch({ reset: true }).then(function() {
-        return store.getAll(collection);
-      });
-    },
-
-    getAll: function(collection) {
-      return collection.invoke('toProps');
+    getAll: function() {
+      var collection = getCollection();
+      return collection ? collection.invoke('toProps') : [];
     },
 
     getStatus: function() {
@@ -188,10 +207,28 @@ define(function(require) {
       }
     },
 
+    getStudentCount: function() {
+      var collection = getCollection();
+      return collection ? collection.length : 0;
+    },
+
+    getStudentStats: function() {
+      var collection = getCollection();
+
+      if (collection) {
+        return {
+          hasMore: collection.meta.hasMore,
+          availableCount: collection.length,
+          estimatedCount: collection.meta.totalCount || 0,
+          remainder: collection.meta.remainder,
+        };
+      }
+    },
+
     onAction: function(action, payload, onChange, onError) {
       switch(action) {
-        case K.USER_LOAD_ALL:
-          loadAll(onChange);
+        case K.USER_LOAD:
+          load(payload, onChange, onError);
         break;
 
         case K.USER_MASS_ENROLL:
@@ -200,10 +237,6 @@ define(function(require) {
       }
     }
   });
-
-  Accounts.on('change', trackCollection);
-
-  trackCollection();
 
   return store;
 });

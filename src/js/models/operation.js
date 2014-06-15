@@ -47,6 +47,8 @@ define(function(require) {
         if (hasFailed) {
           ++this.failureCount;
         }
+
+        this.action = undefined;
       }
 
       if (nextAction) {
@@ -59,6 +61,10 @@ define(function(require) {
       }
 
       this.trigger('change');
+    },
+
+    markLastActionFailed: function() {
+      this.markFailed(undefined, undefined, true);
     },
 
     abort: function(error) {
