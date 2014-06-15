@@ -34,14 +34,17 @@ define(function(require) {
 
           <form className="vertical-form" onSubmit={this.onSubmit} noValidate>
             <fieldset>
-              <label className="form-label">Course</label>
+              <label className="form-label marginless">
+                Course
+              </label>
+
               <CoursePicker
                 courses={this.props.courses}
                 activeCourseId={this.props.activeCourseId} />
             </fieldset>
 
             <fieldset>
-              <label className="form-label">Quiz <em>(id)</em></label>
+              <label className="form-label marginless">Quiz <em>(id)</em></label>
               <input
                 className="form-input"
                 type="text"

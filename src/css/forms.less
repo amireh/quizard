@@ -62,7 +62,7 @@ textarea {
 .vertical-form {
   .form-input {
     width: 100%;
-    margin-bottom: 10px;
+    margin: 0;
     padding: 4px 9px;
     height: auto;
     line-height: 2em;
@@ -84,7 +84,12 @@ textarea {
   display: block;
   font-weight: bold;
   font-size: 13px;
-  margin: @whitespace 0;
+  margin-bottom: @whitespace;
+  line-height: 30px;
+
+  &.marginless {
+    margin-bottom: 0;
+  }
 }
 
 input.spanner, .breaker {

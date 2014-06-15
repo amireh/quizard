@@ -20,7 +20,7 @@ define([], function() {
 
     USER_CREATE: 'USER_CREATE',
     USER_LOAD_ALL: 'USER_LOAD_ALL',
-    // Event triggered when mass-enrollment is about to begin
+    // Status code for when mass-enrollment is about to begin
     USER_MASS_ENROLLMENT_STARTED: 'USER_MASS_ENROLLMENT_STARTED',
     USER_MASS_ENROLL: 'USER_MASS_ENROLL',
     USER_MIN_ENROLL: 1,

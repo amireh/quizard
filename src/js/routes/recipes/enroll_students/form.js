@@ -16,12 +16,15 @@ define(function(require) {
     },
 
     enter: function() {
-      this.listenTo(Users, K.USER_MASS_ENROLLMENT_STARTED, this.showProgress);
+      this.progressShown = false;
+      this.listenTo(Users, 'change:status', this.showProgress);
     },
 
-    showProgress: function() {
-      console.info('UserStore is busy, redirecting to progress dialog.');
-      this.transitionTo(K.RECIPE_ENROLL_STUDENTS_PROGRESS);
+    showProgress: function(status) {
+      if (status === K.USER_MASS_ENROLLMENT_STARTED) {
+        console.info('UserStore is busy, redirecting to progress dialog.');
+        this.transitionTo(K.RECIPE_ENROLL_STUDENTS_PROGRESS);
+      }
     },
 
     shouldUnmount: function() {

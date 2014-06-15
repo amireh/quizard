@@ -34,17 +34,15 @@ define(function(require) {
 
     getDefaultProps: function() {
       return {
-        userStatus: {
-          code: K.STATUS_IDLE
-        }
+        userStatus: K.STATUS_IDLE
       };
     },
 
     componentWillReceiveProps: function(nextProps) {
       var thisProps = this.props;
       var done =
-        thisProps.userStatus.code !== K.STATUS_IDLE &&
-        nextProps.userStatus.code === K.STATUS_IDLE;
+        thisProps.userStatus !== K.STATUS_IDLE &&
+        nextProps.userStatus === K.STATUS_IDLE;
 
       if (done) {
         this.refs.saveButton.markDone(!this.state.storeError);

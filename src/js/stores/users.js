@@ -4,25 +4,71 @@ define(function(require) {
   var Accounts = require('stores/accounts');
   var Courses = require('stores/courses');
   var Operation = require('models/operation');
+  var BatchedOperation = require('models/batched_operation');
   var RSVP = require('rsvp');
   var ajax = require('core/ajax');
   var generateLogin = require('util/generate_login');
   var generateName = require('util/generate_name');
 
-  var store;
-  var collection;
-  var operation;
-  var status = { code: K.STATUS_IDLE };
+  var store, collection, operation;
+  var status = K.STATUS_IDLE;
+
+  var massEnrollment = new BatchedOperation({
+    runner: function(context) {
+      var studentId = ++context.guid + '';
+      var accountId = context.accountId;
+      var courseId = context.courseId;
+      var prefix = context.prefix;
+      var loginId = generateLogin(prefix, studentId);
+
+      operation.mark('Signing up a student with a login id of "' + loginId + '".', studentId);
+      context.status = setStatus(K.USER_REGISTERING)
+
+      return signup(prefix, studentId, accountId).then(function(userId) {
+        operation.mark('Enrolling student with user id [' + userId + ']', userId);
+        context.status = setStatus(K.USER_ENROLLING)
+        return enroll(userId, courseId);
+      });
+    },
+
+    onDone: function(/*output, context*/) {
+      store.emitChange();
+      return true;
+    },
+
+    onError: function(error, context, resolve, reject) {
+      var errorCode;
+
+      console.warn('API operation failure:', error, error.stack);
+
+      if (context.status === K.USER_REGISTERING) {
+        errorCode = K.USER_REGISTRATION_FAILED;
+      }
+      else if (context.status === K.USER_ENROLLING) {
+        errorCode = K.USER_ENROLLMENT_FAILED;
+      }
+
+      // TODO
+      if (context.atomic) {
+        resolve();
+      }
+      else {
+        reject(errorCode);
+      }
+    }
+  });
 
   var trackCollection = function() {
     collection = Accounts.getUserCollection();
   };
 
   var setStatus = function(inStatus) {
-    console.debug('> UserStore Status:', inStatus.code, inStatus.message);
+    console.debug('> UserStore Status:', inStatus);
 
     status = inStatus;
     store.emitChange('status', inStatus);
+
+    return inStatus;
   };
 
   /**
@@ -43,38 +89,28 @@ define(function(require) {
     return RSVP.all(fetches);
   };
 
-  var signup = function(prefix, id, collection) {
+  var signup = function(prefix, id, accountId) {
     var loginId = generateLogin(prefix, id);
-    var password = K.STUDENT_PASSWORD;
-    var email = [ loginId, K.STUDENT_EMAIL_DOMAIN ].join('@');
-    var message = 'Signing up a student with a login id of "' + loginId + '".';
-    var user = collection.push({});
 
-    setStatus({
-      code: K.USER_REGISTERING,
-      message: message
+    return ajax({
+      url: '/accounts/' + accountId + '/users',
+      type: 'POST',
+      data: JSON.stringify({
+        user: {
+          name: generateName(loginId),
+        },
+        pseudonym: {
+          unique_id: [ loginId, K.STUDENT_EMAIL_DOMAIN ].join('@'),
+          password: K.STUDENT_PASSWORD,
+          send_confirmation: false
+        }
+      })
+    }).then(function(user) {
+      return user.id;
     });
-
-    operation.mark(message, loginId);
-
-    return user.save({
-      user: {
-        name: generateName(loginId),
-      },
-      pseudonym: {
-        unique_id: email,
-        password: password,
-        send_confirmation: false
-      }
-    }, { wait: true, parse: true, validate: false });
   };
 
   var enroll = function(userId, courseId) {
-    var message = 'Enrolling student with user id [' + userId + ']';
-
-    setStatus({ code: K.USER_ENROLLING, message: message });
-    operation.mark(message, userId);
-
     return ajax({
       url: '/courses/' + courseId + '/enrollments',
       type: 'POST',
@@ -90,11 +126,9 @@ define(function(require) {
   };
 
   var massEnroll = function(payload, onChange, onError) {
-    var loginId;
     var studentCount = parseInt(payload.studentCount || '', 10);
-    var courseId = Courses.getActiveCourseId();
     var prefix = payload.prefix || K.DEFAULT_ID_PREFIX;
-    var guid = 0;
+    var guid;
 
     if (!studentCount || studentCount < K.USER_MIN_ENROLL) {
       return onError(K.USER_ENROLLMENT_COUNT_TOO_LOW);
@@ -103,77 +137,34 @@ define(function(require) {
       return onError(K.USER_ENROLLMENT_COUNT_TOO_HIGH);
     }
 
-    guid = parseInt(payload.idRange, 10) || guid;
+    guid = parseInt(payload.idRange, 10) || 0;
     prefix = prefix.replace(/_+$/, '');
-
-    store.trigger(K.USER_MASS_ENROLLMENT_STARTED);
-
-    setStatus({
-      code: K.STATUS_BUSY,
-      message: 'Preparing to register and enroll ' + studentCount + ' students.'
-    });
-
-    var studentIndex;
-    var fireStarter = RSVP.defer();
-    // var operationCount = studentCount * 2;
-    // var operationIndex = 0;
-    var lastPromise = fireStarter.promise;
 
     operation = new Operation({
       count: studentCount * 2,
       itemCount: studentCount
     });
 
-    for (studentIndex = 0; studentIndex < studentCount; ++studentIndex) {
-      lastPromise = lastPromise.then(function() {
-        loginId = ++guid + '';
-        console.debug('Operating as', loginId);
-        console.debug('\tSigning up as', loginId);
+    setStatus(K.USER_MASS_ENROLLMENT_STARTED);
 
-
-        return signup(prefix, loginId, Accounts.getUserCollection());
-      }).then(function(user) {
-        return enroll(user.get('id'), courseId);
-      }).then(function() {
-        console.debug('\t\t\tEnrollment of', generateLogin(prefix, loginId), 'was successful.');
-        store.emitChange();
-        return true;
-      });
-    }
-
-    lastPromise.then(function() {
-      status = {
-        code: K.STATUS_IDLE,
-        message: 'All ' + studentCount + ' students have been enrolled.'
-      };
-
+    massEnrollment.run(studentCount, {
+      accountId: Accounts.getActiveAccountId(),
+      courseId: Courses.getActiveCourseId(),
+      prefix: prefix,
+      guid: guid,
+      operation: operation
+    }).then(function() {
+      console.info('Mass enrollment succeeded.');
       operation.mark();
-
       onChange();
-    }).catch(function(apiError) {
-      var errorCode;
-      var errorMessage;
-
-      console.warn('API operation failure:', apiError);
-
-      if (status.code === K.USER_REGISTERING) {
-        errorCode = K.USER_REGISTRATION_FAILED;
-      }
-      else if (status.code === K.USER_ENROLLING) {
-        errorCode = K.USER_ENROLLMENT_FAILED;
-      }
-
+    }, function(errorCode) {
+      console.warn('Mass enrollment failed:', errorCode, 'resetting.');
       operation.abort(errorCode);
       onError(errorCode);
-
-      setStatus({
-        code: errorCode,
-        message: errorMessage
-      });
+    }).then(function() {
+      console.info('UserStore: resetting.');
+      setStatus(K.STATUS_IDLE);
     });
-
-    // get cooking
-    fireStarter.resolve();
   };
 
   store = new Pixy.Store('UserStore', {
