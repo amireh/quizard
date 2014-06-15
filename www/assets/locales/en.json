@@ -1,1 +1,24 @@
-"en:"
+{
+  "en": {
+    "ns_enrollment": {
+      "form": {
+        "errors": {
+          "USER_ENROLLMENT_COUNT_TOO_LOW": "You must want to enroll at least one student.\n",
+          "USER_ENROLLMENT_COUNT_TOO_HIGH": "You can enroll as many as __maxStudentCount__ students, no more.\n"
+        },
+        "hints": {
+          "account": "Users in Canvas must be registered within a specific account. If you happen to have more than one account, please specify the correct one.\n",
+          "course": "This would be the course we'll be enrolling the students in.\n"
+        },
+        "tooltips": {
+          "id_prefix": "Set a prefix that will be used for all the names and emails of the enrolled students. (Quizard will automatically generate one for you if you leave this blank.)\n",
+          "id_range": "The number that Quizard should start from for generating IDs for students.\n"
+        }
+      }
+    },
+    "ns_operation_tracker": {
+      "failures": "1 failure",
+      "failures_plural": "__count__ failures"
+    }
+  }
+}

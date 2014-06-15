@@ -2,6 +2,7 @@
 define(function(require) {
   var React = require('react');
   var ProgressBar = require('jsx!components/progress_bar');
+  var t = require('i18n!operation_tracker');
 
   var secondsToTime = function(seconds) {
     var floor = function(nr) { return Math.floor(nr); };
@@ -89,6 +90,7 @@ define(function(require) {
         <div className="operation-tracker">
           <header>
             {this.renderRemainder()}
+            {this.renderFailures()}
 
             <aside className="operation-eta stick-right">
               ETA: {secondsToTime(this.state.eta) || 'N/A'}
@@ -118,9 +120,22 @@ define(function(require) {
       );
     },
 
+    renderFailures: function() {
+      return (
+        this.props.failures > 0 && [
+          <span> - </span>,
+          <span className="operation-failure-counter">
+            {t('failures', { count: this.props.failures })}
+          </span>
+        ]
+      );
+    },
+
     renderLogEntry: function(logEntry) {
       return (
-        <li key={logEntry.id}>
+        <li key={logEntry.id} className={logEntry.failed ? 'failed' : null}>
+          {logEntry.failed && <span>[FAILED] </span>}
+
           {logEntry.message}
 
           <span className="operation-log-entry-elapsed">

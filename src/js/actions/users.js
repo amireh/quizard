@@ -13,11 +13,12 @@ function(Dispatcher, K) {
       return Dispatcher.dispatch(K.USER_LOAD_ALL);
     },
 
-    massEnroll: function(studentCount, prefix, idRange) {
+    massEnroll: function(studentCount, prefix, idRange, isAtomic) {
       return Dispatcher.dispatch(K.USER_MASS_ENROLL, {
         studentCount: studentCount,
         prefix: prefix,
-        idRange: idRange
+        idRange: idRange,
+        atomic: isAtomic
       }).index;
     }
   };

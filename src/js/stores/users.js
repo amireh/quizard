@@ -49,11 +49,13 @@ define(function(require) {
       }
 
       // TODO
-      if (context.atomic) {
-        resolve();
+      if (context.atomic === true) {
+        reject(errorCode);
       }
       else {
-        reject(errorCode);
+        operation.mark(undefined, undefined, true);
+        store.emitChange();
+        resolve();
       }
     }
   });
@@ -152,7 +154,8 @@ define(function(require) {
       courseId: Courses.getActiveCourseId(),
       prefix: prefix,
       guid: guid,
-      operation: operation
+      operation: operation,
+      atomic: payload.atomic
     }).then(function() {
       operation.mark();
       onChange();

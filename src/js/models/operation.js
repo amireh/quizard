@@ -4,6 +4,7 @@ define(function(require) {
   var clone = _.clone;
   var extend = _.extend;
   var pick = _.pick;
+  var findBy = _.findBy;
 
   var toSeconds = function(milliseconds) {
     return milliseconds / 1000.0;
@@ -24,6 +25,7 @@ define(function(require) {
 
       action: undefined,
       failed: false,
+      failureCount: 0,
       ETA: 0
     },
 
@@ -35,26 +37,28 @@ define(function(require) {
       extend(this, this.defaults, attrs);
     },
 
-    mark: function(nextAction, nextItem) {
-      var emitChange = this.trigger.bind(this, 'change');
+    mark: function(nextAction, nextItem, hasFailed) {
+      if (this.action) {
+        this.logCompletedAction(this.action, hasFailed);
 
-      this.logCompletedAction(this.action);
+        this.completed = this.completed + 1;
+        this.ETA = this.getETA();
 
-      if (!nextAction) {
-        console.debug('Operation: complete.');
-        return emitChange();
+        if (hasFailed) {
+          ++this.failureCount;
+        }
       }
 
-      this.logAction(nextAction);
+      if (nextAction) {
+        this.logAction(nextAction);
 
-      this.action = nextAction;
-      this.item = nextItem;
-      this.completed = this.completed + 1;
-      this.ETA = this.getETA();
+        this.action = nextAction;
+        this.item = nextItem;
 
-      console.debug('Operation: new action', nextAction, this.getCompletionRatio() + '%');
+        console.debug('Operation: new action', nextAction, this.getCompletionRatio() + '%');
+      }
 
-      emitChange();
+      this.trigger('change');
     },
 
     abort: function(error) {
@@ -109,7 +113,7 @@ define(function(require) {
       return this.getCompletionRatio() / elapsedSeconds;
     },
 
-    logCompletedAction: function() {
+    logCompletedAction: function(action, hasFailed) {
       var now, elapsed;
 
       if (!this.log.length) {
@@ -122,6 +126,10 @@ define(function(require) {
       this.lastActionAt = now;
 
       this.log[0].elapsed = toSeconds(elapsed);
+
+      if (hasFailed) {
+        this.log[0].failed = true;
+      }
     },
 
     logAction: function(message) {
@@ -155,6 +163,7 @@ define(function(require) {
       props.elapsed = toSeconds(new Date() - this.startedAt);
       props.log = clone(this.log);
       props.aps = this.getProcessingRate();
+      props.failures = this.failureCount;
 
       return props;
     }
