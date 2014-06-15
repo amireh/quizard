@@ -7,7 +7,6 @@ define(function(require) {
   var StudentCount = require('jsx!components/student_count');
   var Alert = require('jsx!components/alert');
   var Question = require('jsx!./take/question');
-  var Operation = require('jsx!components/operation_tracker');
 
   var TakeQuiz = React.createClass({
     mixins: [ React.mixins.ActionInitiator ],
@@ -26,8 +25,7 @@ define(function(require) {
         },
         quizTaking: {
           responseCount: K.USER_MIN_ENROLL
-        },
-        quizTakingOperation: {}
+        }
       };
     },
 
@@ -66,8 +64,6 @@ define(function(require) {
           </section>
 
           {this.renderActions()}
-
-          {Operation(this.props.quizTakingOperation)}
         </form>
       );
     },

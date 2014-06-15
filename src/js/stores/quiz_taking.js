@@ -6,13 +6,13 @@ define(function(require) {
   var batchedTakeQuiz = require('./operations/batched_take_quiz');
   var Quizzes = require('stores/quizzes');
   var Users = require('stores/users');
-  var store, quizTaker, operation, responseCount;
+  var store, quizTaker, operation, responseCount, status;
 
   var setStatus = function(code) {
     console.debug('Status:', code);
 
-    store.status = code;
-    store.emitChange();
+    status = code;
+    store.emitChange('status', code);
   };
 
   var resetStatus = function() {
@@ -125,6 +125,10 @@ define(function(require) {
 
 
   store = new Pixy.Store('quizTakingStore', {
+    getStatus: function() {
+      return status;
+    },
+
     build: function(quiz) {
       quizTaker = new QuizTaker({}, { quiz: Quizzes.collection.get(quiz.id) });
       this.emitChange();
@@ -133,16 +137,14 @@ define(function(require) {
     toProps: function() {
       var props = {};
 
-      props.status = this.status;
+      if (operation) {
+        props = operation.toProps();
+      }
+
+      props.status = status;
       props.responseCount = responseCount;
 
       return props;
-    },
-
-    getCurrentOperation: function() {
-      if (operation) {
-        return operation.toProps();
-      }
     },
 
     onAction: function(action, payload, onChange, onError) {

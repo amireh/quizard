@@ -83,7 +83,7 @@ define(function(require) {
       return (
         <div>
           {
-            !DialogLayout.isEmpty(undefined, this.state) &&
+            !DialogLayout.isEmpty(this.props, this.state, true) &&
             this.renderLayout(DialogLayout, {
               key: 'dialogLayout',
               onClose: this.closeDialog

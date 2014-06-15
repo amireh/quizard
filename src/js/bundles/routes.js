@@ -13,4 +13,6 @@ define([
   'routes/quizzes/quiz',
   'routes/quizzes/quiz/show',
   'routes/quizzes/quiz/take',
+  'routes/quizzes/quiz/take/form',
+  'routes/quizzes/quiz/take/progress',
 ], function() {});

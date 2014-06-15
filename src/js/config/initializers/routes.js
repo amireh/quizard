@@ -42,7 +42,10 @@ define([
       match('/courses/:course_id').to('course', function(match) {
         match('/quizzes/:quiz_id').to('quiz', function(match) {
           match('/').to('quizShow');
-          match('/take').to('takeQuiz');
+          match('/take').to('takeQuiz', function(match) {
+            match('/').to('takeQuizForm');
+            match('/progress').to('takeQuizProgress');
+          });
         });
       });
 
