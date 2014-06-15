@@ -22,6 +22,12 @@ en:
           The number that Quizard should start from for generating IDs for
           students.
   ns_load_students:
+    description: >
+      <p>
+        Some recipes in Quizard require a pool of students to work with. This
+        step allows you to "load", or prepare, that pool of students by loading
+        them into the Quizard registry.
+      </p>
     status: >
       Loading __perPage__ students from page __page__.
     status_no_more_students: >

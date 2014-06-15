@@ -5,6 +5,7 @@ define(function(require) {
   var K = require('constants');
   var AccountPicker = require('jsx!components/account_picker');
   var SaveButton = require('jsx!components/save_button');
+  var StudentCount = require('jsx!components/student_count');
   var Checkbox = require('jsx!components/checkbox');
   var Operation = require('jsx!components/operation_tracker');
   var t = require('i18n!load_students');
@@ -28,18 +29,29 @@ define(function(require) {
 
     componentDidUpdate: function(prevProps, prevState) {
       if (this.props.userStatus === K.STATUS_IDLE) {
-        this.refs.saveButton.reset();
+        if (prevProps.userStatus === K.USER_LOADING) {
+          this.refs.saveButton.markDone(true);
+        } else {
+          this.refs.saveButton.reset();
+        }
       }
     },
 
     render: function() {
       var stats = this.props.studentStats;
+      var loadLabel = "Load students";
+
+      if (stats.hasMore === true) {
+        loadLabel = 'Load more students';
+      }
 
       return(
         <div className="two-columns">
           <header className="content-header">Load Students</header>
 
           <div className="column">
+            {t.htmlSafe('description')}
+
             <form id="load-students" className="vertical-form" onSubmit={this.onSubmit}>
               <fieldset>
                 <legend>{t('labels.account', 'Account')}</legend>
@@ -53,21 +65,13 @@ define(function(require) {
               </fieldset>
 
               <fieldset>
+                <legend>{t('labels.student_count', 'Student count')}</legend>
+
+                <StudentCount autoFocus valueLink={this.linkState('count')} />
+              </fieldset>
+
+              <fieldset>
                 <legend>{t('labels.options', 'Options')}</legend>
-
-                <label className="form-label">
-                  {t('labels.count', 'Student count')}
-
-                  <div>
-                    <input
-                      className="form-input"
-                      type="number"
-                      min="1"
-                      max={K.USER_MAX_ENROLL}
-                      autoFocus
-                      valueLink={this.linkState('count')} />
-                  </div>
-                </label>
 
                 <Checkbox
                   label={t('labels.reset', 'Unload students loaded earlier (e.g, start fresh)')}
@@ -80,7 +84,7 @@ define(function(require) {
                   ref="saveButton"
                   onClick={this.onSubmit}
                   type="primary"
-                  children="Load students" />
+                  children={loadLabel} />
               </div>
             </form>
           </div>

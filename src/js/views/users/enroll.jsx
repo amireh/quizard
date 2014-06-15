@@ -5,6 +5,7 @@ define(function(require) {
   var K = require('constants');
   var SaveButton = require('jsx!components/save_button');
   var Checkbox = require('jsx!components/checkbox');
+  var StudentCount = require('jsx!components/student_count');
   var Alert = require('jsx!components/alert');
   var AccountPicker = require('jsx!components/account_picker');
   var CoursePicker = require('jsx!components/course_picker');
@@ -140,16 +141,9 @@ define(function(require) {
                 <label className="form-label">
                   Number of students
 
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      max="5000"
-                      valueLink={this.linkState('studentCount')}
-                      autoFocus
-                      className="form-input" />
-                    <small className="add-on">Between 1 and 5000</small>
-                  </div>
+                  <StudentCount
+                    autoFocus
+                    valueLink={this.linkState('studentCount')} />
                 </label>
 
                 <label className="form-label">

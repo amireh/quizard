@@ -17,6 +17,7 @@
       }
     },
     "ns_load_students": {
+      "description": "<p>\n  Some recipes in Quizard require a pool of students to work with. This\n  step allows you to \"load\", or prepare, that pool of students by loading\n  them into the Quizard registry.\n</p>\n",
       "status": "Loading __perPage__ students from page __page__.\n",
       "status_no_more_students": "Nothing to do, no more students to load.\n"
     },
