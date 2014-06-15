@@ -1,4 +1,5 @@
 define([
+  'config/initializers/i18next',
   'config/initializers/jquery',
   'config/initializers/pixy',
   'config/initializers/moment',
@@ -8,4 +9,6 @@ define([
   //>>excludeStart("production", pragmas.production);
   , 'config/initializers/debug'
   //>>excludeEnd("production");
-], function() {});
+], function(loadLocale) {
+  return loadLocale;
+});

@@ -15,22 +15,22 @@ module.exports = {
   },
 
   locales: {
-    files: 'www/assets/locales/**/*.yml',
-    tasks: [ 'locales', 'notify:locales' ]
+    files: 'config/locales/*.yml',
+    tasks: [ 'yaml:locales', 'notify:locales' ]
   },
 
-  docs: {
-    files: [ '.jsduck', 'doc/guides/**/*.md', 'doc/*.*' ],
-    tasks: [ 'docs', 'notify:docs' ]
-  },
+  // docs: {
+  //   files: [ '.jsduck', 'doc/guides/**/*.md', 'doc/*.*' ],
+  //   tasks: [ 'docs', 'notify:docs' ]
+  // },
 
   jsx: {
     files: 'src/js/**/*.jsx',
     tasks: [ 'newer:react', 'jshint:jsx' ]
   },
 
-  tests: {
-    files: [ 'src/js/**/*.js', 'test/**/*' ],
-    tasks: [ 'test' ]
-  }
+  // tests: {
+  //   files: [ 'src/js/**/*.js', 'test/**/*' ],
+  //   tasks: [ 'test' ]
+  // }
 };

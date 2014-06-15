@@ -1,8 +1,14 @@
 requirejs.config({
   baseUrl: '../src/js',
+  map: {
+    '*': {
+      'lodash': 'underscore'
+    }
+  },
   paths: {
     'text': '../../vendor/js/require/text',
     'jsx': '../../vendor/js/require/jsx',
+    'i18n': '../../vendor/js/require/i18n',
     'JSXTransformer': '../../vendor/js/require/JSXTransformer-0.10.0',
     'jquery': '../../vendor/js/jquery/jquery-2.0.2',
     'jquery.jquerypp': '../../vendor/js/jquery/jquerypp.custom',
@@ -20,25 +26,26 @@ requirejs.config({
     'pixy': '../../vendor/js/pixy',
     'rsvp': '../../vendor/js/pixy',
     'router': '../../vendor/js/pixy',
+    'i18next': '../../vendor/js/i18next.amd-1.6.3',
+    'defaultLocale': 'config/defaultLocale.json',
   },
 
   shim: {
-    'jquery':                 { exports: 'jQuery' },
-    'jquery.jquerypp':        [ 'jquery' ],
-    'jquery.qtip':            [ 'jquery' ],
+    'jquery': { exports: 'jQuery' },
+    'jquery.jquerypp': [ 'jquery' ],
+    'jquery.qtip': [ 'jquery' ],
+    'chosen': { deps: [ 'jquery' ], exports: 'Chosen' },
 
-    'chosen': {
-      deps: [ 'jquery' ],
-      exports: 'Chosen'
-    },
-
-    'underscore':     { exports: '_' },
-    'lodash':         { exports: '_' },
-    'store':          { exports: 'store' },
-    'shortcut':       { exports: 'shortcut' },
-    'moment':         { exports: 'moment' },
-    'inflection':     [],
+    'underscore': { exports: '_' },
+    'lodash': { exports: '_' },
+    'store': { exports: 'store' },
+    'shortcut': { exports: 'shortcut' },
+    'moment': { exports: 'moment' },
     'pikaday': { exports: 'Pikaday', deps: [ 'underscore', 'moment' ] },
+
+    'inflection':     [],
+
+    'defaultLocale': [],
   },
 
   jsx: {

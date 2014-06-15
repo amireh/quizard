@@ -154,15 +154,12 @@ define(function(require) {
       guid: guid,
       operation: operation
     }).then(function() {
-      console.info('Mass enrollment succeeded.');
       operation.mark();
       onChange();
     }, function(errorCode) {
-      console.warn('Mass enrollment failed:', errorCode, 'resetting.');
       operation.abort(errorCode);
       onError(errorCode);
     }).then(function() {
-      console.info('UserStore: resetting.');
       setStatus(K.STATUS_IDLE);
     });
   };

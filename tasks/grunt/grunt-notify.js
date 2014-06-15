@@ -17,6 +17,12 @@ module.exports = {
     }
   },
 
+  locales: {
+    options: {
+      message: 'Quizard locales have been generated.'
+    }
+  },
+
   jshint: {
     jsx: {
       options: {

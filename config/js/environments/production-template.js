@@ -32,11 +32,6 @@ define([], function() {
 
     defaultLocale: 'en',
 
-    oauth: {
-      facebook: 'https://api.pibiapp.com/auth/facebook',
-      google: 'https://api.pibiapp.com/auth/google_oauth2'
-    },
-
     // Number of decimals to round to when displaying floats.
     precision: 2,
 
@@ -44,55 +39,8 @@ define([], function() {
       timeout: 15000,
     },
 
-    connectionInspector: {
-      pulse:      10000,
-      retries:    10,
-      max_delay:  60000
-    },
-
-    demoCredentials: {
-      email:    "pibi@localhost.com",
-      password: "pibidemo123"
-    },
-
-    journal: {
-      pulse: 5000
-    },
-
-    freezePolice: {
-      pulse: 15000
-    },
-
-    preferences: {
-      pulse: 5000 // pulse of the preferences autosaver
-    },
-
-    analytics: {
-      // Routes defined here will not be collected by the analytics module.
-      blacklist: [],
-    },
-
-    mixpanel: {
-      namespace: 'YOUR_MIXPANEL_NAMESPACE',
-      token: 'YOUR_MIXPANEL_TOKEN'
-    },
-
-    // The date format aside of ISO-8601 that the API accepts.
-    //
-    // You shouldn't really need to ever change this.
-    apiDateFormat: 'MM[/]DD[/]YYYY',
-
     defaultPreferences: {
-      "user": {
-        "dateFormat": 'DD[/]MM[/]YYYY',
-
-        "theme": "diet",
-
-        // The starting set of currencies.
-        "currencies": [
-          "USD",
-          "EUR"
-        ]
+      user: {
       }
     }
   };
