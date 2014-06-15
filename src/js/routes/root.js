@@ -1,8 +1,10 @@
 define(function(require) {
   var ApplicationRoute = require('core/application_route');
   var React = require('react');
+  var RSVP = require('rsvp');
   var RootLayout = require('jsx!views/layouts/root');
   var SessionStore = require('stores/sessions');
+  var AccountStore = require('stores/accounts');
   var RouteActions = require('actions/routes');
 
   return new ApplicationRoute('root', {
@@ -16,6 +18,14 @@ define(function(require) {
       return SessionStore.isActive();
     },
 
+    model: function() {
+      if (this.isAuthenticated()) {
+        return AccountStore.fetch();
+      } else {
+        return RSVP.resolve();
+      }
+    },
+
     /**
      * @private
      *
@@ -27,7 +37,7 @@ define(function(require) {
 
       update({ transitioning: true });
 
-      RouteActions.home().finally(function() {
+      this.reload().finally(RouteActions.home).finally(function() {
         update({ transitioning: false });
       });
     },
@@ -37,7 +47,9 @@ define(function(require) {
 
       this.applicationLayout.resolve(layout);
 
-      this.listenTo(SessionStore, 'change', this.switchAuthStates);
+      SessionStore.addChangeListener(this.switchAuthStates, this);
+      AccountStore.addChangeListener(this.updateProps, this);
+
       this.updateProps();
     },
 
@@ -49,6 +61,8 @@ define(function(require) {
       props = props || {};
       props.authenticated = SessionStore.isActive();
       props.user = SessionStore.get();
+      props.accounts = AccountStore.getAll();
+      props.activeAccountId = AccountStore.getActiveAccountId();
 
       this.events.update.call(this, props);
     }

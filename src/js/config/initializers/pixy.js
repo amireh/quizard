@@ -30,6 +30,7 @@ define([
   // Install Cache storage adapter
   Pixy.Cache.setAdapter(Store);
   Pixy.Cache.setAvailable(Store.enabled);
+  Pixy.Cache.enable();
 
   Pixy.Collection.setDefaultOptions('add', { parse: true });
   Pixy.Collection.setDefaultOptions('set', { parse: true });

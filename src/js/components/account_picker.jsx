@@ -8,6 +8,11 @@ function(React, AccountActions, Chosen) {
   var chosenOptions = {
     width: '100%'
   };
+  var NO_ACCOUNT_ID = 'none';
+  var NO_ACCOUNT = [{
+    id: NO_ACCOUNT_ID,
+    name: 'Choose an account'
+  }];
 
   /**
    * @class Components.AccountPicker
@@ -25,11 +30,15 @@ function(React, AccountActions, Chosen) {
     getDefaultProps: function() {
       return {
         accounts: [],
-        activeAccountId: null
+        activeAccountId: NO_ACCOUNT_ID
       };
     },
 
     render: function() {
+      var accounts = this.props.activeAccountId === NO_ACCOUNT_ID ?
+        NO_ACCOUNT.concat(this.props.accounts) :
+        this.props.accounts;
+
       return (
         <Chosen
           synchronize
@@ -37,7 +46,7 @@ function(React, AccountActions, Chosen) {
           chosenOptions={chosenOptions}
           value={this.props.activeAccountId}
           onChange={this.activateAccount}
-          children={this.props.accounts.map(this.renderAccount)} />
+          children={accounts.map(this.renderAccount)} />
       );
     },
 
@@ -48,6 +57,10 @@ function(React, AccountActions, Chosen) {
     },
 
     activateAccount: function(e) {
+      if (e.target.value === NO_ACCOUNT_ID) {
+        return;
+      }
+
       AccountActions.activate(e.target.value);
     }
   });

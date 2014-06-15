@@ -19,7 +19,7 @@ define(function(require) {
 
       nextPage = ++context.page;
 
-      if (collection.meta.hasMore === false) {
+      if (collection.meta.hasMore === false && !collection.meta.cached) {
         context.operation.mark(t('status_no_more_students'));
         return RSVP.resolve();
       }
@@ -29,10 +29,11 @@ define(function(require) {
         perPage: K.USER_MAX_PER_PAGE
       }), nextPage);
 
-      return collection.fetchNext({ page: nextPage });
+      return collection.fetchNext({ page: nextPage, useCache: false });
     },
 
     onDone: function(output, context) {
+      context.collection.updateCacheEntry();
       context.operation.mark();
       context.emitChange();
       return true;

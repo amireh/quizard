@@ -107,6 +107,7 @@ define(function(require) {
       operation: operation,
       emitChange: store.emitChange.bind(store),
     }).then(function() {
+
       onChange();
     }, function() {
       onError();
@@ -217,6 +218,7 @@ define(function(require) {
 
       if (collection) {
         return {
+          cached: collection.meta.cached,
           hasMore: collection.meta.hasMore,
           availableCount: collection.length,
           estimatedCount: collection.meta.totalCount || 0,

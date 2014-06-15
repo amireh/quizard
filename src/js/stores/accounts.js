@@ -22,8 +22,7 @@ define([
     if (account) {
       activeAccountId = payload.id;
       localStorage.setItem('activeAccountId', payload.id);
-
-      onChange();
+      account.users.fetch({ useCache: true }).then(onChange, onChange);
     } else {
       onError("Account with the id " + payload.id + " could not be resolved.");
     }

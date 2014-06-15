@@ -40,6 +40,7 @@ define(function(require) {
     render: function() {
       var stats = this.props.studentStats;
       var loadLabel = "Load students";
+      var canLoadMore = stats.cached || this.state.reset || stats.hasMore !== false;
 
       if (stats.hasMore === true) {
         loadLabel = 'Load more students';
@@ -80,7 +81,7 @@ define(function(require) {
 
               <div className="form-actions">
                 <SaveButton
-                  disabled={stats.hasMore === false && !this.state.reset}
+                  disabled={!canLoadMore}
                   ref="saveButton"
                   onClick={this.onSubmit}
                   type="primary"
@@ -94,6 +95,7 @@ define(function(require) {
               <p>
                 Loaded students: {stats.availableCount}/{stats.estimatedCount}
                 {stats.hasMore && ' (estimated)'}
+                {stats.cached && ' (from cache)'}
               </p>
             </section>
 
