@@ -33,6 +33,7 @@ define(function(require) {
       this.log = [];
       this.startedAt = new Date();
       this.lastActionAt = new Date();
+      this.firstActionAt = undefined;
 
       extend(this, this.defaults, attrs);
     },
@@ -57,14 +58,15 @@ define(function(require) {
         this.action = nextAction;
         this.item = nextItem;
 
-        console.debug('Operation: new action', nextAction, this.getCompletionRatio() + '%');
+        console.debug('Operation: new action', nextAction,
+          this.getCompletionRatio() + '%', '(', this.getProcessingRate(), ')');
       }
 
       this.trigger('change');
     },
 
     markLastActionFailed: function() {
-      this.markFailed(undefined, undefined, true);
+      this.mark(undefined, undefined, true);
     },
 
     abort: function(error) {
@@ -108,13 +110,17 @@ define(function(require) {
       var now, elapsed, elapsedSeconds;
 
       // Forget the first 10%
-      if (this.count === 0 || (0.1 > this.completed / this.count)) {
+      if (this.count === 0 || !this.firstActionAt) {
         return 0;
       }
 
       now = new Date();
-      elapsed = now - this.startedAt; // milliseconds
-      elapsedSeconds = parseFloat(toSeconds(elapsed));
+      elapsed = now - this.firstActionAt; // milliseconds
+      elapsedSeconds = toSeconds(elapsed);
+
+      if (elapsed <= 1000) {
+        return 0;
+      }
 
       return this.getCompletionRatio() / elapsedSeconds;
     },
@@ -130,6 +136,10 @@ define(function(require) {
       elapsed = now - this.lastActionAt;
 
       this.lastActionAt = now;
+
+      if (!this.firstActionAt) {
+        this.firstActionAt = now;
+      }
 
       this.log[0].elapsed = toSeconds(elapsed);
 

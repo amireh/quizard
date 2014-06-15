@@ -80,7 +80,7 @@ define(function(require) {
         var answers = question.getResponsePool();
 
         answers.forEach(function(answer) {
-          var respondentCount = Math.round(answer.responseRatio / 100 * studentCount);
+          var respondentCount = Math.ceil(answer.responseRatio / 100 * studentCount);
           tally += answer.remainingRespondents = respondentCount;
         });
 

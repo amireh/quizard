@@ -30,8 +30,10 @@ function(Dispatcher, K) {
       }).index;
     },
 
-    take: function() {
-      return Dispatcher.dispatch(K.QUIZ_TAKING_TAKE).index;
+    take: function(atomic) {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_TAKE, {
+        atomic: atomic
+      }).index;
     },
 
     addAnswer: function(questionId) {

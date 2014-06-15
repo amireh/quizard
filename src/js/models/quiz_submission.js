@@ -11,9 +11,20 @@ define(function(require) {
   return Model.extend({
     name: 'QuizSubmission',
 
-    url: function() {
+    baseUrl: function() {
       var id = this.get('id') || 'self';
       return [ result(this.quiz, 'url'), 'submissions', id ].join('/');
+    },
+
+    url: function() {
+      var url = this.baseUrl();
+      var userId = this.get('userId');
+
+      if (userId) {
+        url += '?as_user_id=' + userId;
+      }
+
+      return url;
     },
 
     initialize: function(attrs, options) {

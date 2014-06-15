@@ -2,16 +2,21 @@ define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
   var QuizTaker = require('models/quiz_taker');
-  var BatchedOperation = require('models/batched_operation');
+  var Operation = require('models/operation');
+  var batchedTakeQuiz = require('./operations/batched_take_quiz');
   var Quizzes = require('stores/quizzes');
-  var QuizSubmissions = require('stores/quiz_submissions');
-  var store, quizTaker;
+  var Users = require('stores/users');
+  var store, quizTaker, operation, responseCount;
 
-  var setStatus = function(message) {
-    console.debug('Status:', message);
+  var setStatus = function(code) {
+    console.debug('Status:', code);
 
-    store.status = message;
+    store.status = code;
     store.emitChange();
+  };
+
+  var resetStatus = function() {
+    setStatus(K.STATUS_IDLE);
   };
 
   /**
@@ -24,48 +29,46 @@ define(function(require) {
    *  2. it answers the submission using the QuizTaker module
    *  3. it turns it in
    */
-  var take = function(onChange, onError) {
-    var failureEmitter = function(statusCode) {
-      return function(apiError) {
-        console.warn('API operation failure:', apiError, apiError.stack);
-        setStatus(statusCode);
-        onError(statusCode);
+  var take = function(payload, onChange, onError) {
+    var students = Users.getAll().slice(0, responseCount);
+    var studentResponses;
 
-        throw apiError;
-      };
-    };
+    operation = new Operation({
+      count: responseCount * 3 + 1,
+      itemCount: responseCount
+    });
 
-    var prepIt = function() {
-      setStatus(K.QUIZ_TAKING_STATUS_PREPARING);
+    operation.on('change', store.emitChange, store);
 
-      return QuizSubmissions.findOrCreate(quizTaker.quiz, undefined);
-    };
+    setStatus(K.QUIZ_TAKING_STARTED);
+    operation.mark('Generating responses...');
 
-    var answerIt = function(quizSubmission) {
-      setStatus(K.QUIZ_TAKING_STATUS_ANSWERING);
+    try {
+      quizTaker.assignRespondents(responseCount);
+      studentResponses = quizTaker.generateResponses(students);
+    }
+    catch(e) {
+      console.warn(e.stack);
+      operation.markLastActionFailed();
+      onError(K.QUIZ_TAKING_RESPONSE_GENERATION_FAILED);
+      resetStatus();
+      return;
+    }
 
-      // todo: multiple-user support
-      var students = [{ id: 'self' }];
-      var studentResponses = quizTaker.generateResponses(students);
-
-      return QuizSubmissions.saveAnswers(quizSubmission, studentResponses[0].responses);
-    };
-
-    var turnItIn = function(quizSubmission) {
-      setStatus(K.QUIZ_TAKING_STATUS_TURNING_IN);
-      return QuizSubmissions.turnIn(quizSubmission);
-    };
-
-    prepIt()
-      .catch(failureEmitter(K.QUIZ_TAKING_STATUS_PREPARATION_FAILED))
-      .then(answerIt)
-      .catch(failureEmitter(K.QUIZ_TAKING_STATUS_ANSWERING_FAILED))
-      .then(turnItIn)
-      .catch(failureEmitter(K.QUIZ_TAKING_STATUS_TURNING_IN_FAILED))
-      .then(function() {
-        setStatus(K.QUIZ_TAKING_STATUS_IDLE);
-        onChange();
-      });
+    batchedTakeQuiz.run(responseCount, {
+      emitChange: store.emitChange.bind(store),
+      operation: operation,
+      quizTaker: quizTaker,
+      studentResponses: studentResponses,
+      atomic: payload.atomic
+    }).then(function() {
+      onChange();
+    }, function() {
+      onError();
+    }).finally(function() {
+      operation.mark();
+      resetStatus();
+    });
   };
 
   var addAnswer = function(payload, onChange, onError) {
@@ -107,6 +110,7 @@ define(function(require) {
   var setResponseCount = function(payload, onChange, onError) {
     var count = payload.count;
 
+    // TODO: fix this to use the maximum available students instead
     if (count < K.USER_MIN_ENROLL) {
       return onError();
     }
@@ -114,20 +118,13 @@ define(function(require) {
       return onError();
     }
 
-    quizTaker.assignRespondents(count);
+    responseCount = parseInt(count, 10);
 
     onChange();
   };
 
-  var takeQuiz = new BatchedOperation({
-    runner: function(params) {
-
-    }
-  });
 
   store = new Pixy.Store('quizTakingStore', {
-    status: K.QUIZ_TAKING_STATUS_IDLE,
-
     build: function(quiz) {
       quizTaker = new QuizTaker({}, { quiz: Quizzes.collection.get(quiz.id) });
       this.emitChange();
@@ -137,9 +134,15 @@ define(function(require) {
       var props = {};
 
       props.status = this.status;
-      props.responseCount = quizTaker.responseCount;
+      props.responseCount = responseCount;
 
       return props;
+    },
+
+    getCurrentOperation: function() {
+      if (operation) {
+        return operation.toProps();
+      }
     },
 
     onAction: function(action, payload, onChange, onError) {
@@ -162,7 +165,7 @@ define(function(require) {
         break;
 
         case K.QUIZ_TAKING_TAKE:
-          take(onChange, onError);
+          take(payload, onChange, onError);
         break;
 
         case K.QUIZ_TAKING_ADD_ANSWER:
@@ -195,6 +198,9 @@ define(function(require) {
 
     reset: function() {
       quizTaker = undefined;
+      responseCount = 0;
+      operation = undefined;
+      resetStatus();
     }
   });
 

@@ -6,8 +6,8 @@ define(function(require) {
   var QuizSubmission = require('models/quiz_submission');
   var store;
 
-  var urlForQuestions = function(submission) {
-    return [ '', 'quiz_submissions', submission.id, 'questions' ].join('/');
+  var urlForQuestions = function(submission, userId) {
+    return [ '', 'quiz_submissions', submission.id, 'questions?as_user_id=' + userId ].join('/');
   };
 
   var toJSON = function(data) {
@@ -15,38 +15,39 @@ define(function(require) {
   };
 
   store = new Pixy.Store('quizSubmissionStore', {
-    findOrCreate: function(quiz, user) {
+    findOrCreate: function(quiz, userId) {
       var svc = RSVP.defer();
-      var quizSubmission = new QuizSubmission({}, { quiz: quiz });
+      var quizSubmission = new QuizSubmission({ userId: userId }, { quiz: quiz });
 
       // TODO: masquerading support
 
-      quizSubmission.fetch({ parse: true }).then(
-        function() {
-          if (quizSubmission.isUntaken()) {
+      quizSubmission.fetch({ parse: true }).then(function() {
+        if (quizSubmission.isUntaken()) {
+          svc.resolve(quizSubmission);
+        } else {
+          store.create(quiz, userId, quizSubmission.nextAttempt()).then(svc.resolve, svc.reject);
+        }
+      }, function(apiError) {
+        if (apiError.status === 404) {
+          store.create(quiz, userId, 1).then(function(quizSubmission) {
             svc.resolve(quizSubmission);
-          } else {
-            store.create(quiz, user, quizSubmission.nextAttempt())
-              .then(svc.resolve, svc.reject);
-          }
-        },
-        function(apiError) {
-          if (apiError.status === 404) {
-            store.create(quiz, user, 1).then(function(quizSubmission) {
-              svc.resolve(quizSubmission);
-            }, svc.reject);
-          } else {
-            svc.reject(apiError);
-          }
-        });
+          }, svc.reject);
+        }
+        else if (apiError.status === 409) {
+
+        }
+        else{
+          svc.reject(apiError);
+        }
+      });
 
       return svc.promise;
     },
 
-    create: function(quiz, user, attempt) {
+    create: function(quiz, userId, attempt) {
       // TODO: masquerading support
       return ajax({
-        url: result(quiz, 'url') + '/submissions',
+        url: result(quiz, 'url') + '/submissions?as_user_id=' + userId,
         type: 'POST',
         data: toJSON({
           attempt: attempt
@@ -56,9 +57,9 @@ define(function(require) {
       });
     },
 
-    saveAnswers: function(quizSubmission, answers) {
+    saveAnswers: function(quizSubmission, userId, answers) {
       return ajax({
-        url: urlForQuestions(quizSubmission),
+        url: urlForQuestions(quizSubmission, userId),
         type: 'POST',
         data: toJSON({
           attempt: quizSubmission.attempt(),
@@ -68,9 +69,9 @@ define(function(require) {
       }).then(function() { return quizSubmission; });
     },
 
-    turnIn: function(quizSubmission) {
+    turnIn: function(quizSubmission, userId) {
       return ajax({
-        url: quizSubmission.url() + '/complete',
+        url: quizSubmission.baseUrl() + '/complete',
         type: 'POST',
         data: toJSON({
           attempt: quizSubmission.attempt(),

@@ -4,8 +4,10 @@ define(function(require) {
   var K = require('constants');
   var Actions = require('actions/quiz_taking');
   var SaveButton = require('jsx!components/save_button');
+  var StudentCount = require('jsx!components/student_count');
   var Alert = require('jsx!components/alert');
   var Question = require('jsx!./take/question');
+  var Operation = require('jsx!components/operation_tracker');
 
   var TakeQuiz = React.createClass({
     mixins: [ React.mixins.ActionInitiator ],
@@ -24,31 +26,24 @@ define(function(require) {
         },
         quizTaking: {
           responseCount: K.USER_MIN_ENROLL
-        }
+        },
+        quizTakingOperation: {}
       };
     },
 
     componentWillReceiveProps: function(nextProps) {
       var thisProps = this.props;
-      var saveDone =
-        thisProps.quizTaking.status === K.QUIZ_TAKING_STATUS_TURNING_IN &&
-        nextProps.quizTaking.status === K.QUIZ_TAKING_STATUS_IDLE;
+      var done =
+        thisProps.quizTaking.status !== K.STATUS_IDLE &&
+        nextProps.quizTaking.status === K.STATUS_IDLE;
 
-      var loadDone =
-        thisProps.quizTaking.status === K.QUIZ_TAKING_LOADING_STUDENTS &&
-        nextProps.quizTaking.status === K.QUIZ_TAKING_STATUS_IDLE;
-
-      if (saveDone) {
+      if (done) {
         this.refs.saveButton.markDone(true);
-      }
-      else if (loadDone) {
-        this.refs.loadButton.markDone(true);
       }
     },
 
     onStoreError: function() {
       this.refs.saveButton.markDone(false);
-      this.refs.loadButton.markDone(false);
     },
 
     render: function() {
@@ -62,7 +57,7 @@ define(function(require) {
 
           {!canTake && <Alert>
               No students are available. You must either enroll some, or
-              load them first.
+              <a href={K.RECIPE_LOAD_STUDENTS}>load them</a> first.
             </Alert>
           }
 
@@ -71,6 +66,8 @@ define(function(require) {
           </section>
 
           {this.renderActions()}
+
+          {Operation(this.props.quizTakingOperation)}
         </form>
       );
     },
@@ -96,19 +93,12 @@ define(function(require) {
         <div className="form-actions">
           {canTake &&
             <label className="form-label">
-              Student count
-              <div>
-                <input
-                  className="form-input"
-                  type="number"
-                  min="1" max={this.props.studentCount}
-                  onChange={this.setResponseCount}
-                  value={this.props.quizTaking.responseCount} />
+              Number of participants
 
-                <span>
-                  {this.props.studentCount} students are available
-                </span>
-              </div>
+              <StudentCount
+                max={this.props.studentCount}
+                onChange={this.setResponseCount}
+                value={this.props.quizTaking.responseCount} />
             </label>
           }
 
@@ -118,14 +108,6 @@ define(function(require) {
             disabled={!canTake}
             type="success"
             children="Take it" />
-
-          {' '}
-
-          <SaveButton
-            ref="loadButton"
-            onClick={this.onLoadStudents}
-            type="default"
-            children="Load students" />
         </div>
       );
     },
@@ -140,12 +122,6 @@ define(function(require) {
       e.preventDefault();
 
       this.trackAction(Actions.take());
-    },
-
-    onLoadStudents: function(e) {
-      e.preventDefault();
-
-      this.trackAction(Actions.loadStudents());
     }
   });
 

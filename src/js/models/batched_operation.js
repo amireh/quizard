@@ -42,7 +42,8 @@ define(function(require) {
       this.options = {
         runner: options.runner,
         onDone: options.onDone || this.defaults.onDone,
-        onError: options.onError || this.defaults.onError
+        onError: options.onError || this.defaults.onError,
+        setup: options.setup
       };
 
       if (!this.options.runner) {
@@ -65,9 +66,15 @@ define(function(require) {
       var abort = this.abort.bind(this);
       var runnerIndex = 0;
 
+      runCount = parseInt(runCount, 10);
+
       this.reset();
 
       console.info('Engaging batched operation, doing', runCount, 'runs.');
+
+      if (this.options.setup) {
+        this.options.setup(context);
+      }
 
       (function chainRunners() {
         if (wasAborted()) {

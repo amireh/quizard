@@ -13,6 +13,7 @@ define(function(require) {
 
       if (remaining > 0) {
         answer.remainingRespondents -= 1;
+        console.debug('Pulled answer out of pool:', answer, answer.remainingRespondents);
         return true;
       }
     });
@@ -31,7 +32,10 @@ define(function(require) {
       answerSet = answerSets[0];
       answer = pullAndMarkAnswer(answerSet.answers);
 
-      answer.remainingRespondents -= 1;
+      if (!answer) {
+        debugger
+      }
+
       return answer.id;
     }
     else if (questionType === 'short_answer_question') {

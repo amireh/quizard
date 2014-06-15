@@ -44,8 +44,6 @@ define(function(require) {
 
       console.warn('API operation failure:', error, error.stack);
 
-      debugger
-
       // TODO
       if (context.atomic === true) {
         reject(errorCode);

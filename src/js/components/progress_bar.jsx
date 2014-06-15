@@ -2,7 +2,7 @@
 define([ 'react' ], function(React) {
   var MIN_RESOLUTION = 1;
   var MAX_RESOLUTION = 4;
-  var DEFAULT_RESOLUTION = 2;
+  var DEFAULT_RESOLUTION = 4;
 
   /**
    * @class Components.ProgressBar
@@ -29,6 +29,8 @@ define([ 'react' ], function(React) {
     },
 
     setProgress: function(progress) {
+      var that = this;
+
       this.setState({
         progress: Math.min(parseInt(progress, 10), 100)
       });
@@ -59,16 +61,17 @@ define([ 'react' ], function(React) {
       var shouldUpdate, proximityCoefficient;
       var delta = nextProps.progress - this.state.progress;
 
-      // progress must move forwards, discard negative adjustments
-      if (delta > 0) {
+      // jump to 0% or 100% if specified
+      if (nextProps.progress === 100 || nextProps.progress === 0) {
+        shouldUpdate = true;
+      }
+      else if (delta > 0) {
+        // progress must move forwards, discard negative adjustments
         proximityCoefficient = this.props.APS * this.props.resolution;
 
         // don't jump if we're very close to getting there (in < 1second),
         // looks much better
         shouldUpdate = delta >= proximityCoefficient;
-
-        // unless the progress is 100%, then jump
-        shouldUpdate = shouldUpdate || nextProps.progress === 100;
       }
 
       if (shouldUpdate) {
@@ -88,7 +91,7 @@ define([ 'react' ], function(React) {
         'progress-red': progress > 0 && progress < 25,
         'progress-orange': progress >= 25 && progress < 50,
         'progress-blue': progress >= 50 && progress < 75,
-        'progress-green': progress > 75,
+        'progress-green': progress >= 75,
         'progress-bar': true
       });
 
@@ -109,11 +112,12 @@ define([ 'react' ], function(React) {
       var resolution = parseInt(this.props.resolution, 10);
 
       if (!this.props.APS) {
-        console.debug('Will not tick, no resolution or APS specified.');
+        console.debug('Progress: Will not tick, no resolution or APS specified.');
         return;
       }
 
       step = this.props.APS / resolution;
+      console.info('Progress: easing', step, 'up to', this.state.progress + step)
       this.setProgress(this.state.progress + step);
     },
 

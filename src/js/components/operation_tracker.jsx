@@ -43,7 +43,7 @@ define(function(require) {
 
         ETA: 0,
         ratio: 0,
-        remaining: 0,
+        remaining: undefined,
         elapsed: 0,
         aps: 0,
         log: []
@@ -51,7 +51,7 @@ define(function(require) {
     },
 
     componentDidMount: function() {
-      this.etaTimer = setInterval(this.start, 1000);
+      this.etaTimer = setInterval(this.updateETA, 1000);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -72,7 +72,7 @@ define(function(require) {
       }
     },
 
-    start: function() {
+    updateETA: function() {
       this.setState({ eta: this.state.eta - 1 });
     },
 
@@ -81,11 +81,11 @@ define(function(require) {
         clearInterval(this.etaTimer);
         this.etaTimer = null;
       }
-
-      this.refs.progressBar.stop();
     },
 
     render: function() {
+      var active = this.props.count > 0;
+
       return(
         <div className="operation-tracker">
           <header>
@@ -97,11 +97,12 @@ define(function(require) {
             </aside>
           </header>
 
-          <ProgressBar
-            ref="progressBar"
-            key="progressBar"
-            APS={this.props.aps}
-            progress={this.props.ratio} />
+          {active &&
+            <ProgressBar
+              key="progressBar"
+              APS={this.props.aps}
+              progress={this.props.ratio} />
+          }
 
           <ul className="operation-log">
             {this.props.log.map(this.renderLogEntry)}
@@ -111,11 +112,17 @@ define(function(require) {
     },
 
     renderRemainder: function() {
+      if (this.props.count === 0) {
+        return <span className="operation-counter" children="-" />;
+      }
+
       return (
         this.props.remaining === 0 ?
-        <span className="operation-counter" children="Done" /> :
         <span className="operation-counter">
-          {this.props.remaining}/{this.props.count} operations left
+          Done in {this.props.elapsed} seconds
+        </span> :
+        <span className="operation-counter">
+          {this.props.remaining || 0}/{this.props.count} operations left
         </span>
       );
     },
