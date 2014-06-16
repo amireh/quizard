@@ -2,7 +2,6 @@ define(function(require) {
   var Pixy = require('ext/pixy');
   var K = require('constants');
   var _ = require('underscore');
-  var generateRandomString = require('util/generate_random_string');
   var pluck = _.pluck;
   var where = _.where;
   var uniq = _.uniq;
@@ -10,6 +9,7 @@ define(function(require) {
   var contains = _.contains;
   var uniqueId = _.uniqueId;
   var remove = _.remove;
+  var sample = _.sample;
 
   var extractBlanks = function(answers) {
     return uniq(pluck(answers, 'blank_id'));
@@ -18,7 +18,7 @@ define(function(require) {
   var mkUnknownAnswer = function(id, attrs) {
     return extend({
       id: [ K.QUESTION_UNKNOWN_ANSWER, id ].join('_'),
-      text: generateRandomString(),
+      text: K.QUESTION_UNKNOWN_ANSWER_TEXT,
       unknown: true
     }, attrs);
   };
@@ -97,6 +97,12 @@ define(function(require) {
 
           delete answer.weight;
         });
+
+        // If the question does not have a correct answer, e.g Essay, then
+        // choose an answer at random and give it the initial response ratio
+        if (!responseRatioDistributed && set.answers.length) {
+          sample(set.answers).responseRatio = 100;
+        }
       });
 
       attrs.id = id;

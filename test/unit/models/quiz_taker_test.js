@@ -172,6 +172,36 @@ define(function(require) {
         });
       });
 
+      describe('Essays and Short-Answer', function() {
+        it('should pick the "Other" answer and generate garbage', function() {
+          var allResponses, myResponses, response;
+          var questionId = '18';
+          var userId = 'self';
+
+          subject.setResponseRatio(questionId, 'other_' + questionId + '_auto', 100);
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(typeof response.answer).toBe('string');
+          expect(response.answer.length).toBeGreaterThan(1);
+        });
+
+        it('should pick the "No" answer and provide nothing', function() {
+          var allResponses, myResponses, response;
+          var questionId = '18';
+          var userId = 'self';
+
+          subject.setResponseRatio(questionId, [ 'none', questionId, 'auto' ].join('_'), 100);
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(response.answer).toBe('');
+        });
+
+      });
+
     });
   });
 });

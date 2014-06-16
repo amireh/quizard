@@ -1,10 +1,16 @@
 define(function(require) {
   var _ = require('underscore');
+  var K = require('constants');
+  var generateRandomString = require('util/generate_random_string');
   var contains = _.contains;
   var find = _.find;
   var MultipleChoiceLike = [
     'multiple_choice_question',
     'true_false_question'
+  ];
+  var ShortAnswerLike = [
+    'short_answer_question',
+    'essay_question'
   ];
 
   var pullAndMarkAnswer = function(answers) {
@@ -31,25 +37,13 @@ define(function(require) {
       answerSet = answerSets[0];
       answer = pullAndMarkAnswer(answerSet.answers);
 
-      if (!answer) {
-        // debugger
-      }
-
       return answer.id;
     }
-    else if (questionType === 'short_answer_question') {
+    else if (contains(ShortAnswerLike, questionType)) {
       answerSet = answerSets[0];
       answer = pullAndMarkAnswer(answerSet.answers);
 
-      if (answer.id.substr(0,4) === 'none') {
-        return '';
-      }
-      else if (answer.id.substr(0,5) === 'other') {
-        return 'some really random answer';
-      }
-      else {
-        return answer.text;
-      }
+      value = answer.text;
     }
     else if (questionType === 'fill_in_multiple_blanks_question') {
       value = answerSets.reduce(function(blanks, answerSet) {
@@ -85,6 +79,15 @@ define(function(require) {
       }
     }
 
+    // If the student has chosen an unknown answer, we want it to be something
+    // random too:
+    if (value === K.QUESTION_UNKNOWN_ANSWER_TEXT) {
+      value = generateRandomString();
+    }
+    else if (value === K.QUESTION_MISSING_ANSWER_TEXT) {
+      value = '';
+    }
+
     return value;
-  }
+  };
 });
