@@ -15,7 +15,7 @@ define(function(require) {
     return subject.questions.get(id);
   };
 
-  describe('Models.QuizTaker', function() {
+  xdescribe('Models.QuizTaker', function() {
 
     beforeEach(function() {
       quiz = new Quiz(JSON.parse(JSON.stringify(QuizData)));

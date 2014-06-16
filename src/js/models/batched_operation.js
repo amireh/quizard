@@ -1,6 +1,8 @@
 define(function(require) {
   var Pixy = require('pixy');
   var RSVP = require('rsvp');
+  var K = require('constants');
+  var uid = 0;
 
   // Process a single operation.
   //
@@ -52,23 +54,38 @@ define(function(require) {
     },
 
     /**
-     * Start processing the operations.
+     * Run the batched operation with a given set of parameters.
      *
-     * @return {RSVP.Promise}
+     * @return {Object}
+     *         A descriptor for *this* run of the batched operation.
+     *
+     * @return {String} return.id
+     *         A unique id among all batched operation runs that identifies this
+     *         run.
+     *
+     * @return {RSVP.Promise} return.promise
      *         Resolves when all the runners are done, regardless of status.
+     *
+     * @return {Function} return.abort
+     *         An escape hatch for preemptively aborting the operation.
      */
     run: function(runCount, context) {
+      var aborted;
       var service = RSVP.defer();
+      var runnerIndex = 0;
       var runner = this.options.runner;
       var onDone = this.options.onDone;
       var onError = this.options.onError;
-      var wasAborted = function() { return this.aborted; }.bind(this);
-      var abort = this.abort.bind(this);
-      var runnerIndex = 0;
+      var abort = function(statusCode, error) {
+        aborted = true;
+
+        service.reject({
+          code: statusCode,
+          detail: error
+        });
+      };
 
       runCount = parseInt(runCount, 10);
-
-      this.reset();
 
       console.info('Engaging batched operation, doing', runCount, 'runs.');
 
@@ -77,7 +94,7 @@ define(function(require) {
       }
 
       (function chainRunners() {
-        if (wasAborted()) {
+        if (aborted) {
           console.warn('Operation had been aborted, ignoring runners past', runnerIndex);
           return;
         }
@@ -91,26 +108,24 @@ define(function(require) {
           return chainRunners();
         }, function(error) {
           console.warn('Aborting batched operation.', error);
-          abort();
-          service.reject(error);
+          abort(K.OPERATION_FAILED, error);
         });
       })();
 
-      return service.promise;
-    },
+      return {
+        id: (++uid) + '',
 
-    // Stop as soon as the current operation is finished.
-    //
-    // @return {RSVP.Promise}
-    abort: function() {
-      this.aborted = true;
-    },
+        promise: service.promise,
 
-    /**
-     * @internal
-     */
-    reset: function() {
-      this.aborted = false;
+        /**
+         * Stop as soon as the current operation is finished.
+         *
+         * @return {RSVP.Promise}
+         */
+        abort: abort.bind(null, K.OPERATION_ABORTED),
+
+        then: service.promise.then.bind(service.promise)
+      };
     }
   });
 

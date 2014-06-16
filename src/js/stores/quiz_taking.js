@@ -6,7 +6,7 @@ define(function(require) {
   var batchedTakeQuiz = require('./operations/batched_take_quiz');
   var Quizzes = require('stores/quizzes');
   var Users = require('stores/users');
-  var store, quizTaker, operation, responseCount, status;
+  var store, quizTaker, operation, responseCount, status, batchRun;
 
   var setStatus = function(code) {
     console.debug('Status:', code);
@@ -55,18 +55,32 @@ define(function(require) {
       return;
     }
 
-    batchedTakeQuiz.run(responseCount, {
+    operation.runner = batchedTakeQuiz.run(responseCount, {
       emitChange: store.emitChange.bind(store),
       operation: operation,
       quizTaker: quizTaker,
       studentResponses: studentResponses,
       atomic: payload.atomic
-    }).then(function() {
+    });
+
+    operation.runner.then(function() {
       onChange();
-    }, function() {
-      onError();
+    }, function(rc) {
+      if (rc.code === K.OPERATION_ABORTED) {
+        operation.abort();
+      }
+      else if (rc.code === K.OPERATION_FAILED) {
+        operation.stop(rc.detail);
+        onError(rc.detail);
+      }
+      else {
+        console.warn('Unexpected error in BatchedOperation runner:', rc, rc.stack);
+        operation.stop();
+        onError();
+      }
     }).finally(function() {
       operation.mark();
+      operation.runner = undefined;
       resetStatus();
     });
   };
@@ -139,6 +153,10 @@ define(function(require) {
 
       if (operation) {
         props = operation.toProps();
+
+        if (operation.runner) {
+          props.id = operation.runner.id;
+        }
       }
 
       props.status = status;
@@ -194,6 +212,12 @@ define(function(require) {
 
         case K.QUIZ_TAKING_ADD_ANSWER_TO_VARIANT:
           addAnswerToVariant(payload, onChange, onError);
+        break;
+
+        case K.OPERATION_ABORT:
+          if (operation && operation.runner.id === payload.operationId) {
+            operation.runner.abort();
+          }
         break;
       }
     },

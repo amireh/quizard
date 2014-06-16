@@ -23,7 +23,10 @@
     },
     "ns_operation_tracker": {
       "failures": "1 failure",
-      "failures_plural": "__count__ failures"
+      "failures_plural": "__count__ failures",
+      "confirmations": {
+        "aborting": "You are about to abort the operation which *may* leave things in a broken state. Are you sure you want to do this?"
+      }
     }
   }
 }

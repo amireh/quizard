@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var ProgressBar = require('jsx!components/progress_bar');
   var t = require('i18n!operation_tracker');
+  var OperationActions = require('actions/operations');
 
   var secondsToTime = function(seconds) {
     var floor = function(nr) { return Math.floor(nr); };
@@ -67,8 +68,9 @@ define(function(require) {
         this.stop();
       }
 
-      if (this.props.failed) {
+      if (this.props.failed || this.props.aborted) {
         this.stop();
+        this.refs.progressBar.stop();
       }
     },
 
@@ -89,6 +91,7 @@ define(function(require) {
       return(
         <div className="operation-tracker">
           <header>
+            {this.renderStatus()}
             {this.renderRemainder()}
             {this.renderFailures()}
 
@@ -100,6 +103,7 @@ define(function(require) {
           {active &&
             <ProgressBar
               key="progressBar"
+              ref="progressBar"
               APS={this.props.aps}
               progress={this.props.ratio} />
           }
@@ -107,6 +111,17 @@ define(function(require) {
           <ul className="operation-log">
             {this.props.log.map(this.renderLogEntry)}
           </ul>
+
+          <div className="operation-actions">
+            {this.props.id &&
+              <button
+                disabled={this.props.aborted || this.props.failed}
+                className="btn btn-danger"
+                onClick={this.onAbort}>
+                Abort
+              </button>
+            }
+          </div>
         </div>
       );
     },
@@ -127,15 +142,30 @@ define(function(require) {
       );
     },
 
+    renderStatus: function() {
+      var status;
+
+      if (this.props.aborted) {
+        status = t('status.aborted', '[ ABORTED ]');
+      }
+      else if (this.props.failed) {
+        status = t('status.failed', '[ FAILED ]');
+      }
+
+      return status ?
+        <span className="operation-status" children={status} /> :
+        false;
+    },
+
     renderFailures: function() {
-      return (
-        this.props.failures > 0 && [
+      if (this.props.failures > 0) {
+        return [
           <span> - </span>,
           <span className="operation-failure-counter">
             {t('failures', { count: this.props.failures })}
           </span>
-        ]
-      );
+        ];
+      }
     },
 
     renderLogEntry: function(logEntry) {
@@ -150,6 +180,14 @@ define(function(require) {
           </span>
         </li>
       );
+    },
+
+    onAbort: function(e) {
+      e.preventDefault();
+
+      if (confirm(t('confirmations.aborting'))) {
+        OperationActions.abort(this.props.id);
+      }
     }
   });
 

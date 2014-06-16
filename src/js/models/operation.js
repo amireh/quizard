@@ -23,10 +23,39 @@ define(function(require) {
       item: undefined,
       itemCount: 0,
 
+      /**
+       * The current
+       * @type {[type]}
+       */
       action: undefined,
+
+      /**
+       * Whether the operation has failed as a whole.
+       */
       failed: false,
+
+      /**
+       * In case of operation failure, this would point to a meaningful error
+       * code.
+       */
+      error: undefined,
+
+      /**
+       * The number of actions that failed. Only viable if running in non-atomic
+       * mode, as atomic operations would fail as soon as any action fails.
+       */
       failureCount: 0,
-      ETA: 0
+
+      /**
+       * ETA in seconds.
+       */
+      ETA: 0,
+
+      /**
+       * @property {Boolean} [aborted]
+       *           Whether the operation was manually aborted by the user.
+       */
+      aborted: false
     },
 
     initialize: function(attrs) {
@@ -43,7 +72,6 @@ define(function(require) {
         this.logCompletedAction(this.action, hasFailed);
 
         this.completed = this.completed + 1;
-        this.ETA = this.getETA();
 
         if (hasFailed) {
           ++this.failureCount;
@@ -69,9 +97,13 @@ define(function(require) {
       this.mark(undefined, undefined, true);
     },
 
-    abort: function(error) {
+    stop: function(error) {
       this.failed = true;
       this.error = error;
+    },
+
+    abort: function() {
+      this.aborted = true;
     },
 
     isComplete: function() {
@@ -167,11 +199,11 @@ define(function(require) {
         'count',
         'completed',
         'action',
-        'ETA',
         'failed',
         'item',
         'itemCount',
-        'error'
+        'error',
+        'aborted'
       ]);
 
       props.ratio = this.getCompletionRatio();
@@ -180,6 +212,7 @@ define(function(require) {
       props.log = clone(this.log);
       props.aps = this.getProcessingRate();
       props.failures = this.failureCount;
+      props.ETA = this.getETA();
 
       return props;
     }

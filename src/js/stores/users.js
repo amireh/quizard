@@ -185,7 +185,7 @@ define(function(require) {
       operation.mark();
       onChange();
     }, function(errorCode) {
-      operation.abort(errorCode);
+      operation.stop(errorCode);
       onError(errorCode);
     }).then(function() {
       setStatus(K.STATUS_IDLE);

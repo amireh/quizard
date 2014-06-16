@@ -116,5 +116,9 @@ define([], function() {
 
     STATUS_IDLE: 'idle',
     STATUS_BUSY: 'busy',
+
+    OPERATION_ABORT: 'OPERATION_ABORT',
+    OPERATION_ABORTED: 'OPERATION_ABORTED',
+    OPERATION_FAILED: 'OPERATION_FAILED',
   };
 });

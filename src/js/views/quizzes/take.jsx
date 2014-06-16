@@ -83,11 +83,12 @@ define(function(require) {
     },
 
     renderActions: function() {
-      var canTake = this.props.studentCount > 0;
+      var hasStudents = this.props.studentCount > 0;
+      var hasResponseCount = this.props.quizTaking.responseCount > 0;
 
       return (
         <div className="form-actions">
-          {canTake &&
+          {hasStudents &&
             <label className="form-label">
               Number of participants
 
@@ -101,7 +102,7 @@ define(function(require) {
           <SaveButton
             ref="saveButton"
             onClick={this.onSubmit}
-            disabled={!canTake}
+            disabled={!hasStudents || !hasResponseCount}
             type="success"
             children="Take it" />
         </div>
