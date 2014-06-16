@@ -15,7 +15,7 @@ define(function(require) {
     return subject.questions.get(id);
   };
 
-  xdescribe('Models.QuizTaker', function() {
+  describe('Models.QuizTaker', function() {
 
     beforeEach(function() {
       quiz = new Quiz(JSON.parse(JSON.stringify(QuizData)));
@@ -27,7 +27,7 @@ define(function(require) {
 
     describe('#setResponseRatio', function() {
       it('should accept ratios between 0 and 100', function() {
-        subject.setResponseRatio('3866', 40);
+        subject.setResponseRatio('11', '3866', 40);
         expect(findAnswer('3866').responseRatio).toBe(40);
       });
 
@@ -36,35 +36,35 @@ define(function(require) {
           return findAnswer(answerId).responseRatio;
         };
 
-        subject.setResponseRatio('3866', 100);
+        subject.setResponseRatio('11', '3866', 100);
 
         expect(ratioFor('3866')).toBe(100);
         expect(ratioFor('2040')).toBe(0);
         expect(ratioFor('7387')).toBe(0);
         expect(ratioFor('4082')).toBe(0);
 
-        subject.setResponseRatio('2040', 20);
+        subject.setResponseRatio('11', '2040', 20);
 
         expect(ratioFor('3866')).toBe(80);
         expect(ratioFor('2040')).toBe(20);
         expect(ratioFor('7387')).toBe(0);
         expect(ratioFor('4082')).toBe(0);
 
-        subject.setResponseRatio('3866', 100);
+        subject.setResponseRatio('11', '3866', 100);
 
         expect(ratioFor('3866')).toBe(100);
         expect(ratioFor('2040')).toBe(0);
         expect(ratioFor('7387')).toBe(0);
         expect(ratioFor('4082')).toBe(0);
 
-        subject.setResponseRatio('7387', 40);
+        subject.setResponseRatio('11', '7387', 40);
 
         expect(ratioFor('3866')).toBe(60);
         expect(ratioFor('2040')).toBe(0);
         expect(ratioFor('7387')).toBe(40);
         expect(ratioFor('4082')).toBe(0);
 
-        subject.setResponseRatio('4082', 20);
+        subject.setResponseRatio('11', '4082', 20);
 
         expect(ratioFor('3866')).toBe(50);
         expect(ratioFor('2040')).toBe(0);
@@ -77,7 +77,7 @@ define(function(require) {
           return findAnswer(answerId).responseRatio;
         };
 
-        subject.setResponseRatio('3866', 60);
+        subject.setResponseRatio('11', '3866', 60);
 
         expect(ratioFor('3866')).toBe(60);
         expect(ratioFor('2040')).toBe(14);
@@ -115,7 +115,7 @@ define(function(require) {
           var responses;
 
           expect(answer).toBeTruthy();
-          subject.setResponseRatio(answer.id, 100);
+          subject.setResponseRatio('15', answer.id, 100);
           responses = subject.generateResponses([{ id: 'self' }]);
           expect(findBy(responses[0].responses, { id: question.id }).answer).
             toEqual('Something');
@@ -127,7 +127,7 @@ define(function(require) {
           var responses;
 
           expect(answer).toBeTruthy();
-          subject.setResponseRatio(answer.id, 100);
+          subject.setResponseRatio('15', answer.id, 100);
           responses = subject.generateResponses([{ id: 'self' }]);
           expect(findBy(responses[0].responses, { id: question.id }).answer.length).
             toBeGreaterThan(1);
@@ -139,7 +139,7 @@ define(function(require) {
           var responses;
 
           expect(answer).toBeTruthy();
-          subject.setResponseRatio(answer.id, 100);
+          subject.setResponseRatio('15', answer.id, 100);
           responses = subject.generateResponses([{ id: 'self' }]);
           expect(findBy(responses[0].responses, { id: question.id }).answer).
             toEqual('');

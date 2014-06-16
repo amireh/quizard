@@ -74,5 +74,7 @@ function(CONFIG, RSVP, diff) {
   DEBUG.expose('stores/accounts', 'accountStore');
   DEBUG.expose('stores/users', 'userStore');
   DEBUG.expose('stores/courses', 'courseStore');
-  DEBUG.expose('ext/jquery/ajax', 'ajax');
+  DEBUG.expose('stores/quizzes', 'quizStore');
+  DEBUG.expose('stores/quiz_taking', 'quizTakingStore');
+  DEBUG.expose('core/ajax', 'ajax');
 });

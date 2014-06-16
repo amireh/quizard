@@ -7,8 +7,8 @@ define(function(require) {
   new Route('takeQuiz', {
     navLink: K.RECIPE_TAKE_QUIZ,
 
-    model: function() {
-      return QuizTakingStore.build(this.modelFor('quiz'));
+    setup: function() {
+      QuizTakingStore.build(this.modelFor('quiz'));
     },
 
     enter: function() {

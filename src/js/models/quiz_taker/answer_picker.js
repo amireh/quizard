@@ -13,7 +13,7 @@ define(function(require) {
 
       if (remaining > 0) {
         answer.remainingRespondents -= 1;
-        console.debug('Pulled answer out of pool:', answer, answer.remainingRespondents);
+        // console.debug('Pulled answer out of pool:', answer, answer.remainingRespondents);
         return true;
       }
     });
@@ -33,7 +33,7 @@ define(function(require) {
       answer = pullAndMarkAnswer(answerSet.answers);
 
       if (!answer) {
-        debugger
+        // debugger
       }
 
       return answer.id;

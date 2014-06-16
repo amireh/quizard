@@ -44,7 +44,6 @@ define(function(require) {
     operation.mark('Generating responses...');
 
     try {
-      quizTaker.assignRespondents(responseCount);
       studentResponses = quizTaker.generateResponses(students);
     }
     catch(e) {
@@ -139,6 +138,10 @@ define(function(require) {
 
 
   store = new Pixy.Store('quizTakingStore', {
+    debug: function() {
+      return quizTaker;
+    },
+
     getStatus: function() {
       return status;
     },

@@ -4,30 +4,24 @@
 @dialog-title-height: 61px;
 
 body.with-dialog {
-  &:after {
-    .fullscreen();
-    content: "";
-    position: fixed;
-    z-index: 9;
-    background: rgba(0,0,0,0.5);
-  }
-
   #main {
-    z-index: -1 !important;
+    z-index: 0;
     pointer-events: none;
     .disable-selection;
   }
 
-  #dialogs {
-    display: block;
-    z-index: 10;
+  &:after {
+    .fullscreen();
+    content: "";
+    position: fixed;
+    z-index: 1;
+    background: rgba(0,0,0,0.5);
   }
 
-  // &.guest {
-  //   &:after { display: none; }
-  //   background: url(../assets/images/groovepaper/groovepaper.png)
-  //     repeat;
-  // }
+  #dialogs {
+    display: block;
+    z-index: 2;
+  }
 }
 
 #dialogs {
@@ -44,11 +38,6 @@ body.with-dialog {
   margin-left: -300px;
   margin-top: -280px;
 
-  .transition(
-    ~"top 0.25s ease-in-out 0s,",
-    ~"margin-top 0.25s ease-in-out 0s"
-  );
-
   &.large-dialog {
     height: auto;
     margin-top: 0;
@@ -61,7 +50,6 @@ body.with-dialog {
   background: white;
   position: relative;
   margin: 0 auto;
-  .touch-scrolling;
   .kickass-shadow;
   overflow: hidden;
 
@@ -83,7 +71,10 @@ body.with-dialog {
   }
 
   &.no-padding {
-    .dialog-content { padding-top: 0; padding-bottom: 0; }
+    .dialog-content {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 }
 
@@ -170,44 +161,6 @@ body.with-dialog {
   z-index: 1;
 }
 
-.dialog-nav {
-  width: 160px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  border-right: 1px solid #ddd;
-  background: #eee;
-  box-shadow: -1px 0 1px #f4f4f4 inset;
-  border-radius: 0 0 0 4px;
-
-  a, header {
-    display: block;
-    line-height: 32px;
-    white-space: nowrap;
-    padding: 0 20px;
-  }
-
-  header {
-    padding: 10px 20px;
-  }
-
-  a {
-    &.active, &:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    i {
-      position: absolute;
-      right: 20px;
-    }
-  }
-}
-
-.dialog-nav + .dialog-content {
-  margin-left: 160px;
-}
-
 .dialog-content {
   padding: 20px;
 }
@@ -227,14 +180,6 @@ body.with-dialog {
     height: 0;
     border-bottom: 1px solid #ddd;
   }
-
-  .icon-pibi-framed {
-    display: block;
-    margin-bottom: 20px;
-    pointer-events: none;
-
-    .flip-y();
-  }
 }
 
 .dialog-actions {
@@ -250,7 +195,6 @@ body.with-dialog {
   legend {
     font-size: 17.5px;
     line-height: 32px;
-    // margin-bottom: 10px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
     cursor: text;
