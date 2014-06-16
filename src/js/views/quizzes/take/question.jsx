@@ -8,6 +8,7 @@ define(function(require) {
   var MultipleAnswersRenderer = require('jsx!./multiple_answers');
   var EssayRenderer = require('jsx!./essay');
   var NumericalRenderer = require('jsx!./numerical');
+  var CalculatedRenderer = require('jsx!./calculated');
 
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer,
@@ -17,6 +18,7 @@ define(function(require) {
     multiple_answers_question: MultipleAnswersRenderer,
     essay_question: EssayRenderer,
     numerical_question: NumericalRenderer,
+    calculated_question: CalculatedRenderer,
   };
 
   var Question = React.createClass({

@@ -14,6 +14,11 @@ define(function(require) {
     'essay_question'
   ];
 
+  var NumericalLike = [
+    'numerical_question',
+    'calculated_question',
+  ];
+
   var pullAndMarkAnswer = function(answers) {
     return find(answers, function(answer) {
       var remaining = answer.remainingRespondents;
@@ -79,7 +84,7 @@ define(function(require) {
         value = variant.answerIds;
       }
     }
-    else if (questionType === 'numerical_question') {
+    else if (contains(NumericalLike, questionType)) {
       answerSet = answerSets[0];
       answer = pullAndMarkAnswer(answerSet.answers);
 

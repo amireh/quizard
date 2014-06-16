@@ -200,6 +200,7 @@ define(function(require) {
           expect(response.answer).toBe('');
         });
       });
+
       describe('Numerical', function() {
         var questionId = '21';
         var userId = 'self';
@@ -254,8 +255,48 @@ define(function(require) {
 
           expect(response.answer).toBe('');
         });
-
       }); // numerical
+
+      describe('Calculated', function() {
+        var questionId = '53';
+        var userId = 'self';
+
+        it('should choose an exact answer', function() {
+          var allResponses, myResponses, response;
+
+          subject.setResponseRatio(questionId, '5842', 100);
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(response.answer).toBe(9);
+        });
+
+        it('should generate a random answer', function() {
+          _.range(1000).forEach(function() {
+            var allResponses, myResponses, response;
+
+            subject.setResponseRatio(questionId, 'other_53_auto', 100);
+            allResponses = subject.generateResponses([ { id: userId } ]);
+            myResponses = findBy(allResponses, { id: userId }).responses;
+            response = findBy(myResponses, { id: questionId });
+
+            expect(typeof response.answer).toBe('number')
+            expect([ 9, 14, 15 ]).not.toContain(response.answer);
+          });
+        });
+
+        it('should provide no answer', function() {
+          var allResponses, myResponses, response;
+
+          subject.setResponseRatio(questionId, 'none_53_auto', 100);
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(response.answer).toBe('');
+        });
+      }); // calculated
 
     });
   });

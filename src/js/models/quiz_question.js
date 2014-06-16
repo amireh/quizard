@@ -25,7 +25,19 @@ define(function(require) {
 
       delete answer.numerical_answer_type;
       answer.type = type;
-    }
+    },
+    // We gon' trick the answer picker into treating this just like a numerical
+    // question by extracing the number found in the "answer" property, and
+    // renaming it to "exact" so it gets treated the same way
+    calculatedQuestion: function(answer) {
+      if (answer.answer) {
+        answer.type = K.QUESTION_NUMERICAL_EXACT_ANSWER;
+        answer.text = answer.exact = answer.answer;
+      } else {
+        answer.type = 'auto';
+      }
+    },
+
   };
 
   var extractBlanks = function(answers) {

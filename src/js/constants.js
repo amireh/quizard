@@ -83,6 +83,7 @@ define([], function() {
       'essay_question',
       'short_answer_question',
       'numerical_question',
+      'calculated_question',
     ],
 
     QUESTIONS_WITH_ANSWER_SETS: [
