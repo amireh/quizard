@@ -54,6 +54,7 @@ define(function(require) {
     else if (questionType === 'fill_in_multiple_blanks_question') {
       value = answerSets.reduce(function(blanks, answerSet) {
         var text;
+        var blank = answerSet.id;
 
         answer = pullAndMarkAnswer(answerSet.answers);
 
@@ -63,16 +64,20 @@ define(function(require) {
           text = answer.text;
         }
 
-        blanks[answerSet.id] = text;
+        blanks[blank] = text;
 
         return blanks;
       }, {});
     }
     else if (questionType === 'multiple_dropdowns_question') {
       value = answerSets.reduce(function(variables, answerSet) {
+        var variable = answerSet.id;
+
         answer = pullAndMarkAnswer(answerSet.answers);
 
-        variables[answerSet.id] = answer.id;
+        if (answer && !answer.missing) {
+          variables[variable] = answer.id;
+        }
 
         return variables;
       }, {});

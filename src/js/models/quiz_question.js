@@ -110,7 +110,6 @@ define(function(require) {
       if (contains(K.FREE_FORM_INPUT_QUESTIONS, type)) {
         answerSets.forEach(function(set) {
           set.answers.push(mkUnknownAnswer(id + '_' + set.id));
-          set.answers.push(mkMissingAnswer(id + '_' + set.id));
         });
       }
 
@@ -118,6 +117,7 @@ define(function(require) {
       answerSets.forEach(function(set) {
         var responseRatioDistributed = false;
 
+        set.answers.push(mkMissingAnswer(id + '_' + set.id));
         set.answers.forEach(function(answer) {
           answer.id = ''+answer.id;
           answer.correct = answer.weight === 100;
