@@ -2,6 +2,7 @@ define(function(require) {
   var Pixy = require('ext/pixy');
   var K = require('constants');
   var _ = require('underscore');
+  var generateRandomString = require('util/generate_random_string');
   var pluck = _.pluck;
   var where = _.where;
   var uniq = _.uniq;
@@ -17,7 +18,7 @@ define(function(require) {
   var mkUnknownAnswer = function(id, attrs) {
     return extend({
       id: [ K.QUESTION_UNKNOWN_ANSWER, id ].join('_'),
-      text: K.QUESTION_UNKNOWN_ANSWER_TEXT,
+      text: generateRandomString(),
       unknown: true
     }, attrs);
   };

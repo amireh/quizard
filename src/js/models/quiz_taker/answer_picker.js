@@ -13,7 +13,6 @@ define(function(require) {
 
       if (remaining > 0) {
         answer.remainingRespondents -= 1;
-        // console.debug('Pulled answer out of pool:', answer, answer.remainingRespondents);
         return true;
       }
     });
