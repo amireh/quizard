@@ -5,6 +5,10 @@ require([ 'jquery', 'config' ], function($, Config) {
 
   Config.xhr.timeout = 50;
 
+  $.ajaxPrefilter('*', function(options) {
+    console.info('XHR request: [' + options.type + ']', options.url);
+  });
+
   require([ 'config/initializer' ], function() {
     launchTests();
   });

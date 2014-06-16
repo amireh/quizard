@@ -3,12 +3,9 @@ define(function(require) {
   var RSVP = require('rsvp');
   var result = require('underscore').result;
   var ajax = require('core/ajax');
+  var masquerade = require('util/masquerade');
   var QuizSubmission = require('models/quiz_submission');
   var store;
-
-  var urlForQuestions = function(submission, userId) {
-    return [ '', 'quiz_submissions', submission.id, 'questions?as_user_id=' + userId ].join('/');
-  };
 
   var toJSON = function(data) {
     return JSON.stringify(data);
@@ -19,9 +16,10 @@ define(function(require) {
       var svc = RSVP.defer();
       var quizSubmission = new QuizSubmission({ userId: userId }, { quiz: quiz });
 
-      // TODO: masquerading support
-
-      quizSubmission.fetch({ parse: true }).then(function() {
+      quizSubmission.fetch({
+        parse: true,
+        url: masquerade(quizSubmission.url(), userId)
+      }).then(function() {
         if (quizSubmission.isUntaken()) {
           svc.resolve(quizSubmission);
         } else {
@@ -33,9 +31,6 @@ define(function(require) {
             svc.resolve(quizSubmission);
           }, svc.reject);
         }
-        else if (apiError.status === 409) {
-
-        }
         else{
           svc.reject(apiError);
         }
@@ -45,21 +40,21 @@ define(function(require) {
     },
 
     create: function(quiz, userId, attempt) {
-      // TODO: masquerading support
-      return ajax({
-        url: result(quiz, 'url') + '/submissions?as_user_id=' + userId,
-        type: 'POST',
-        data: toJSON({
-          attempt: attempt
-        })
-      }).then(function(payload) {
-        return new QuizSubmission(payload, { quiz: quiz, parse: true });
+      var quizSubmission = new QuizSubmission({
+        attempt: attempt
+      }, {
+        quiz: quiz
+      });
+
+      return quizSubmission.save(undefined, {
+        parse: true,
+        url: masquerade(quizSubmission.url(), userId)
       });
     },
 
     saveAnswers: function(quizSubmission, userId, answers) {
       return ajax({
-        url: urlForQuestions(quizSubmission, userId),
+        url: masquerade(quizSubmission.questionsUrl(), userId),
         type: 'POST',
         data: toJSON({
           attempt: quizSubmission.attempt(),
@@ -71,7 +66,7 @@ define(function(require) {
 
     turnIn: function(quizSubmission, userId) {
       return ajax({
-        url: quizSubmission.baseUrl() + '/complete',
+        url: masquerade(quizSubmission.url() + '/complete', userId),
         type: 'POST',
         data: toJSON({
           attempt: quizSubmission.attempt(),

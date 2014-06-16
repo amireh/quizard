@@ -2,6 +2,10 @@ define(function(require) {
   var Pixy = require('pixy');
   var result = require('underscore').result;
 
+  var getId = function(quizSubmission) {
+    return quizSubmission.get('id') || 'self';
+  };
+
   var Model = Pixy.Model;
   /**
    * @class Models.Quiz
@@ -11,20 +15,12 @@ define(function(require) {
   return Model.extend({
     name: 'QuizSubmission',
 
-    baseUrl: function() {
-      var id = this.get('id') || 'self';
-      return [ result(this.quiz, 'url'), 'submissions', id ].join('/');
+    urlRoot: function(dontMasquerade) {
+      return result(this.quiz, 'url') + '/submissions';
     },
 
-    url: function() {
-      var url = this.baseUrl();
-      var userId = this.get('userId');
-
-      if (userId) {
-        url += '?as_user_id=' + userId;
-      }
-
-      return url;
+    questionsUrl: function() {
+      return '/quiz_submissions/' + getId(this) + '/questions';
     },
 
     initialize: function(attrs, options) {

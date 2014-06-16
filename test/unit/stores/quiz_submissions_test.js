@@ -3,6 +3,7 @@ define(function(require) {
   var K = require('constants');
   var Store = require('stores/quiz_submissions');
   var Quiz = require('models/quiz');
+  var QuizSubmission = require('models/quiz_submission');
   var XHR = require('fixtures/xhr.js');
 
   describe('Stores.QuizSubmissions', function() {
@@ -41,6 +42,24 @@ define(function(require) {
         expect(onError).not.toHaveBeenCalled();
         expect(onChange).toHaveBeenCalled();
       });
+
+      it('should create a submission as someone else', function() {
+        this.respondWith('POST',
+          '/api/v1/courses/1/quizzes/1/submissions?as_user_id=10',
+          XHR(200, {
+            quiz_submissions: [{
+              id: '1',
+              user_id: '10'
+            }]
+          }));
+
+        Store.create(quiz, 10).then(onChange, onError);
+
+        this.respond();
+
+        expect(onError).not.toHaveBeenCalled();
+        expect(onChange).toHaveBeenCalled();
+      });
     });
 
     describe('#findOrCreate', function() {
@@ -70,5 +89,26 @@ define(function(require) {
       });
     });
 
+    describe('#saveAnswers', function() {
+      it('should save answers as someone else', function() {
+        var quiz = new Quiz({ id: 1 });
+        var quizSubmission = new QuizSubmission({
+          id: 1
+        }, { quiz: quiz });
+
+        this.respondWith('POST',
+          '/api/v1/quiz_submissions/1/questions?as_user_id=10',
+          XHR(200, {
+            quiz_submission_questions: []
+          }));
+
+        Store.saveAnswers(quizSubmission, 10).then(onChange, onError);
+
+        this.respond();
+
+        expect(onError).not.toHaveBeenCalled();
+        expect(onChange).toHaveBeenCalled();
+      });
+    });
   });
 });
