@@ -410,6 +410,8 @@
           evt.preventDefault();
           if (this.results_showing) {
             return this.result_select(evt);
+          } else {
+            this.results_show();
           }
           break;
         case 27:

@@ -4,6 +4,7 @@ define(function(require) {
   var generateRandomString = require('util/generate_random_string');
   var contains = _.contains;
   var find = _.find;
+  var compact = _.compact;
   var random = _.random;
   var MultipleChoiceLike = [
     'multiple_choice_question',
@@ -104,6 +105,26 @@ define(function(require) {
       }
       else if (answer.text === K.QUESTION_MISSING_ANSWER_TEXT) {
         value = '';
+      }
+    }
+    else if (questionType === 'matching_question') {
+      variant = pullAndMarkAnswer(variants);
+
+      if (variant) {
+        value = variant.answerIds.reduce(function(pairs, pair) {
+          var matchId = pair.matchId;
+
+          if (matchId.substr(0,4) === 'none') {
+            return undefined;
+          }
+
+          return pairs.concat([{
+            answer_id: pair.answerId,
+            match_id: matchId
+          }]);
+        }, []);
+
+        value = compact(value);
       }
     }
 

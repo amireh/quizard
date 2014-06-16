@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 define(function(require) {
   var React = require('react');
+  var K = require('constants');
   var TooltipsMixin = require('mixins/views/tooltips');
   var RatiosMixin = require('jsx!./mixins/response_ratios');
   var RatioControls = require('jsx!./components/ratio_controls');
@@ -40,9 +41,13 @@ define(function(require) {
     },
 
     renderAnswer: function(answer) {
+      var text = answer.text === K.QUESTION_UNKNOWN_ANSWER_TEXT ?
+        'Something' :
+        answer.text;
+
       return (
         <Answer
-          key={answer.id} id={answer.id} text={answer.text}
+          key={answer.id} id={answer.id} text={text}
           correct={answer.correct}
           missing={answer.missing}
           unknown={answer.unknown}

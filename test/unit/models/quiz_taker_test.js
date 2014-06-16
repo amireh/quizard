@@ -21,7 +21,6 @@ define(function(require) {
       quiz = new Quiz(JSON.parse(JSON.stringify(QuizData)));
       quiz.questions.reset(JSON.parse(JSON.stringify(QuizQuestionData)));
       spyOn(quiz, 'urlRoot').and.returnValue('/courses/1/quizzes/18');
-
       subject = new QuizTaker({}, { quiz: quiz });
     });
 
@@ -80,9 +79,10 @@ define(function(require) {
         subject.setResponseRatio('11', '3866', 60);
 
         expect(ratioFor('3866')).toBe(60);
-        expect(ratioFor('2040')).toBe(14);
-        expect(ratioFor('7387')).toBe(13);
-        expect(ratioFor('4082')).toBe(13);
+        expect(ratioFor('2040')).toBe(10);
+        expect(ratioFor('7387')).toBe(10);
+        expect(ratioFor('4082')).toBe(10);
+        expect(ratioFor('none_11_auto')).toBe(10);
       });
     });
 
@@ -218,7 +218,7 @@ define(function(require) {
 
         it('should choose an answer within a range', function() {
           // do it a number of times to make sure the randomizer is functional
-          _.range(1000).forEach(function() {
+          _.range(100).forEach(function() {
             var allResponses, myResponses, response;
 
             subject.setResponseRatio(questionId, '6959', 100);
@@ -231,7 +231,7 @@ define(function(require) {
         });
 
         it('should generate a random answer', function() {
-          _.range(1000).forEach(function() {
+          _.range(100).forEach(function() {
             var allResponses, myResponses, response;
 
             subject.setResponseRatio(questionId, 'other_21_auto', 100);
@@ -239,7 +239,7 @@ define(function(require) {
             myResponses = findBy(allResponses, { id: userId }).responses;
             response = findBy(myResponses, { id: questionId });
 
-            expect(typeof response.answer).toBe('number')
+            expect(typeof response.answer).toBe('number');
             expect([ 0.5, 1.5, 2.5, 3, 4, 5, 6, 12 ]).not.toContain(response.answer);
           });
         });
@@ -273,7 +273,7 @@ define(function(require) {
         });
 
         it('should generate a random answer', function() {
-          _.range(1000).forEach(function() {
+          _.range(100).forEach(function() {
             var allResponses, myResponses, response;
 
             subject.setResponseRatio(questionId, 'other_53_auto', 100);
@@ -281,7 +281,7 @@ define(function(require) {
             myResponses = findBy(allResponses, { id: userId }).responses;
             response = findBy(myResponses, { id: questionId });
 
-            expect(typeof response.answer).toBe('number')
+            expect(typeof response.answer).toBe('number');
             expect([ 9, 14, 15 ]).not.toContain(response.answer);
           });
         });
@@ -298,6 +298,32 @@ define(function(require) {
         });
       }); // calculated
 
+      describe('Matching question', function() {
+        it('should do', function() {
+          var allResponses, myResponses, response;
+          var questionId = '20';
+          var userId = 'self';
+          var question = findQuestion(questionId);
+          var variant = question.get('variants')[0];
+
+          subject.setVariantResponseRatio(questionId, variant.id, 100);
+          subject.addAnswerToVariant(questionId, variant.id, {
+            answerId: '8796',
+            matchId: '1525'
+          });
+
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(response.answer).toEqual([
+            {
+              answer_id: '8796',
+              match_id: '1525'
+            }
+          ]);
+        })
+      });
     });
   });
 });

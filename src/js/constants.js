@@ -89,6 +89,11 @@ define([], function() {
     QUESTIONS_WITH_ANSWER_SETS: [
       'fill_in_multiple_blanks_question',
       'multiple_dropdowns_question',
+      // 'matching_question',
+    ],
+
+    QUESTIONS_WITH_VARIANTS: [
+      'multiple_answers_question',
       'matching_question',
     ],
 

@@ -31,7 +31,7 @@ define(function(require) {
         subject = createQuestion('multiple_choice_question');
         expect(subject.get('answerSets').length).toEqual(1);
         expect(pluck(subject.get('answerSets')[0].answers, 'id')).toEqual([
-          '3866', '2040', '7387', '4082'
+          '3866', '2040', '7387', '4082', 'none_11_auto'
         ]);
       });
 

@@ -32,6 +32,8 @@
   }
 
   .quiz-questions {
+    @actionbar-height: 50px;
+
     // Remove the spacing caused by the question text since we're injecting HTML
     legend + div > :first-child,
     legend + p {
@@ -58,8 +60,6 @@
     }
 
     li.question-answer {
-      @actionbar-height: 40px;
-
       display: inline-block;
       width: 100px + 2*@whitespace;
       vertical-align: bottom;
@@ -86,7 +86,7 @@
         top: 100%;
         left: 0;
         right: 0;
-        padding: 5px 0;
+        padding: 8px 0;
         line-height: @actionbar-height - 10px;
 
         .form-label {
@@ -98,11 +98,14 @@
 
             & + .add-on {
               position: absolute;
-              padding: 0;
             }
           }
         }
       }
+    }
+
+    .actionbar .input-append .add-on {
+      padding: 0;
     }
 
     .question-variant li.question-answer {
@@ -117,6 +120,43 @@
     input[readonly] {
       color: @mute-fg;
       background: @shade;
+    }
+
+    .matching-question {
+      .question-variant {
+        background: @region-bg;
+        border: 1px solid @shade;
+        padding: 1px 15px;
+
+        &+.question-variant {
+          border-top: none;
+        }
+      }
+
+      .question-answer {
+        display: block;
+        width: auto;
+        background: transparent;
+        border-bottom-width: 1px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-right: 0;
+
+        .answer-text {
+          display: inline-block;
+          width: 320px;
+          vertical-align: top;
+        }
+
+        li.correct {
+          background: @active;
+          color: white;
+
+          &:hover {
+            background: @blue;
+          }
+        }
+      }
     }
   }
 

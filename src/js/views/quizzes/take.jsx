@@ -7,7 +7,6 @@ define(function(require) {
   var StudentCount = require('jsx!components/student_count');
   var Alert = require('jsx!components/alert');
   var Question = require('jsx!./take/question');
-
   var TakeQuiz = React.createClass({
     mixins: [ React.mixins.ActionInitiator ],
 
@@ -69,6 +68,7 @@ define(function(require) {
     },
 
     renderQuestion: function(question, index) {
+
       return (
         <Question
           key={question.id}
@@ -78,7 +78,8 @@ define(function(require) {
           position={index+1}
           answerType={question.answerType}
           answerSets={question.answerSets}
-          variants={question.variants} />
+          variants={question.variants}
+          matches={question.matches} />
       );
     },
 

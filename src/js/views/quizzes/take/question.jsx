@@ -10,6 +10,7 @@ define(function(require) {
   var NumericalRenderer = require('jsx!./numerical');
   var CalculatedRenderer = require('jsx!./calculated');
   var MultipleDropdownsRenderer = require('jsx!./multiple_dropdowns');
+  var MatchingRenderer = require('jsx!./matching');
 
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer,
@@ -21,6 +22,7 @@ define(function(require) {
     numerical_question: NumericalRenderer,
     calculated_question: CalculatedRenderer,
     multiple_dropdowns_question: MultipleDropdownsRenderer,
+    matching_question: MatchingRenderer,
   };
 
   var Question = React.createClass({

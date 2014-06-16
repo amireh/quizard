@@ -38,6 +38,11 @@ define(function(require) {
       }
     },
 
+    matchingQuestion: function(answer) {
+      answer.matchId = ''+answer.match_id;
+      delete answer.right;
+      delete answer.match_id;
+    }
   };
 
   var extractBlanks = function(answers) {
@@ -130,6 +135,8 @@ define(function(require) {
           }
 
           delete answer.weight;
+          delete answer.comments;
+          delete answer.html;
 
           answerDecorator(answer);
         });
@@ -149,10 +156,23 @@ define(function(require) {
       attrs.autoGradable = contains(K.MANUALLY_GRADED_QUESTIONS, type);
       attrs.pointsPossible = payload.points_possible;
 
-      if (type === 'multiple_answers_question') {
+      if (contains(K.QUESTIONS_WITH_VARIANTS, type)) {
         // Start out with a default empty variant
         attrs.variants = [ buildVariant() ];
         attrs.variants[0].responseRatio = 100;
+
+        remove(attrs.answerSets[0].answers, {
+          id: [ K.QUESTION_MISSING_ANSWER, id, 'auto' ].join('_')
+        });
+      }
+
+      if (type === 'matching_question') {
+        attrs.matches = payload.matches.map(function(match) {
+          return {
+            id: ''+match.match_id,
+            text: match.text
+          };
+        }).concat(mkMissingAnswer(id));
       }
 
       return attrs;
@@ -166,7 +186,8 @@ define(function(require) {
         'answerType',
         'answerSets',
         'variants',
-        'position'
+        'position',
+        'matches'
       ]);
 
       // which is basically everything.. duh
@@ -195,7 +216,7 @@ define(function(require) {
     },
 
     getResponsePool: function() {
-      if (this.get('type') === 'multiple_answers_question') {
+      if (contains(K.QUESTIONS_WITH_VARIANTS, this.get('type'))) {
         return this.get('variants');
       }
       else {

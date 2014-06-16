@@ -1,8 +1,9 @@
 /** @jsx React.DOM */
 define([
-  'ext/react', 'ext/jquery', 'modules/combobox'
-], function(React, $, ComboBox) {
+  'ext/react', 'ext/jquery', 'underscore', 'modules/combobox'
+], function(React, $, _, ComboBox) {
   var LinkUtils = React.LinkUtils;
+  var extend = _.extend;
 
   /**
    * @class Components.Chosen
@@ -32,9 +33,9 @@ define([
 
     getDefaultProps: function() {
       return {
+        width: '100px',
         synchronize: true,
         chosenOptions: {
-          width: '100px'
         }
       };
     },
@@ -49,7 +50,9 @@ define([
         $select.on('change', this._synchronizeChosen);
       }
 
-      ComboBox.create($select, this.props.chosenOptions);
+      ComboBox.create($select, extend({
+        width: this.props.width
+      }, this.props.chosenOptions));
     },
 
     componentWillUnmount: function() {
