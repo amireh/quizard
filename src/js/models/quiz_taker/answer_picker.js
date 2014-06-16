@@ -4,6 +4,7 @@ define(function(require) {
   var generateRandomString = require('util/generate_random_string');
   var contains = _.contains;
   var find = _.find;
+  var random = _.random;
   var MultipleChoiceLike = [
     'multiple_choice_question',
     'true_false_question'
@@ -76,6 +77,23 @@ define(function(require) {
 
       if (variant) {
         value = variant.answerIds;
+      }
+    }
+    else if (questionType === 'numerical_question') {
+      answerSet = answerSets[0];
+      answer = pullAndMarkAnswer(answerSet.answers);
+
+      if (answer.type === K.QUESTION_NUMERICAL_EXACT_ANSWER) {
+        value = answer.exact;
+      }
+      else if (answer.type === K.QUESTION_NUMERICAL_RANGE_ANSWER) {
+        value = random(answer.start, answer.end);
+      }
+      else if (answer.text === K.QUESTION_UNKNOWN_ANSWER_TEXT) {
+        value = random(0, 123456789);
+      }
+      else if (answer.text === K.QUESTION_MISSING_ANSWER_TEXT) {
+        value = '';
       }
     }
 

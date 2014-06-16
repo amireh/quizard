@@ -10,6 +10,23 @@ define(function(require) {
   var uniqueId = _.uniqueId;
   var remove = _.remove;
   var sample = _.sample;
+  var I = function() {};
+
+  var AnswerDecorators = {
+    numericalQuestion: function(answer) {
+      var type = answer.numerical_answer_type || 'auto';
+
+      if (type === K.QUESTION_NUMERICAL_EXACT_ANSWER) {
+        answer.text = answer.exact;
+      }
+      else if (type === K.QUESTION_NUMERICAL_RANGE_ANSWER) {
+        answer.text = answer.start + '..' + answer.end;
+      }
+
+      delete answer.numerical_answer_type;
+      answer.type = type;
+    }
+  };
 
   var extractBlanks = function(answers) {
     return uniq(pluck(answers, 'blank_id'));
@@ -53,6 +70,11 @@ define(function(require) {
       var type = payload.question_type;
       var answers = payload.answers || [];
       var answerSets = [];
+      var answerDecorator = I;
+
+      if (type) {
+        answerDecorator = AnswerDecorators[type.camelize(true)] || I;
+      }
 
       // Wrap all answers in "answerSets" to normalize access between
       // question types that have multiple sets (like blanks) and those that
@@ -96,6 +118,8 @@ define(function(require) {
           }
 
           delete answer.weight;
+
+          answerDecorator(answer);
         });
 
         // If the question does not have a correct answer, e.g Essay, then

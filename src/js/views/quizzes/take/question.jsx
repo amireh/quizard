@@ -7,6 +7,7 @@ define(function(require) {
   var FIMBRenderer = require('jsx!./fill_in_multiple_blanks');
   var MultipleAnswersRenderer = require('jsx!./multiple_answers');
   var EssayRenderer = require('jsx!./essay');
+  var NumericalRenderer = require('jsx!./numerical');
 
   var Renderers = {
     multiple_choice_question: MultipleChoiceRenderer,
@@ -15,6 +16,7 @@ define(function(require) {
     fill_in_multiple_blanks_question: FIMBRenderer,
     multiple_answers_question: MultipleAnswersRenderer,
     essay_question: EssayRenderer,
+    numerical_question: NumericalRenderer,
   };
 
   var Question = React.createClass({

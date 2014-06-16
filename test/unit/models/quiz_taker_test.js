@@ -199,8 +199,63 @@ define(function(require) {
 
           expect(response.answer).toBe('');
         });
-
       });
+      describe('Numerical', function() {
+        var questionId = '21';
+        var userId = 'self';
+
+        it('should choose an exact answer', function() {
+          var allResponses, myResponses, response;
+
+          subject.setResponseRatio(questionId, '4343', 100);
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(response.answer).toBe(12);
+        });
+
+        it('should choose an answer within a range', function() {
+          // do it a number of times to make sure the randomizer is functional
+          _.range(1000).forEach(function() {
+            var allResponses, myResponses, response;
+
+            subject.setResponseRatio(questionId, '6959', 100);
+            allResponses = subject.generateResponses([ { id: userId } ]);
+            myResponses = findBy(allResponses, { id: userId }).responses;
+            response = findBy(myResponses, { id: questionId });
+
+            expect(_.range(3,7)).toContain(response.answer);
+          });
+        });
+
+        it('should generate a random answer', function() {
+          _.range(1000).forEach(function() {
+            var allResponses, myResponses, response;
+
+            subject.setResponseRatio(questionId, 'other_21_auto', 100);
+            allResponses = subject.generateResponses([ { id: userId } ]);
+            myResponses = findBy(allResponses, { id: userId }).responses;
+            response = findBy(myResponses, { id: questionId });
+
+            expect(typeof response.answer).toBe('number')
+            expect([ 0.5, 1.5, 2.5, 3, 4, 5, 6, 12 ]).not.toContain(response.answer);
+          });
+        });
+
+
+        it('should provide no answer', function() {
+          var allResponses, myResponses, response;
+
+          subject.setResponseRatio(questionId, 'none_21_auto', 100);
+          allResponses = subject.generateResponses([ { id: userId } ]);
+          myResponses = findBy(allResponses, { id: userId }).responses;
+          response = findBy(myResponses, { id: questionId });
+
+          expect(response.answer).toBe('');
+        });
+
+      }); // numerical
 
     });
   });

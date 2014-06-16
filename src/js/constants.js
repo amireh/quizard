@@ -81,7 +81,8 @@ define([], function() {
     FREE_FORM_INPUT_QUESTIONS: [
       'fill_in_multiple_blanks_question',
       'essay_question',
-      'short_answer_question'
+      'short_answer_question',
+      'numerical_question',
     ],
 
     QUESTIONS_WITH_ANSWER_SETS: [
@@ -99,6 +100,8 @@ define([], function() {
     QUESTION_MISSING_ANSWER_TEXT: 'No Answer',
     QUESTION_UNKNOWN_ANSWER: 'other',
     QUESTION_UNKNOWN_ANSWER_TEXT: 'Something Else',
+    QUESTION_NUMERICAL_EXACT_ANSWER: 'exact_answer',
+    QUESTION_NUMERICAL_RANGE_ANSWER: 'range_answer',
 
     VARIANT_HELP_TOOLTIP: [
       'Variants are combinations of answers that students will respond with.',
