@@ -1,33 +1,16 @@
 /** @jsx React.DOM */
 define(function(require) {
   var React = require('react');
+  var K = require('constants');
   var ProgressBar = require('jsx!components/progress_bar');
-  var t = require('i18n!operation_tracker');
+  var t = require('i18n!operations');
   var OperationActions = require('actions/operations');
-
-  var secondsToTime = function(seconds) {
-    var floor = function(nr) { return Math.floor(nr); };
-    var pad = function(duration) {
-      return ('00' + duration).slice(-2);
-    };
-
-    if (seconds > 3600) {
-      var hh = floor(seconds / 3600);
-      var mm = floor((seconds - hh*3600) / 60);
-      var ss = seconds % 60;
-
-      return [pad(hh), pad(mm), pad(ss)].join(':');
-    } else if (seconds > 0 && seconds < 3600) {
-      return [pad(floor(seconds / 60)), pad(floor(seconds % 60))].join(':');
-    } else {
-      return;
-    }
-  };
+  var secondsToTime = require('util/seconds_to_time');
 
   var OperationTracker = React.createClass({
     getInitialState: function() {
       return {
-        eta: 0,
+        ETA: 0,
       };
     },
 
@@ -35,18 +18,11 @@ define(function(require) {
       return {
         count: 0,
         completed: 0,
-
         item: undefined,
         itemCount: 0,
-
         action: undefined,
-        prevAction: undefined,
-
         ETA: 0,
         ratio: 0,
-        remaining: undefined,
-        elapsed: 0,
-        aps: 0,
         log: []
       };
     },
@@ -56,7 +32,7 @@ define(function(require) {
     },
 
     componentWillReceiveProps: function(nextProps) {
-      this.setState({ eta: nextProps.ETA });
+      this.setState({ ETA: nextProps.ETA });
     },
 
     componentWillUnmount: function() {
@@ -64,18 +40,17 @@ define(function(require) {
     },
 
     componentDidUpdate: function(prevProps, prevState) {
-      if (this.props.remaining === 0) {
-        this.stop();
-      }
+      var done =
+        prevProps.status === K.OPERATION_ACTIVE &&
+        this.props.status !== K.OPERATION_ACTIVE;
 
-      if (this.props.failed || this.props.aborted) {
+      if (done) {
         this.stop();
-        this.refs.progressBar.stop();
       }
     },
 
     updateETA: function() {
-      this.setState({ eta: this.state.eta - 1 });
+      this.setState({ ETA: this.state.ETA - 1 });
     },
 
     stop: function() {
@@ -86,8 +61,6 @@ define(function(require) {
     },
 
     render: function() {
-      var active = this.props.count > 0;
-
       return(
         <div className="operation-tracker">
           <header>
@@ -100,27 +73,24 @@ define(function(require) {
             </aside>
           </header>
 
-          {active &&
-            <ProgressBar
-              key="progressBar"
-              ref="progressBar"
-              APS={this.props.aps}
-              progress={this.props.ratio} />
-          }
+          <ProgressBar
+            key="progressBar"
+            ref="progressBar"
+            APS={this.props.APS}
+            progress={this.props.ratio}
+            active={this.props.status === K.OPERATION_ACTIVE} />
 
           <ul className="operation-log">
             {this.props.log.map(this.renderLogEntry)}
           </ul>
 
           <div className="operation-actions">
-            {this.props.id &&
-              <button
-                disabled={this.props.aborted || this.props.failed}
-                className="btn btn-danger"
-                onClick={this.onAbort}>
-                Abort
-              </button>
-            }
+            <button
+              disabled={this.props.status !== K.OPERATION_ACTIVE}
+              className="btn btn-danger"
+              onClick={this.onAbort}>
+              Abort
+            </button>
           </div>
         </div>
       );
@@ -145,11 +115,11 @@ define(function(require) {
     renderStatus: function() {
       var status;
 
-      if (this.props.aborted) {
-        status = t('status.aborted', '[ ABORTED ]');
+      if (this.props.status === K.OPERATION_ABORTED) {
+        status = t('statuses.aborted', '[ ABORTED ] ');
       }
-      else if (this.props.failed) {
-        status = t('status.failed', '[ FAILED ]');
+      else if (this.props.status === K.OPERATION_FAILED) {
+        status = t('statuses.failed', '[ FAILED ] ');
       }
 
       return status ?
@@ -158,11 +128,11 @@ define(function(require) {
     },
 
     renderFailures: function() {
-      if (this.props.failures > 0) {
+      if (this.props.failed > 0) {
         return [
           <span> - </span>,
           <span className="operation-failure-counter">
-            {t('failures', { count: this.props.failures })}
+            {t('failures', { count: this.props.failed })}
           </span>
         ];
       }

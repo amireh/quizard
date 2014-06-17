@@ -45,11 +45,14 @@ define(function(require) {
     componentWillReceiveProps: function(nextProps) {
       var thisProps = this.props;
       var done =
-        thisProps.userStatus !== K.STATUS_IDLE &&
-        nextProps.userStatus === K.STATUS_IDLE;
+        thisProps.operation.status === K.OPERATION_ACTIVE &&
+        nextProps.operation.status !== K.OPERATION_ACTIVE;
 
       if (done) {
-        this.refs.saveButton.markDone(!this.state.storeError);
+        this.refs.saveButton.markDone(nextProps.operation.status === K.OPERATION_COMPLETE);
+      }
+      else if (nextProps.operation.status === K.OPERATION_ACTIVE) {
+        this.refs.saveButton.markLoading();
       }
     },
 
@@ -172,9 +175,12 @@ define(function(require) {
               </fieldset>
             </div>
 
-            <SaveButton ref="saveButton" onClick={this.onSubmit} type="primary">
-              Enroll Students
-            </SaveButton>
+            <SaveButton
+              manual
+              ref="saveButton"
+              onClick={this.onSubmit}
+              type="primary"
+              children="Enroll Students" />
           </form>
         </div>
       );

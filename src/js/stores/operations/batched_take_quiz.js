@@ -13,9 +13,6 @@ define(function(require) {
       var quizTaker = context.quizTaker;
       var quiz = quizTaker.quiz;
       var studentResponse = context.studentResponses[context.studentIndex++];
-      if (!studentResponse) {
-        debugger
-      }
       var responses = studentResponse.responses;
       var userId = studentResponse.id;
 

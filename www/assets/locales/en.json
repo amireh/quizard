@@ -21,11 +21,23 @@
       "status": "Loading __perPage__ students from page __page__.\n",
       "status_no_more_students": "Nothing to do, no more students to load.\n"
     },
-    "ns_operation_tracker": {
+    "ns_operations": {
       "failures": "1 failure",
       "failures_plural": "__count__ failures",
       "confirmations": {
-        "aborting": "You are about to abort the operation which *may* leave things in a broken state. Are you sure you want to do this?"
+        "aborting": "You are about to abort the operation which *may* leave things in a broken state. Are you sure you want to do this?\n"
+      },
+      "enrollment": {
+        "title": "Enrolling one student",
+        "title_plural": "Enrolling __count__ students",
+        "actions": {
+          "USER_REGISTERING": "Signing up as a student with a login id of \"__login__\".",
+          "USER_ENROLLING": "Enrolling student with user id \"__userId__\" into the course."
+        },
+        "errors": {
+          "USER_REGISTERING": "Unable to register user with login \"__login__\". This probably means you have already registered a similar user by Quizard. <p>Try using a higher ID Range or a different ID Prefix.</p>\n",
+          "USER_ENROLLING": "Unable to enroll user with id __login__. Make sure the course allows self-operation!\n"
+        }
       }
     }
   }

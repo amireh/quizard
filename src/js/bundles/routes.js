@@ -5,8 +5,6 @@ define([
   'routes/index',
   'routes/logout',
   'routes/recipes/enroll_students',
-  'routes/recipes/enroll_students/form',
-  'routes/recipes/enroll_students/progress',
   'routes/recipes/load_students',
   'routes/recipes/take_quiz',
   'routes/course',

@@ -76,5 +76,12 @@ function(CONFIG, RSVP, diff) {
   DEBUG.expose('stores/courses', 'courseStore');
   DEBUG.expose('stores/quizzes', 'quizStore');
   DEBUG.expose('stores/quiz_taking', 'quizTakingStore');
+  DEBUG.expose('stores/operations', 'operationStore');
   DEBUG.expose('core/ajax', 'ajax');
+
+  DEBUG.listeners = function(obj) {
+    return _.uniq(_.flatten(Object.keys(obj._events).map(function(name) {
+      return _.pluck(obj._events[name], 'ctx');
+    })));
+  }
 });

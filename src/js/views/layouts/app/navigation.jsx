@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
-define([ 'react', 'constants' ], function(React, K) {
+define([ 'react', 'constants', 'actions/operations' ],
+function(React, K, OperationActions) {
   /**
    * @internal
    *
@@ -38,7 +39,8 @@ define([ 'react', 'constants' ], function(React, K) {
   var Navigation = React.createClass({
     getDefaultProps: function() {
       return {
-        active: undefined
+        active: undefined,
+        operation: {}
       };
     },
 
@@ -83,9 +85,20 @@ define([ 'react', 'constants' ], function(React, K) {
             {!this.props.authenticated &&
               <a className="btn btn-primary" href="/login">Login</a>
             }
+
+            <button
+              className="a11y-btn icon-console stick-right"
+              onClick={this.toggleOperation}
+              disabled={!this.props.operation.name || !this.props.operation.minimized}
+              title="Restore the operation progress box" />
           </section>
         </nav>
       );
+    },
+
+    toggleOperation: function(e) {
+      e.preventDefault();
+      OperationActions.restore();
     }
   });
 

@@ -4,72 +4,25 @@ define(function(require) {
   var Accounts = require('stores/accounts');
   var Courses = require('stores/courses');
   var Operation = require('models/operation');
-  var BatchedOperation = require('models/batched_operation');
-  var RSVP = require('rsvp');
-  var ajax = require('core/ajax');
-  var generateLogin = require('util/generate_login');
-  var generateName = require('util/generate_name');
+  var OperationStore = require('./operations');
+  var batchedEnrollment = require('./operations/batched_enrollment');
+  // var RSVP = require('rsvp');
+
   var loadUsers = require('./operations/batched_load_users');
 
-  var store, operation;
+  // var store, operation;
+  var store, emitChange;
   var status = K.STATUS_IDLE;
 
   var getCollection = function() {
     return Accounts.getUserCollection();
   };
 
-  var massEnrollment = new BatchedOperation({
-    runner: function(context) {
-      var studentId = ++context.guid + '';
-      var accountId = context.accountId;
-      var courseId = context.courseId;
-      var prefix = context.prefix;
-      var loginId = generateLogin(prefix, studentId);
-
-      operation.mark('Signing up a student with a login id of "' + loginId + '".', studentId);
-      context.status = setStatus(K.USER_REGISTERING)
-
-      return signup(prefix, studentId, accountId).then(function(userId) {
-        operation.mark('Enrolling student with user id [' + userId + ']', userId);
-        context.status = setStatus(K.USER_ENROLLING)
-        return enroll(userId, courseId);
-      });
-    },
-
-    onDone: function(/*output, context*/) {
-      store.emitChange();
-      return true;
-    },
-
-    onError: function(error, context, resolve, reject) {
-      var errorCode;
-
-      console.warn('API operation failure:', error, error.stack);
-
-      if (context.status === K.USER_REGISTERING) {
-        errorCode = K.USER_REGISTRATION_FAILED;
-      }
-      else if (context.status === K.USER_ENROLLING) {
-        errorCode = K.USER_ENROLLMENT_FAILED;
-      }
-
-      // TODO
-      if (context.atomic === true) {
-        reject(errorCode);
-      }
-      else {
-        operation.mark(undefined, undefined, true);
-        store.emitChange();
-        resolve();
-      }
-    }
-  });
-
   var setStatus = function(inStatus) {
     console.debug('> UserStore Status:', inStatus);
 
     status = inStatus;
-    store.emitChange('status', inStatus);
+    emitChange('status', inStatus);
 
     return inStatus;
   };
@@ -93,7 +46,7 @@ define(function(require) {
 
     runnerCount = Math.ceil(count / K.USER_MAX_PER_PAGE, 10);
 
-    operation = new Operation({
+    var operation = new Operation({
       count: runnerCount,
       itemCount: runnerCount
     });
@@ -105,7 +58,7 @@ define(function(require) {
       reset: options.reset,
       collection: collection,
       operation: operation,
-      emitChange: store.emitChange.bind(store),
+      emitChange: emitChange,
     }).then(function() {
 
       onChange();
@@ -116,46 +69,10 @@ define(function(require) {
     });
   };
 
-  var signup = function(prefix, id, accountId) {
-    var loginId = generateLogin(prefix, id);
-
-    return ajax({
-      url: '/accounts/' + accountId + '/users',
-      type: 'POST',
-      data: JSON.stringify({
-        user: {
-          name: generateName(loginId),
-        },
-        pseudonym: {
-          unique_id: [ loginId, K.STUDENT_EMAIL_DOMAIN ].join('@'),
-          password: K.STUDENT_PASSWORD,
-          send_confirmation: false
-        }
-      })
-    }).then(function(user) {
-      return user.id;
-    });
-  };
-
-  var enroll = function(userId, courseId) {
-    return ajax({
-      url: '/courses/' + courseId + '/enrollments',
-      type: 'POST',
-      data: JSON.stringify({
-        enrollment: {
-          user_id: ''+userId,
-          type: K.USER_STUDENT_ENROLLMENT,
-          enrollment_state: 'active',
-          notify: false
-        }
-      })
-    });
-  };
-
-  var massEnroll = function(payload, onChange, onError) {
+  var enroll = function(payload, onChange, onError) {
     var studentCount = parseInt(payload.studentCount || '', 10);
     var prefix = payload.prefix || K.DEFAULT_ID_PREFIX;
-    var guid;
+    var guid, operation, descriptor;
 
     if (!studentCount || studentCount < K.USER_MIN_ENROLL) {
       return onError(K.USER_ENROLLMENT_COUNT_TOO_LOW);
@@ -167,32 +84,43 @@ define(function(require) {
     guid = parseInt(payload.idRange, 10) || 0;
     prefix = prefix.replace(/_+$/, '');
 
-    operation = new Operation({
+    operation = OperationStore.start('enrollment', {
       count: studentCount * 2,
       itemCount: studentCount
     });
 
-    setStatus(K.USER_MASS_ENROLLMENT_STARTED);
-
-    massEnrollment.run(studentCount, {
+    descriptor = batchedEnrollment.run(studentCount, {
       accountId: Accounts.getActiveAccountId(),
       courseId: Courses.getActiveCourseId(),
       prefix: prefix,
       guid: guid,
       operation: operation,
-      atomic: payload.atomic
-    }).then(function() {
-      operation.mark();
+      atomic: payload.atomic,
+      emitChange: emitChange
+    })
+
+    descriptor.then(function() {
+      operation.markComplete();
       onChange();
-    }, function(errorCode) {
-      operation.stop(errorCode);
-      onError(errorCode);
-    }).then(function() {
-      setStatus(K.STATUS_IDLE);
+    }).catch(function(rc) {
+      if (rc.code === K.OPERATION_ABORTED) {
+        operation.markAborted();
+      } else {
+        operation.markFailed(rc.detail);
+      }
+
+      onError();
     });
+
+    operation.on('abort', descriptor.abort);
   };
 
   store = new Pixy.Store('UserStore', {
+    initialize: function() {
+      // cache it
+      emitChange = this.emitChange.bind(this);
+    },
+
     getAll: function() {
       var collection = getCollection();
       return collection ? collection.invoke('toProps') : [];
@@ -203,9 +131,9 @@ define(function(require) {
     },
 
     getCurrentOperation: function() {
-      if (operation) {
-        return operation.toProps();
-      }
+      // if (operation) {
+      //   return operation.toProps();
+      // }
     },
 
     getStudentCount: function() {
@@ -234,7 +162,7 @@ define(function(require) {
         break;
 
         case K.USER_MASS_ENROLL:
-          massEnroll(payload, onChange, onError);
+          enroll(payload, onChange, onError);
         break;
       }
     }

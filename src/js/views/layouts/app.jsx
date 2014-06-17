@@ -6,8 +6,7 @@ define([
   'jsx!./app/menu_bar',
   'jsx!./app/statusbar',
   'jsx!./app/loading_bar',
-  'jsx!./app/operation_box',
-], function(React, $, Navigation, MenuBar, Statusbar, LoadingBar, OperationBox) {
+], function(React, $, Navigation, MenuBar, Statusbar, LoadingBar) {
 
   var AppLayout = React.createClass({
     mixins: [ React.addons.LayoutMixin ],
@@ -33,12 +32,9 @@ define([
 
           <Navigation
             authenticated={this.props.authenticated}
+            operation={this.props.operation}
             email={this.props.user.email}
             active={this.props.navLink} />
-
-          <OperationBox
-            key="operation-box"
-            children={this.renderOutlet('operation')} />
 
           <main id="content">
             {this.renderOutlet('content')}

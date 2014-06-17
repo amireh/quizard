@@ -3,9 +3,11 @@ define(function(require) {
   var K = require('constants');
   var Courses = require('stores/courses');
   var Users = require('stores/users');
+  var View = require('jsx!views/users/enroll');
 
   new Route('enrollStudentsRecipe', {
     navLink: K.RECIPE_ENROLL_STUDENTS,
+    views: [{ component: View }],
 
     model: function() {
       return Courses.fetch();
@@ -23,8 +25,7 @@ define(function(require) {
       this.update({
         courses: Courses.getAll(),
         activeCourseId: Courses.getActiveCourseId(),
-        userStatus: Users.getStatus(),
-        enrollment: Users.getCurrentOperation()
+        userStatus: Users.getStatus()
       });
     }
   });

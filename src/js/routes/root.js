@@ -5,6 +5,7 @@ define(function(require) {
   var RootLayout = require('jsx!views/layouts/root');
   var SessionStore = require('stores/sessions');
   var AccountStore = require('stores/accounts');
+  var OperationStore = require('stores/operations');
   var RouteActions = require('actions/routes');
 
   return new ApplicationRoute('root', {
@@ -49,12 +50,9 @@ define(function(require) {
 
       SessionStore.addChangeListener(this.switchAuthStates, this);
       AccountStore.addChangeListener(this.updateProps, this);
+      OperationStore.addChangeListener(this.updateProps, this);
 
       this.updateProps();
-    },
-
-    exit: function() {
-      SessionStore.removeChangeListener(null, this);
     },
 
     updateProps: function(props) {
@@ -63,6 +61,7 @@ define(function(require) {
       props.user = SessionStore.get();
       props.accounts = AccountStore.getAll();
       props.activeAccountId = AccountStore.getActiveAccountId();
+      props.operation = OperationStore.toProps();
 
       this.events.update.call(this, props);
     }

@@ -79,7 +79,7 @@ define([ 'react' ], function(React) {
 
       return (
         <button
-          onClick={activate.bind(this)}
+          onClick={this.props.manual ? this.props.onClick : activate.bind(this)}
           disabled={this.props.disabled || isLoading}
           className={classSet(className)}>
           {!isIdle && <span className="indicator"></span>}

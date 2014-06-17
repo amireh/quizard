@@ -1,9 +1,5 @@
 /** @jsx React.DOM */
 define([ 'react' ], function(React) {
-  var MIN_RESOLUTION = 1;
-  var MAX_RESOLUTION = 4;
-  var DEFAULT_RESOLUTION = 4;
-
   /**
    * @class Components.ProgressBar
    *
@@ -16,77 +12,12 @@ define([ 'react' ], function(React) {
 
     getDefaultProps: function() {
       return {
-        progress: 0,
-        APS: 0,
-        resolution: DEFAULT_RESOLUTION,
-      };
-    },
-
-    getInitialState: function() {
-      return {
         progress: 0
       };
     },
 
-    setProgress: function(progress) {
-      var that = this;
-
-      this.setState({
-        progress: Math.min(parseInt(progress, 10), 100)
-      });
-    },
-
-    componentDidMount: function() {
-      var interval;
-      var resolution = parseInt(this.props.resolution, 10);
-
-      if (resolution > MAX_RESOLUTION || resolution < MIN_RESOLUTION) {
-        console.warn(
-          'Invalid resolution passed to progress bar.',
-          'Value must be between 1 and 4.');
-
-        resolution = DEFAULT_RESOLUTION;
-      }
-
-      interval = Math.max(1.0 / resolution * 1000, 250);
-      this.normalizer = setInterval(this.tick, interval);
-      console.debug('pbar mounted, ticking every:', interval);
-    },
-
-    componentWillUnmount: function() {
-      this.stop();
-    },
-
-    componentWillReceiveProps: function(nextProps) {
-      var shouldUpdate, proximityCoefficient;
-      var delta = nextProps.progress - this.state.progress;
-
-      // jump to 0% or 100% if specified
-      if (nextProps.progress === 100 || nextProps.progress === 0) {
-        shouldUpdate = true;
-      }
-      else if (delta > 0) {
-        // progress must move forwards, discard negative adjustments
-        proximityCoefficient = this.props.APS * this.props.resolution;
-
-        // don't jump if we're very close to getting there (in < 1second),
-        // looks much better
-        shouldUpdate = delta >= proximityCoefficient;
-      }
-
-      if (shouldUpdate) {
-        this.setProgress(nextProps.progress);
-      }
-    },
-
-    componentDidUpdate: function() {
-      if (this.state.progress >= 100) {
-        this.stop();
-      }
-    },
-
     render: function() {
-      var progress = this.state.progress;
+      var progress = parseInt(this.props.progress || 0, 10);
       var klasses = React.addons.classSet({
         'progress-red': progress > 0 && progress < 25,
         'progress-orange': progress >= 25 && progress < 50,
@@ -105,27 +36,6 @@ define([ 'react' ], function(React) {
           <span className="ratio">{ progress }%</span>
         </div>
       );
-    },
-
-    tick: function() {
-      var step;
-      var resolution = parseInt(this.props.resolution, 10);
-
-      if (!this.props.APS) {
-        console.debug('Progress: Will not tick, no resolution or APS specified.');
-        return;
-      }
-
-      step = this.props.APS / resolution;
-      console.info('Progress: easing', step, 'up to', this.state.progress + step)
-      this.setProgress(this.state.progress + step);
-    },
-
-    stop: function() {
-      if (this.normalizer) {
-        clearInterval(this.normalizer);
-        this.normalizer = null;
-      }
     }
   });
 
