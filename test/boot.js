@@ -9,7 +9,7 @@ require([ 'jquery', 'config' ], function($, Config) {
     console.info('XHR request: [' + options.type + ']', options.url);
   });
 
-  require([ 'config/initializer' ], function() {
-    launchTests();
+  require([ 'config/initializer' ], function(init) {
+    init().then(launchTests);
   });
 });

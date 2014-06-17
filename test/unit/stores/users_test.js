@@ -5,6 +5,7 @@ define(function(require) {
   var Account = require('models/account');
   var Accounts = require('stores/accounts');
   var Courses = require('stores/courses');
+  var Operations = require('stores/operations');
   var Users = require('stores/users');
   var EnrollmentFixture = require('json!fixtures/enrollment');
 
@@ -28,7 +29,7 @@ define(function(require) {
       });
 
       it('should sign-up as a student and enroll into course', function() {
-        Users.on('change:status', onStatusChange);
+        Operations.on('change', onStatusChange);
         Users.onAction(K.USER_MASS_ENROLL, {
           studentCount: 1,
           prefix: 'quizard'
@@ -100,7 +101,7 @@ define(function(require) {
       });
 
       it('should work for multiple students', function() {
-        Users.on('change:status', onStatusChange);
+        Operations.on('change', onStatusChange);
         Users.onAction(K.USER_MASS_ENROLL, {
           studentCount: 2,
           prefix: 'quizard',
