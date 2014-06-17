@@ -12,7 +12,6 @@ define([], function() {
 
     ERROR_ACCESS_UNAUTHORIZED: 'Unauthorized',
     ERROR_ACCESS_OVERAUTHORIZED: 'Overauthorized',
-    // Use strings for i18n
     ERROR_NOT_FOUND: 'NOT_FOUND',
 
     ACCOUNT_REQUIRED: 'ACCOUNT_REQUIRED',
@@ -32,15 +31,14 @@ define([], function() {
     // Status codes for mass user enrollment
     USER_ENROLLMENT_COUNT_TOO_LOW: 'USER_ENROLLMENT_COUNT_TOO_LOW',
     USER_ENROLLMENT_COUNT_TOO_HIGH: 'USER_ENROLLMENT_COUNT_TOO_HIGH',
+
     USER_REGISTERING: 'USER_REGISTERING',
     USER_ENROLLING: 'USER_ENROLLING',
-
     USER_LOADING: 'USER_LOADING',
 
     ACCOUNT_ACTIVATE: 'ACCOUNT_ACTIVATE',
     COURSE_ACTIVATE: 'COURSE_ACTIVATE',
 
-    QUIZ_LOAD_MORE: 'QUIZ_LOAD_MORE',
     QUIZ_ACTIVATE: 'QUIZ_ACTIVATE',
 
     RECIPE_ENROLL_STUDENTS: '/recipes/enroll_students',
@@ -106,22 +104,9 @@ define([], function() {
     QUESTION_NUMERICAL_EXACT_ANSWER: 'exact_answer',
     QUESTION_NUMERICAL_RANGE_ANSWER: 'range_answer',
 
-    VARIANT_HELP_TOOLTIP: [
-      'Variants are combinations of answers that students will respond with.',
-      'You can have as many variants as needed to cover all possible answers.'
-    ].join(' '),
-
-    MANUAL_RESPONSE_DISTRIBUTION_TOOLTIP: [
-      'This option allows you to specify the ratio of',
-      'responses each answer should receive *almost* exactly.'
-    ].join(' '),
-
     DEFAULT_ID_PREFIX: 'quizard',
     STUDENT_EMAIL_DOMAIN: 'quizard.com',
     STUDENT_PASSWORD: 'quizard_student_password',
-
-    STATUS_IDLE: 'idle',
-    STATUS_BUSY: 'busy',
 
     OPERATION_ACTIVE: 'OPERATION_ACTIVE',
     OPERATION_ABORT: 'OPERATION_ABORT',

@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var Actions = require('actions/quiz_taking');
   var K = require('constants');
+  var t = require('i18n!take_quiz');
 
   var HasVariantsMixin = {
     getDefaultProps: function() {
@@ -24,7 +25,7 @@ define(function(require) {
               <em
                 className="whatisthis"
                 children="What is this?"
-                title={K.VARIANT_HELP_TOOLTIP} /> :
+                title={t('tooltips.variants')} /> :
               <a
                 className="whatisthis"
                 children="Remove"

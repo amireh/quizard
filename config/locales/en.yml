@@ -39,6 +39,13 @@ en:
       An error occurred trying to generate and prepare the student responses
       for submission. This is most likely an internal issue in Quizard and
       should be reported.
+    tooltips:
+      manual_response_distribution: >
+        This option allows you to specify the ratio of responses each answer
+        should receive *almost* exactly.
+      variants: >
+        Variants are combinations of answers that students will respond with.
+        You can have as many variants as needed to cover all possible answers.
   ns_operations:
     failures: 1 failure
     failures_plural: __count__ failures

@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var Actions = require('actions/quiz_taking');
   var K = require('constants');
+  var t = require('i18n!take_quiz');
   var Radio = require('jsx!components/radio');
   var GUID = 0;
 
@@ -41,7 +42,7 @@ define(function(require) {
 
               <em
                 className="whatisthis"
-                title={K.MANUAL_RESPONSE_DISTRIBUTION_TOOLTIP}
+                title={t('tooltips.manual_response_distribution')}
                 children="What is this?" />
           </div>
         </div>

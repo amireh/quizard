@@ -38,7 +38,9 @@ define(function(require) {
 
     getDefaultProps: function() {
       return {
-        userStatus: K.STATUS_IDLE
+        accounts: [],
+        courses: [],
+        operation: {}
       };
     },
 
