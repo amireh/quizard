@@ -1,19 +1,20 @@
 /** @jsx React.DOM */
 define([ 'react' ], function(React) {
-  var Statusbar = React.createClass({
+  var Toolbar = React.createClass({
     getDefaultProps: function() {
       return {
-        message: undefined
+        children: false
       };
     },
+
     render: function() {
       return(
-        <footer id="statusbar">
-          {this.props.message}
+        <footer id="toolbar">
+          {this.props.children}
         </footer>
       );
     }
   });
 
-  return Statusbar;
+  return Toolbar;
 });

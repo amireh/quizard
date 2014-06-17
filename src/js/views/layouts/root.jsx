@@ -91,7 +91,7 @@ define(function(require) {
 
           {this.renderLayout(AppLayout, { key: 'appLayout' })}
 
-          {this.props.transitioning && <LoadingScreen />}
+          <LoadingScreen visible={this.props.transitioning} />
         </div>
       );
     },

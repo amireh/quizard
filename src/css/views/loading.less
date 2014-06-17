@@ -12,22 +12,42 @@
 #loading_screen {
   .fullscreen();
   .disable-selection();
-  background: white;
+  .transition(~"opacity 0.25s ease-in-out 0s");
+
+  opacity: 1;
+  background: @brand-color;
+  color: white;
+
+  &.background {
+    display: none;
+  }
 
   position: fixed;
-  // display:  none;
   z-index: 1000;
   overflow: hidden;
 
   header {
-    text-align: left;
-    margin: -20px 0 0 0;
-    padding: 10px 0;
+    margin: -55px 0 0 0;
     font-size: 14px;
     position: absolute;
     top: 50%;
     left: 50%;
     width: 240px;
+
+    > span {
+      display: block;
+    }
+  }
+
+  .version {
+    font-size: 24px;
+    line-height: 40px;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+  }
+
+  #loading_status {
+    padding: 5px 0;
   }
 
   .logo {
@@ -38,24 +58,11 @@
     height:     168px;
     margin-top: -96px;
     margin-left: -200px;
+
     &:before {
+      .iconify(@icon-quiz);
       line-height: 168px;
     }
-  }
-
-  .version {
-    position: absolute;
-    bottom: auto;
-    right: auto;
-    left: 50%;
-    top: 50%;
-    margin-top: -50px;
-    font-size: 24px;
-    font-weight: bold;
-    border-bottom: 1px solid #555;
-    display: block;
-    width: 240px;
-    text-align: left;
   }
 }
 

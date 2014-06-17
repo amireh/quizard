@@ -4,9 +4,9 @@ define([
   'jquery',
   'jsx!./app/navigation',
   'jsx!./app/menu_bar',
-  'jsx!./app/statusbar',
+  'jsx!./app/toolbar',
   'jsx!./app/loading_bar',
-], function(React, $, Navigation, MenuBar, Statusbar, LoadingBar) {
+], function(React, $, Navigation, MenuBar, Toolbar, LoadingBar) {
 
   var AppLayout = React.createClass({
     mixins: [ React.addons.LayoutMixin ],

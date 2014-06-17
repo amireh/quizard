@@ -38,6 +38,8 @@ define([
           autoFocus='[name="apiToken"]'
           thin={true}>
 
+          <em className="logo icon-quiz" />
+
           <p>Fill in your Canvas API token to proceed.</p>
 
           <form ref="form" onSubmit={this.login} noValidate className="vertical-form">
