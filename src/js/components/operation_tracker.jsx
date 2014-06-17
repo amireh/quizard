@@ -70,7 +70,7 @@ define(function(require) {
             {this.renderFailures()}
 
             <aside className="operation-eta stick-right">
-              ETA: {secondsToTime(this.state.eta) || 'N/A'}
+              ETA: {secondsToTime(this.state.ETA) || 'N/A'}
             </aside>
           </header>
 

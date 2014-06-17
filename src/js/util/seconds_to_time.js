@@ -5,6 +5,8 @@ define(function() {
       return ('00' + duration).slice(-2);
     };
 
+    seconds = parseInt(seconds || 0, 10);
+
     if (seconds > 3600) {
       var hh = floor(seconds / 3600);
       var mm = floor((seconds - hh*3600) / 60);
