@@ -44,7 +44,11 @@ define(function(require) {
       answerSet = answerSets[0];
       answer = pullAndMarkAnswer(answerSet.answers);
 
-      return answer.id;
+      if (answer.missing) {
+        value = '';
+      } else {
+        value = answer.id;
+      }
     }
     else if (contains(ShortAnswerLike, questionType)) {
       answerSet = answerSets[0];
@@ -100,10 +104,10 @@ define(function(require) {
       else if (answer.type === K.QUESTION_NUMERICAL_RANGE_ANSWER) {
         value = random(answer.start, answer.end);
       }
-      else if (answer.text === K.QUESTION_UNKNOWN_ANSWER_TEXT) {
+      else if (answer.unknown) {
         value = random(0, 123456789);
       }
-      else if (answer.text === K.QUESTION_MISSING_ANSWER_TEXT) {
+      else if (answer.missing) {
         value = '';
       }
     }
