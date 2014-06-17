@@ -61,7 +61,7 @@
 
     li.question-answer {
       display: inline-block;
-      width: 100px + 2*@whitespace;
+      width: 97px + 2*@whitespace;
       vertical-align: bottom;
       margin-right: @whitespace;
       background: @shade;
@@ -77,6 +77,10 @@
 
       &.missing-answer, &.unknown-answer {
         font-style: italic;
+      }
+
+      &:nth-of-type(5n) {
+        margin-right: 0;
       }
 
       .actionbar {

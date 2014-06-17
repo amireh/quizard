@@ -40,7 +40,7 @@ define(function(require) {
     fetchQuestions: function(quizId) {
       var quiz = collection.get(quizId);
 
-      return quiz.questions.fetch().then(function() {
+      return quiz.questions.fetchAll().then(function() {
         return this.get(quizId);
       }.bind(this));
     },

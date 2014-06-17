@@ -47,7 +47,7 @@ define(function(require) {
       var operation = context.operation;
       var emitChange = context.emitChange;
 
-      console.warn('API operation failure:', error, error.stack);
+      console.warn('API operation failure:', error, error && error.stack);
 
       switch(context.status) {
         case K.QUIZ_TAKING_PREPARING:

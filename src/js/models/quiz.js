@@ -25,7 +25,7 @@ define(function(require) {
         },
 
         url: function() {
-          return quiz.url() + '/questions';
+          return quiz.url() + '/questions?page=' + (this.meta.currentPage || 1);
         },
 
         model: QuizQuestion
