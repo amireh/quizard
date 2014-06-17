@@ -7,17 +7,18 @@ define(function(require) {
   new Route('loadStudentsRecipe', {
     navLink: K.RECIPE_LOAD_STUDENTS,
     views: [{ component: View }],
+    accessPolicy: 'private',
 
     enter: function() {
       this.updateProps();
 
       Users.addChangeListener(this.updateProps, this);
+      Users.addErrorListener(this.injectStoreError, this);
     },
 
     updateProps: function() {
       this.update({
-        userStatus: Users.getStatus(),
-        studentLoading: Users.getCurrentOperation(),
+        studentLoading: Users.getStudentLoadingOperation(),
         studentStats: Users.getStudentStats()
       });
     }

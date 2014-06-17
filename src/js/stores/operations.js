@@ -17,7 +17,7 @@ define(function(require) {
       this.stopListening();
       minimized = false;
 
-      operation = new Operation(extend(description, { name: name }));
+      operation = new Operation(name, description);
       this.listenTo(operation, 'change', this.emitChange);
 
       this.emitChange();

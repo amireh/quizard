@@ -16,6 +16,7 @@ define(function(require) {
 
     getDefaultProps: function() {
       return {
+        actionbar: true,
         count: 0,
         completed: 0,
         item: undefined,
@@ -84,14 +85,16 @@ define(function(require) {
             {this.props.log.map(this.renderLogEntry)}
           </ul>
 
-          <div className="operation-actions">
-            <button
-              disabled={this.props.status !== K.OPERATION_ACTIVE}
-              className="btn btn-danger"
-              onClick={this.onAbort}>
-              Abort
-            </button>
-          </div>
+          {this.props.actionbar &&
+            <div className="operation-actions">
+              <button
+                disabled={this.props.status !== K.OPERATION_ACTIVE}
+                className="btn btn-danger"
+                onClick={this.onAbort}>
+                Abort
+              </button>
+            </div>
+          }
         </div>
       );
     },

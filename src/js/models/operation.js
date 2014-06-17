@@ -119,12 +119,13 @@ define(function(require) {
      *        the number of users you're enrolling, or the number of quiz
      *        respondents you're submitting on their behalf.
      */
-    initialize: function(attrs) {
+    constructor: function(name, attrs) {
       this.startedAt = new Date();
       this.lastActionAt = new Date();
 
       extend(this, this.defaults, attrs);
 
+      this.name = name;
       this.log = [];
       this.title = this.title || t([ this.name, 'title' ].join('.'), {
         count: this.itemCount

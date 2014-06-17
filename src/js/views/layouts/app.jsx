@@ -39,8 +39,6 @@ define([
           <main id="content">
             {this.renderOutlet('content')}
           </main>
-
-          <Statusbar message={this.props.status} />
         </div>
       );
     }

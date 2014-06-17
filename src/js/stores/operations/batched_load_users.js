@@ -40,19 +40,9 @@ define(function(require) {
     },
 
     onError: function(error, context, resolve, reject) {
-      var errorCode;
-
-      console.warn('API operation failure:', error, error.stack);
-
-      // TODO
-      if (context.atomic === true) {
-        reject(errorCode);
-      }
-      else {
-        context.operation.markLastActionFailed();
-        context.emitChange();
-        resolve();
-      }
+      context.operation.markLastActionFailed();
+      context.emitChange();
+      resolve();
     }
   });
 

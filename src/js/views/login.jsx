@@ -34,27 +34,29 @@ define([
       return(
         <Dialog
           onClose={this.props.onClose}
-          title='Sign in to Canvas'
+          title='Sign in to Quizard'
           autoFocus='[name="apiToken"]'
           thin={true}>
 
           <p>Fill in your Canvas API token to proceed.</p>
 
           <form ref="form" onSubmit={this.login} noValidate className="vertical-form">
-            <input
-              type="text"
-              name="apiToken"
-              placeholder="Your API token"
-              autoFocus={true}
-              valueLink={this.linkState('apiToken')}
-              className="form-input" />
+            <label className="form-label">
+              <input
+                type="text"
+                name="apiToken"
+                placeholder="Your API token"
+                autoFocus={true}
+                valueLink={this.linkState('apiToken')}
+                className="form-input" />
+            </label>
 
             <SaveButton
               ref="saveButton"
               onClick={this.login}
-              className="primary"
-              overlay={true}
-              paddedOverlay={true}>
+              type="primary"
+              overlay
+              paddedOverlay>
               Log In
             </SaveButton>
           </form>

@@ -11,20 +11,10 @@ define(function(require) {
   var loadUsers = require('./operations/batched_load_users');
 
   // var store, operation;
-  var store, emitChange;
-  var status = K.STATUS_IDLE;
+  var store, emitChange, studentLoading;
 
   var getCollection = function() {
     return Accounts.getUserCollection();
-  };
-
-  var setStatus = function(inStatus) {
-    console.debug('> UserStore Status:', inStatus);
-
-    status = inStatus;
-    emitChange('status', inStatus);
-
-    return inStatus;
   };
 
   /**
@@ -46,26 +36,23 @@ define(function(require) {
 
     runnerCount = Math.ceil(count / K.USER_MAX_PER_PAGE, 10);
 
-    var operation = new Operation({
+    studentLoading = new Operation('studentLoading', {
       count: runnerCount,
       itemCount: runnerCount
     });
-
-    setStatus(K.USER_LOADING);
 
     loadUsers.run(runnerCount, {
       page: options.page,
       reset: options.reset,
       collection: collection,
-      operation: operation,
+      operation: studentLoading,
       emitChange: emitChange,
     }).then(function() {
-
+      studentLoading.markComplete();
       onChange();
-    }, function() {
+    }, function(rc) {
+      studentLoading.markFailed(rc.detail);
       onError();
-    }).then(function() {
-      setStatus(K.STATUS_IDLE);
     });
   };
 
@@ -97,7 +84,7 @@ define(function(require) {
       operation: operation,
       atomic: payload.atomic,
       emitChange: emitChange
-    })
+    });
 
     descriptor.then(function() {
       operation.markComplete();
@@ -126,14 +113,10 @@ define(function(require) {
       return collection ? collection.invoke('toProps') : [];
     },
 
-    getStatus: function() {
-      return status;
-    },
-
-    getCurrentOperation: function() {
-      // if (operation) {
-      //   return operation.toProps();
-      // }
+    getStudentLoadingOperation: function() {
+      if (studentLoading) {
+        return studentLoading.toProps();
+      }
     },
 
     getStudentCount: function() {

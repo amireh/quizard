@@ -24,8 +24,7 @@ define(function(require) {
     updateProps: function() {
       this.update({
         courses: Courses.getAll(),
-        activeCourseId: Courses.getActiveCourseId(),
-        userStatus: Users.getStatus()
+        activeCourseId: Courses.getActiveCourseId()
       });
     }
   });
