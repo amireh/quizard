@@ -34,7 +34,9 @@ define(function(require) {
             }
           </AnswerSet>
 
-          <RatioControls id={this.props.id} answerType={this.props.answerType} />
+          <div className="question-controls">
+            <RatioControls id={this.props.id} answerType={this.props.answerType} />
+          </div>
         </div>
       );
     },

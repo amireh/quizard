@@ -2,10 +2,11 @@
 @dialog-nav-width: 160px;
 @dialog-title-padding: 20px;
 @dialog-title-height: 61px;
+@dialog-zindex: 2;
 
 body.with-dialog {
   #main {
-    z-index: 0;
+    z-index: @dialog-zindex - 2;
     pointer-events: none;
     .disable-selection;
   }
@@ -14,13 +15,13 @@ body.with-dialog {
     .fullscreen();
     content: "";
     position: fixed;
-    z-index: 1;
+    z-index: @dialog-zindex - 1;
     background: rgba(0,0,0,0.5);
   }
 
   #dialogs {
     display: block;
-    z-index: 2;
+    z-index: @dialog-zindex;
   }
 }
 
@@ -127,7 +128,7 @@ body.with-dialog {
   right:  0;
 
   line-height: 1;
-  z-index: 2;
+  z-index: @dialog-zindex;
   cursor: pointer;
   padding: @dialog-title-padding;
   border: none;
@@ -158,7 +159,7 @@ body.with-dialog {
   border-radius: 4px 4px 0 0;
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
   box-shadow: 0 1px 0 0 #ccc;
-  z-index: 1;
+  z-index: @dialog-zindex - 1;
 }
 
 .dialog-content {

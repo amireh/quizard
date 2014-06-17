@@ -7,7 +7,9 @@ define(function(require) {
   var StudentCount = require('jsx!components/student_count');
   var Alert = require('jsx!components/alert');
   var Question = require('jsx!./take/question');
+  var Options = require('jsx!./take/options');
   var t = require('i18n!take_quiz');
+
   var TakeQuiz = React.createClass({
     mixins: [ React.mixins.ActionInitiator ],
 
@@ -63,35 +65,40 @@ define(function(require) {
       var canTake = this.props.studentCount > 0;
 
       return(
-        <form onSubmit={this.onSubmit} id="take-quiz">
+        <div>
           <header className="content-header">
             {this.props.quiz.name}
+
+
+            <Options />
           </header>
 
-          {!canTake &&
-            <Alert>
-              No students are available. You must either enroll some, or
-              <a href={K.RECIPE_LOAD_STUDENTS}> load them</a> first.
-            </Alert>
-          }
+          <form noValidate onSubmit={this.onSubmit} id="take-quiz">
 
-          {this.state.storeError &&
-            <Alert>
-              {this.formatError()}
-            </Alert>
-          }
+            {!canTake &&
+              <Alert>
+                No students are available. You must either enroll some, or
+                <a href={K.RECIPE_LOAD_STUDENTS}> load them</a> first.
+              </Alert>
+            }
 
-          <section className="quiz-questions">
-            {this.props.quiz.questions.map(this.renderQuestion)}
-          </section>
+            {this.state.storeError &&
+              <Alert>
+                {this.formatError()}
+              </Alert>
+            }
 
-          {this.renderActions()}
-        </form>
+            <section className="quiz-questions">
+              {this.props.quiz.questions.map(this.renderQuestion)}
+            </section>
+
+            {this.renderActions()}
+          </form>
+        </div>
       );
     },
 
     renderQuestion: function(question, index) {
-
       return (
         <Question
           key={question.id}
@@ -143,6 +150,10 @@ define(function(require) {
       e.preventDefault();
 
       this.trackAction(Actions.take());
+    },
+
+    consume: function(e) {
+      e.preventDefault();
     }
   });
 

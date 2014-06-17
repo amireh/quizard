@@ -11,8 +11,6 @@ define(function(require) {
     navLink: K.RECIPE_TAKE_QUIZ,
 
     model: function() {
-      this.setStatus('Loading available courses.');
-
       return CourseStore.fetch();
     },
 

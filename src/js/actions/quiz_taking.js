@@ -30,6 +30,10 @@ function(Dispatcher, K) {
       }).index;
     },
 
+    randomizeRatios: function() {
+      return Dispatcher.dispatch(K.QUIZ_TAKING_RANDOMIZE_RESPONSE_RATIOS).index;
+    },
+
     take: function(atomic) {
       return Dispatcher.dispatch(K.QUIZ_TAKING_TAKE, {
         atomic: atomic

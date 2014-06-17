@@ -86,6 +86,10 @@ define(function(require) {
 
       return(
         <div id="enroll-students">
+          <header className="content-header">
+            Enroll Students
+          </header>
+
           {error &&
             <Alert
               onDismiss={this.clearStoreError}

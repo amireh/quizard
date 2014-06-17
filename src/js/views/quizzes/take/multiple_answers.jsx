@@ -38,9 +38,13 @@ define(function(require) {
 
     renderAnswer: function(variant, answer) {
       var isChecked = variant.answerIds.indexOf(answer.id) !== -1;
+      var className = React.addons.classSet({
+        'question-answer': true,
+        'correct-answer': answer.correct
+      });
 
       return (
-        <li key={answer.id} className="question-answer">
+        <li key={answer.id} className={className}>
           <Checkbox
             checked={isChecked}
             onChange={this.addToVariant.bind(null, variant.id)}

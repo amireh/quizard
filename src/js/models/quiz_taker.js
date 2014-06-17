@@ -5,6 +5,8 @@ define(function(require) {
   var findAnswerSet = require('./quiz_taker/find_answer_set');
   var _ = require('ext/underscore');
   var findBy = _.findBy;
+  var random = _.random;
+  var sample = _.sample;
 
   /**
    * @class Models.Quiz
@@ -70,6 +72,25 @@ define(function(require) {
       setResponseRatio(answerId, answerSet.answers, ratio);
 
       return true;
+    },
+
+    randomizeResponseRatios: function() {
+      this.questions.forEach(function(question) {
+        var answerSets = question.get('answerSets');
+        var variants = question.get('variants');
+
+        answerSets.forEach(function(answerSet) {
+          var randomAnswer = sample(answerSet.answers);
+          if (randomAnswer) {
+            setResponseRatio(randomAnswer.id, answerSet.answers, random(0, 100));
+          }
+        });
+
+        if (variants && variants.length) {
+          var randomVariant = sample(variants);
+          setResponseRatio(randomVariant.id, variants, random(0, 100));
+        }
+      }, this);
     },
 
     assignRespondents: function(studentCount) {

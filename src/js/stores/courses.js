@@ -7,7 +7,11 @@ define(function(require) {
 
   var collection = new Pixy.Collection(undefined, {
     model: Course,
-    url: '/courses'
+    url: '/courses',
+    cache: {
+      key: 'courses',
+      manual: true
+    }
   });
 
   return new Store('CourseStore', {
@@ -17,7 +21,13 @@ define(function(require) {
       var cachedId = this.preference('active');
       this.clearPreference('active');
 
-      return collection.fetch().then(function() {
+      collection.reset();
+
+      return collection.fetch({ useCache: true }).catch(function() {
+        return collection.fetchAll({ useCache: false });
+      }).then(function() {
+        collection.updateCacheEntry();
+
         if (cachedId) {
           this.activate({ id: cachedId }, this.emitChange.bind(this), NOOP);
         }

@@ -8,6 +8,8 @@ define(function(require) {
   var Users = require('stores/users');
   var store, quizTaker, responseCount;
 
+  responseCount = 0;
+
   /**
    * Take a quiz!
    *
@@ -22,6 +24,10 @@ define(function(require) {
     var studentResponses, operation, descriptor;
     var students = Users.getAll().slice(0, responseCount);
     var isAtomic = payload.atomic;
+
+    if (!responseCount) {
+      return onError(K.RESPONSE_COUNT_REQUIRED);
+    }
 
     try {
       studentResponses = quizTaker.generateResponses(students);
@@ -100,6 +106,12 @@ define(function(require) {
     }
   };
 
+  var randomizeResponseRatios = function(payload, onChange, onError) {
+    quizTaker.randomizeResponseRatios();
+
+    onChange();
+  };
+
   var setResponseCount = function(payload, onChange, onError) {
     var count = payload.count;
 
@@ -148,6 +160,10 @@ define(function(require) {
 
         case K.QUIZ_TAKING_SET_RESPONSE_RATIO:
           setResponseRatio(payload, onChange, onError);
+        break;
+
+        case K.QUIZ_TAKING_RANDOMIZE_RESPONSE_RATIOS:
+          randomizeResponseRatios(payload, onChange, onError);
         break;
 
         case K.QUIZ_TAKING_SET_RESPONSE_COUNT:
