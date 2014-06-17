@@ -33,6 +33,12 @@ en:
     status_no_more_students: >
       Nothing to do, no more students to load.
 
+  ns_take_quiz:
+    unexpected_error: Something has gone wrong.
+    response_generation_failed: >
+      An error occurred trying to generate and prepare the student responses
+      for submission. This is most likely an internal issue in Quizard and
+      should be reported.
   ns_operations:
     failures: 1 failure
     failures_plural: __count__ failures
@@ -40,12 +46,17 @@ en:
       aborting: >
         You are about to abort the operation which *may* leave things in a
         broken state. Are you sure you want to do this?
+
     enrollment:
-      title: Enrolling one student
-      title_plural: Enrolling __count__ students
+      title: >
+        Enrolling a student into <span class="course-name">__course__</span>
+      title_plural: >
+        Enrolling __count__ students into <span class="course-name">__course__</span>
+
       actions:
         USER_REGISTERING: Signing up as a student with a login id of "__login__".
         USER_ENROLLING: Enrolling student with user id "__userId__" into the course.
+
       errors:
         USER_REGISTERING: >
           Unable to register user with login "__login__".
@@ -55,3 +66,12 @@ en:
         USER_ENROLLING: >
           Unable to enroll user with id __login__. Make sure the course
           allows self-operation!
+
+    quiz_taking:
+      title: >
+        Generating a submission for <span class="quiz-name">__quiz__</span>
+      title_plural: >
+        Generating __count__ submissions for <span class="quiz-name">__quiz__</span>
+      actions:
+        QUIZ_TAKING_GENERATING_RESPONSES: >
+          Generating responses for students...

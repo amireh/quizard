@@ -14,6 +14,8 @@ define(function(require) {
   var MAX_LOG_SIZE = 10;
   var logGUID = 0;
 
+  var ALLOWED_ATTRS = [ 'count', 'itemCount' ];
+
   /**
    * @class OperationStatus
    *
@@ -104,17 +106,17 @@ define(function(require) {
      *        A short name that uniquely describes the operation. Needed for
      *        stringifying actions (used as an i18n scope.)
      *
-     * @param {String} title
+     * @param {String} attrs.title
      *        A title to represent to the user in a way the UI decides
      *        appropriate. This should probably describe what you're doing.
      *
      *        If unspecified, we'll try to translate the "title" property
      *        in your operation i18n scope.
      *
-     * @param {Number} count (required)
+     * @param {Number} attrs.count (required)
      *        The number of actions you expect to perform.
      *
-     * @param {Number} itemCount
+     * @param {Number} attrs.itemCount
      *        Number of "items" that your operation describes. This could be
      *        the number of users you're enrolling, or the number of quiz
      *        respondents you're submitting on their behalf.
@@ -123,13 +125,11 @@ define(function(require) {
       this.startedAt = new Date();
       this.lastActionAt = new Date();
 
-      extend(this, this.defaults, attrs);
+      extend(this, this.defaults, pick(attrs, ALLOWED_ATTRS));
 
       this.name = name;
       this.log = [];
-      this.title = this.title || t([ this.name, 'title' ].join('.'), {
-        count: this.itemCount
-      });
+      this.title = attrs.title || this.t('title', null, attrs.titleParams);
     },
 
     /**
@@ -292,7 +292,7 @@ define(function(require) {
 
       this.log.unshift({
         id: ++logGUID,
-        message: this.translate(actionCode, 'actions', item),
+        message: this.t(actionCode, 'actions', item),
         elapsed: 0
       });
     },
@@ -319,9 +319,16 @@ define(function(require) {
       }
     },
 
-    translate: function(actionCode, i18nScope, options) {
-      var key = [ this.name, i18nScope, actionCode ].join('.');
-      return t(key, extend({ defaultValue: actionCode }, options));
+    t: function(actionCode, i18nScope, options) {
+      var key = [ this.name ];
+
+      if (i18nScope) {
+        key.push(i18nScope);
+      }
+
+      key.push(actionCode);
+
+      return t(key.join('.'), extend({ defaultValue: actionCode }, options));
     }
   });
 });

@@ -2,6 +2,7 @@ define(function(require) {
   var Route = require('routes/base');
   var K = require('constants');
   var Users = require('stores/users');
+  var Accounts = require('stores/accounts');
   var View = require('jsx!views/recipes/load_students');
 
   new Route('loadStudentsRecipe', {
@@ -12,6 +13,7 @@ define(function(require) {
     enter: function() {
       this.updateProps();
 
+      Accounts.addChangeListener(this.updateProps, this);
       Users.addChangeListener(this.updateProps, this);
       Users.addErrorListener(this.injectStoreError, this);
     },

@@ -9,6 +9,11 @@ function(React, _, CourseActions, Chosen) {
   var chosenOptions = {
     width: '100%'
   };
+  var NO_COURSE_ID = 'none';
+  var NO_COURSE = [{
+    id: NO_COURSE_ID,
+    name: 'Choose a course'
+  }];
 
   /**
    * @class Components.CoursePicker
@@ -24,11 +29,15 @@ function(React, _, CourseActions, Chosen) {
     getDefaultProps: function() {
       return {
         courses: [],
-        activeCourseId: null
+        activeCourseId: NO_COURSE_ID
       };
     },
 
     render: function() {
+      var courses = this.props.activeCourseId === NO_COURSE_ID ?
+        NO_COURSE.concat(this.props.courses) :
+        this.props.courses;
+
       return (
         <Chosen
           synchronize
@@ -36,7 +45,7 @@ function(React, _, CourseActions, Chosen) {
           chosenOptions={chosenOptions}
           value={this.props.activeCourseId}
           onChange={this.activateCourse}
-          children={this.props.courses.map(this.renderCourse)} />
+          children={courses.map(this.renderCourse)} />
       );
     },
 

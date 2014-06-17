@@ -23,9 +23,9 @@ define(function(require) {
         onError = jasmine.createSpy('onError');
         onStatusChange = jasmine.createSpy('onStatusChange');
 
-        spyOn(Accounts, 'getActiveAccountId').and.returnValue('1');
+        spyOn(Accounts, 'getActiveItem').and.returnValue({ id: '1' });
         spyOn(Accounts, 'getUserCollection').and.returnValue(account.users);
-        spyOn(Courses, 'getActiveCourseId').and.returnValue('1');
+        spyOn(Courses, 'getActiveItem').and.returnValue({ id: '1' });
       });
 
       it('should sign-up as a student and enroll into course', function() {

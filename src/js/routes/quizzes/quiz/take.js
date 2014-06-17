@@ -3,9 +3,11 @@ define(function(require) {
   var K = require('constants');
   var QuizTakingStore = require('stores/quiz_taking');
   var Users = require('stores/users');
+  var View = require('jsx!views/quizzes/take');
 
   new Route('takeQuiz', {
     navLink: K.RECIPE_TAKE_QUIZ,
+    views: [{ component: View }],
 
     setup: function() {
       QuizTakingStore.build(this.modelFor('quiz'));

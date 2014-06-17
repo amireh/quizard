@@ -70,7 +70,9 @@ define(function(require) {
     render: function() {
       var operation = this.props.operation;
       var error = this.getError();
-      var title = operation.title;
+      var title = React.DOM.span({
+        dangerouslySetInnerHTML: { __html: operation.title }
+      });
 
       return(
         <Dialog title={title} onClose={this.minimize}>

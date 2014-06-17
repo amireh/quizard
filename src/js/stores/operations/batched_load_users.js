@@ -40,7 +40,7 @@ define(function(require) {
     },
 
     onError: function(error, context, resolve, reject) {
-      context.operation.markLastActionFailed();
+      context.operation.markActionFailed();
       context.emitChange();
       resolve();
     }

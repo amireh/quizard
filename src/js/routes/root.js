@@ -60,7 +60,7 @@ define(function(require) {
       props.authenticated = SessionStore.isActive();
       props.user = SessionStore.get();
       props.accounts = AccountStore.getAll();
-      props.activeAccountId = AccountStore.getActiveAccountId();
+      props.activeAccountId = AccountStore.getActiveItemId();
       props.operation = OperationStore.toProps();
 
       this.events.update.call(this, props);

@@ -32,11 +32,20 @@ define(function(require) {
       });
     },
 
+    parse: function(payload) {
+      if (payload.title) {
+        payload.name = payload.title;
+        delete payload.title;
+      }
+
+      return payload;
+    },
+
     toProps: function() {
       var props = {};
 
       props.id = this.get('id') + '';
-      props.name = this.get('title');
+      props.name = this.get('name');
       props.questions = this.questions.toProps().filter(function(question) {
         return question.type !== 'text_only_question';
       });

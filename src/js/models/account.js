@@ -12,7 +12,7 @@ define(function(require) {
       this.users = new Users(undefined, { account: this });
     },
 
-    toJSON: function() {
+    toProps: function() {
       return {
         id: this.get('id') + '',
         name: this.get('name')

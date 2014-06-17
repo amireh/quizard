@@ -60,6 +60,8 @@ define(function(require) {
     var studentCount = parseInt(payload.studentCount || '', 10);
     var prefix = payload.prefix || K.DEFAULT_ID_PREFIX;
     var guid, operation, descriptor;
+    var course = Courses.getActiveItem();
+    var account = Accounts.getActiveItem();
 
     if (!studentCount || studentCount < K.USER_MIN_ENROLL) {
       return onError(K.USER_ENROLLMENT_COUNT_TOO_LOW);
@@ -67,18 +69,29 @@ define(function(require) {
     else if (studentCount && studentCount > K.USER_MAX_ENROLL) {
       return onError(K.USER_ENROLLMENT_COUNT_TOO_HIGH);
     }
+    else if (!course) {
+      return onError(K.COURSE_REQUIRED)
+    }
+    else if (!account) {
+      return onError(K.ACCOUNT_REQUIRED);
+    }
 
     guid = parseInt(payload.idRange, 10) || 0;
     prefix = prefix.replace(/_+$/, '');
 
     operation = OperationStore.start('enrollment', {
       count: studentCount * 2,
-      itemCount: studentCount
+      itemCount: studentCount,
+
+      titleParams: {
+        count: studentCount,
+        course: course.name
+      }
     });
 
     descriptor = batchedEnrollment.run(studentCount, {
-      accountId: Accounts.getActiveAccountId(),
-      courseId: Courses.getActiveCourseId(),
+      accountId: account.id,
+      courseId: course.id,
       prefix: prefix,
       guid: guid,
       operation: operation,

@@ -1,10 +1,10 @@
-define([
-  'ext/pixy',
-  'underscore',
-  'constants',
-  'models/account'
-], function(Pixy, _, K, Account) {
-  var store, activeAccountId;
+define(function(require) {
+  var Pixy = require('ext/pixy');
+  var Store = require('core/store');
+  var K = require('constants');
+  var Account = require('models/account');
+
+  var store;
 
   var collection = new Pixy.Collection(undefined, {
     model: Account,
@@ -16,57 +16,43 @@ define([
     return collection.get(id);
   };
 
-  var activate = function(payload, onChange, onError) {
-    var account = get(payload.id);
+  store = new Store('AccountStore', {
+    collection: collection,
 
-    if (account) {
-      activeAccountId = payload.id;
-      localStorage.setItem('activeAccountId', payload.id);
-      account.users.fetch({ useCache: true }).then(onChange, onChange);
-    } else {
-      onError("Account with the id " + payload.id + " could not be resolved.");
-    }
-  };
-
-  store = new Pixy.Store('AccountStore', {
     fetch: function() {
-      var _activeAccountId = localStorage.activeAccountId;
-
-      localStorage.removeItem('activeAccountId');
-      activeAccountId = undefined;
+      var cachedId = this.preference('active');
+      this.clearPreference('active');
 
       return collection.fetch({ reset: true }).then(function() {
-        if (_activeAccountId) {
-          activate({ id: _activeAccountId }, store.emitChange.bind(store), NOOP);
+        if (cachedId) {
+          this.activate({ id: cachedId }, this.emitChange.bind(this), NOOP);
         }
 
-        return store.getAll();
-      });
+        return this.getAll();
+      }.bind(this));
     },
 
-    getAll: function() {
-      return collection.toJSON();
-    },
+    // Activate an account and load its users from the cache, if any.
+    activate: function(payload, onChange, onError) {
+      Store.prototype.activate.call(this, payload, function() {
+        var account = get(this.getActiveItemId());
 
-    /**
-     * The account currently marked as active.
-     *
-     * @return {String|undefined}
-     */
-    getActiveAccountId: function() {
-      return activeAccountId;
+        account.users.fetch({ useCache: true }).finally(onChange);
+      }.bind(this), onError);
     },
 
     getUserCollection: function() {
-      if (activeAccountId) {
-        return collection.get(activeAccountId).users;
+      var account = get(this.getActiveItemId());
+
+      if (account) {
+        return account.users;
       }
     },
 
     onAction: function(action, payload, onChange, onError) {
       switch(action) {
         case K.ACCOUNT_ACTIVATE:
-          activate(payload, onChange, onError);
+          this.activate(payload, onChange, onError);
         break;
       }
     }

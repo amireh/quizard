@@ -38,7 +38,7 @@ define(function(require) {
     },
 
     onDone: function(output, context) {
-      // context.operation.mark();
+      context.operation.mark();
       context.emitChange();
     },
 
@@ -61,12 +61,11 @@ define(function(require) {
         break;
       }
 
-      // TODO
       if (context.atomic === true) {
         reject(errorCode);
       }
       else {
-        operation.markLastActionFailed(errorCode);
+        operation.markActionFailed();
         emitChange();
         resolve();
       }

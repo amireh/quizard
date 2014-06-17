@@ -7,6 +7,7 @@ define(function(require) {
   var StudentCount = require('jsx!components/student_count');
   var Alert = require('jsx!components/alert');
   var Question = require('jsx!./take/question');
+  var t = require('i18n!take_quiz');
   var TakeQuiz = React.createClass({
     mixins: [ React.mixins.ActionInitiator ],
 
@@ -24,23 +25,38 @@ define(function(require) {
         },
         quizTaking: {
           responseCount: K.USER_MIN_ENROLL
-        }
+        },
+        operation: {}
       };
     },
 
     componentWillReceiveProps: function(nextProps) {
       var thisProps = this.props;
+      var success;
       var done =
-        thisProps.quizTaking.status !== K.STATUS_IDLE &&
-        nextProps.quizTaking.status === K.STATUS_IDLE;
+        thisProps.operation.status === K.OPERATION_ACTIVE &&
+        nextProps.operation.status !== K.OPERATION_ACTIVE;
 
       if (done) {
-        this.refs.saveButton.markDone(true);
+        success = nextProps.operation.status === K.OPERATION_COMPLETE;
+        this.refs.saveButton.markDone(success);
       }
     },
 
     onStoreError: function() {
       this.refs.saveButton.markDone(false);
+    },
+
+    formatError: function() {
+      var errorCode = this.state.storeError.error;
+
+      if (errorCode === K.QUIZ_TAKING_RESPONSE_GENERATION_FAILED) {
+        return t('response_generation_failed');
+      } else {
+        return t('unexpected_error', {
+          errorCode: errorCode,
+        });
+      }
     },
 
     render: function() {
@@ -52,9 +68,16 @@ define(function(require) {
             {this.props.quiz.name}
           </header>
 
-          {!canTake && <Alert>
+          {!canTake &&
+            <Alert>
               No students are available. You must either enroll some, or
-              <a href={K.RECIPE_LOAD_STUDENTS}>load them</a> first.
+              <a href={K.RECIPE_LOAD_STUDENTS}> load them</a> first.
+            </Alert>
+          }
+
+          {this.state.storeError &&
+            <Alert>
+              {this.formatError()}
             </Alert>
           }
 

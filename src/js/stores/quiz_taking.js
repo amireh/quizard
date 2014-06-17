@@ -2,22 +2,11 @@ define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
   var QuizTaker = require('models/quiz_taker');
-  var Operation = require('models/operation');
   var batchedTakeQuiz = require('./operations/batched_take_quiz');
   var Quizzes = require('stores/quizzes');
+  var OperationStore = require('stores/operations');
   var Users = require('stores/users');
-  var store, quizTaker, operation, responseCount, status, batchRun;
-
-  var setStatus = function(code) {
-    console.debug('Status:', code);
-
-    status = code;
-    store.emitChange('status', code);
-  };
-
-  var resetStatus = function() {
-    setStatus(K.STATUS_IDLE);
-  };
+  var store, quizTaker, responseCount;
 
   /**
    * Take a quiz!
@@ -30,58 +19,49 @@ define(function(require) {
    *  3. it turns it in
    */
   var take = function(payload, onChange, onError) {
+    var studentResponses, operation, descriptor;
     var students = Users.getAll().slice(0, responseCount);
-    var studentResponses;
-
-    operation = new Operation({
-      count: responseCount * 3 + 1,
-      itemCount: responseCount
-    });
-
-    operation.on('change', store.emitChange, store);
-
-    setStatus(K.QUIZ_TAKING_STARTED);
-    operation.mark('Generating responses...');
+    var isAtomic = payload.atomic;
 
     try {
       studentResponses = quizTaker.generateResponses(students);
     }
     catch(e) {
       console.warn(e.stack);
-      operation.markLastActionFailed();
-      onError(K.QUIZ_TAKING_RESPONSE_GENERATION_FAILED);
-      resetStatus();
-      return;
+      return onError(K.QUIZ_TAKING_RESPONSE_GENERATION_FAILED);
     }
 
-    operation.runner = batchedTakeQuiz.run(responseCount, {
+    operation = OperationStore.start('quiz_taking', {
+      count: responseCount * 3,
+      itemCount: responseCount,
+      titleParams: {
+        count: responseCount,
+        quiz: quizTaker.quiz.get('name')
+      }
+    });
+
+    descriptor = batchedTakeQuiz.run(responseCount, {
       emitChange: store.emitChange.bind(store),
       operation: operation,
       quizTaker: quizTaker,
       studentResponses: studentResponses,
-      atomic: payload.atomic
+      atomic: isAtomic
     });
 
-    operation.runner.then(function() {
+    descriptor.promise.then(function() {
       onChange();
-    }, function(rc) {
+      operation.markComplete();
+    }).catch(function(rc) {
       if (rc.code === K.OPERATION_ABORTED) {
-        operation.abort();
+        operation.markAborted();
       }
       else if (rc.code === K.OPERATION_FAILED) {
-        operation.stop(rc.detail);
+        operation.markFailed(rc.detail);
         onError(rc.detail);
       }
-      else {
-        console.warn('Unexpected error in BatchedOperation runner:', rc, rc.stack);
-        operation.stop();
-        onError();
-      }
-    }).finally(function() {
-      operation.mark();
-      operation.runner = undefined;
-      resetStatus();
     });
+
+    operation.on('abort', descriptor.abort);
   };
 
   var addAnswer = function(payload, onChange, onError) {
@@ -142,10 +122,6 @@ define(function(require) {
       return quizTaker;
     },
 
-    getStatus: function() {
-      return status;
-    },
-
     build: function(quiz) {
       quizTaker = new QuizTaker({}, { quiz: Quizzes.collection.get(quiz.id) });
       this.emitChange();
@@ -154,15 +130,6 @@ define(function(require) {
     toProps: function() {
       var props = {};
 
-      if (operation) {
-        props = operation.toProps();
-
-        if (operation.runner) {
-          props.id = operation.runner.id;
-        }
-      }
-
-      props.status = status;
       props.responseCount = responseCount;
 
       return props;
@@ -216,20 +183,12 @@ define(function(require) {
         case K.QUIZ_TAKING_ADD_ANSWER_TO_VARIANT:
           addAnswerToVariant(payload, onChange, onError);
         break;
-
-        case K.OPERATION_ABORT:
-          if (operation && operation.runner.id === payload.operationId) {
-            operation.runner.abort();
-          }
-        break;
       }
     },
 
     reset: function() {
       quizTaker = undefined;
       responseCount = 0;
-      operation = undefined;
-      resetStatus();
     }
   });
 
