@@ -4,3 +4,4 @@ src/js/build.js
 src/js/bundles/**/*.js
 src/js/views/**/*.js
 src/js/util/diff.js
+src/js/config/initializers/debug.js

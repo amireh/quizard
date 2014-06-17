@@ -2,7 +2,6 @@
 define(function(require) {
   var React = require('react');
   var Actions = require('actions/quiz_taking');
-  var K = require('constants');
   var t = require('i18n!take_quiz');
 
   var HasVariantsMixin = {

@@ -57,6 +57,48 @@ textarea {
   resize: vertical;
 }
 
+.form-label {
+  display: block;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: @whitespace;
+  line-height: 30px;
+
+  &.marginless {
+    margin-bottom: 0;
+  }
+}
+
+.form-input {
+  .transition(~"border linear .2s, box-shadow linear .2s");
+
+  display: inline-block;
+  padding: 4px 6px;
+  font-size: 13px;
+  line-height: 20px;
+  height: 30px;
+  color: inherit;
+  max-width: 100%;
+  vertical-align: middle;
+
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+
+  &:focus {
+    border-color: @dark-blue;
+    outline: 0;
+
+    :invalid, .invalid {
+      border-color: #e9322d;
+    }
+  }
+
+  :invalid, .invalid {
+    color: #b94a48;
+    border-color: #ee5f5b;
+  }
+}
+
 .vertical-form {
   .form-input {
     width: 100%;
@@ -69,18 +111,6 @@ textarea {
 
   .btn {
     width: 100%;
-  }
-}
-
-.form-label {
-  display: block;
-  font-weight: bold;
-  font-size: 13px;
-  margin-bottom: @whitespace;
-  line-height: 30px;
-
-  &.marginless {
-    margin-bottom: 0;
   }
 }
 

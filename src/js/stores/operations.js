@@ -1,9 +1,7 @@
 define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
-  var _ = require('underscore');
   var Operation = require('models/operation');
-  var extend = _.extend;
   var operation;
   var store;
   var minimized = true;
@@ -37,7 +35,7 @@ define(function(require) {
       return props;
     },
 
-    onAction: function(action, payload, onChange, onError) {
+    onAction: function(action, payload, onChange/*, onError*/) {
       if (action === K.OPERATION_BOX_MINIMIZE) {
         minimized = true;
         onChange();

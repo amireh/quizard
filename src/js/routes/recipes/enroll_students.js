@@ -3,7 +3,7 @@ define(function(require) {
   var K = require('constants');
   var Courses = require('stores/courses');
   var Users = require('stores/users');
-  var View = require('jsx!views/users/enroll');
+  var View = require('jsx!views/recipes/enroll_students');
 
   new Route('enrollStudentsRecipe', {
     navLink: K.RECIPE_ENROLL_STUDENTS,

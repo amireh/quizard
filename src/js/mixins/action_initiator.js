@@ -53,5 +53,5 @@ define([ 'underscore' ], function(_) {
         actionIndex: actionIndex
       });
     }
-  }
+  };
 });

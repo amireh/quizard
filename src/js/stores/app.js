@@ -104,7 +104,7 @@ function(Pixy, _, Constants) {
       return secondaryRoute;
     },
 
-    onAction: function(action, payload, onChange, onError) {
+    onAction: function(action, payload, onChange/*, onError*/) {
       switch(action) {
         case Constants.APP_TRACK_ROUTE:
           trackRouteChanges(payload, onChange);

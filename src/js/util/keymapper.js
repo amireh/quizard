@@ -72,10 +72,6 @@ define([ 'underscore', 'shortcut', 'util/sanitize' ], function(_, Shortcut, Sani
             key           = this.keybindings[action] || default_key,
             callback      = action;
 
-        if (description.match(/ns_[\w|_]+\./)) {
-          description = i18n.t(description);
-        }
-
         if (!this[callback]) {
           throw 'no such callback for keybinding action \'' + action + '\' on key \'' + key + '\'';
         }

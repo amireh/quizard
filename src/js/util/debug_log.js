@@ -11,6 +11,6 @@ define([], function() {
 
       console.debug.apply(console, params);
       //>>excludeEnd("production");
-    }
+    };
   };
 });

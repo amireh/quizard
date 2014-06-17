@@ -1,7 +1,6 @@
 define(function(require) {
   var _ = require('ext/underscore');
   var findBy = _.findBy;
-  var pluck = _.pluck;
   var find = _.find;
 
   return function findAnswerSet(answerId, questions, answerSetId) {

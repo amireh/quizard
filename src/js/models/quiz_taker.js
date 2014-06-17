@@ -168,9 +168,6 @@ define(function(require) {
     removeVariantFromQuestion: function(questionId, variantId) {
       this.questions.get(questionId).removeVariant(variantId);
       return true;
-    },
-
-    addCustomAnswer: function(questionId, text, value) {
     }
   });
 });

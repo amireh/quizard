@@ -70,7 +70,7 @@ define(function(require) {
       return onError(K.USER_ENROLLMENT_COUNT_TOO_HIGH);
     }
     else if (!course) {
-      return onError(K.COURSE_REQUIRED)
+      return onError(K.COURSE_REQUIRED);
     }
     else if (!account) {
       return onError(K.ACCOUNT_REQUIRED);

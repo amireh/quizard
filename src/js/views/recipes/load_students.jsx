@@ -48,11 +48,15 @@ define(function(require) {
     },
 
     formatError: function() {
+      var message;
+
       switch(this.state.storeError.error) {
         case K.ACCOUNT_REQUIRED:
-          return <p>You must choose an account first!</p>
+          message = <p>You must choose an account first!</p>;
         break;
       }
+
+      return message;
     },
 
     render: function() {

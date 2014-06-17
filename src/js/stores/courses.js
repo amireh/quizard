@@ -17,6 +17,9 @@ define(function(require) {
   return new Store('CourseStore', {
     collection: collection,
 
+    /**
+     * Get all available courses, relying on the cache as the first source.
+     */
     fetch: function() {
       var cachedId = this.preference('active');
       this.clearPreference('active');

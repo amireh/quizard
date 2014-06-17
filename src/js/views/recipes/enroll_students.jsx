@@ -58,7 +58,7 @@ define(function(require) {
       }
     },
 
-    onStoreError: function(storeError) {
+    onStoreError: function() {
       this.refs.saveButton.markDone(false);
     },
 

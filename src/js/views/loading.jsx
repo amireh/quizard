@@ -25,7 +25,7 @@ define([ 'react', 'jquery' ], function(React, $) {
 
     toggle: function(visible) {
       var $this = $(this.getDOMNode());
-      // $(document.body).toggleClass('state-loading', visible);
+
       $this.css({
         opacity: visible ? '1' : '0'
       });

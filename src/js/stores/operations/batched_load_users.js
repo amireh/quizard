@@ -39,7 +39,7 @@ define(function(require) {
       return true;
     },
 
-    onError: function(error, context, resolve, reject) {
+    onError: function(error, context, resolve/*, reject*/) {
       context.operation.markActionFailed();
       context.emitChange();
       resolve();

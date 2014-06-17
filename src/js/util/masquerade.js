@@ -12,5 +12,5 @@ define(function() {
     userId = ''+ (userId || '');
 
     return url + (userId.length ? '?as_user_id=' + userId : '');
-  }
+  };
 });

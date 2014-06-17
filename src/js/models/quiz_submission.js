@@ -15,7 +15,7 @@ define(function(require) {
   return Model.extend({
     name: 'QuizSubmission',
 
-    urlRoot: function(dontMasquerade) {
+    urlRoot: function() {
       return result(this.quiz, 'url') + '/submissions';
     },
 

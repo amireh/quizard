@@ -8,8 +8,6 @@ define(function(require) {
   var Users = require('stores/users');
   var store, quizTaker, responseCount;
 
-  responseCount = 0;
-
   /**
    * Take a quiz!
    *
@@ -70,12 +68,6 @@ define(function(require) {
     operation.on('abort', descriptor.abort);
   };
 
-  var addAnswer = function(payload, onChange, onError) {
-    var questionId = payload.questionId;
-
-    quizTaker.addCustomAnswer(questionId).then(onChange, onError);
-  };
-
   var addAnswerToVariant = function(payload, onChange, onError) {
     if (quizTaker.addAnswerToVariant(payload.questionId, payload.variantId, payload.answerId)) {
       onChange();
@@ -100,13 +92,13 @@ define(function(require) {
 
     if (rc) {
       onChange();
-      Quizzes.emitChange();
+      // Quizzes.emitChange();
     } else {
       onError(quizTaker.validationError);
     }
   };
 
-  var randomizeResponseRatios = function(payload, onChange, onError) {
+  var randomizeResponseRatios = function(payload, onChange) {
     quizTaker.randomizeResponseRatios();
 
     onChange();
@@ -151,7 +143,7 @@ define(function(require) {
       switch(action) {
         case K.QUIZ_TAKING_SET:
           if (quizTaker.set(payload)) {
-            onChange();
+            // onChange();
             Quizzes.emitChange();
           } else {
             onError(quizTaker.validationError);
@@ -172,10 +164,6 @@ define(function(require) {
 
         case K.QUIZ_TAKING_TAKE:
           take(payload, onChange, onError);
-        break;
-
-        case K.QUIZ_TAKING_ADD_ANSWER:
-          addAnswer(payload, onChange, onError);
         break;
 
         case K.QUIZ_TAKING_ADD_VARIANT:

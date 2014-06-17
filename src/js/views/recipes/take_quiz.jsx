@@ -6,6 +6,10 @@ define(function(require) {
   var CoursePicker = require('jsx!components/course_picker');
   var RouteActions = require('actions/routes');
 
+  // This recipe is just a dialog that takes the user to the proper quiz
+  // view.
+  //
+  // The real action of taking a quiz happens in quizzes/take.jsx
   var TakeQuizRecipe = React.createClass({
     mixins: [ React.addons.LinkedStateMixin, React.mixins.ActionInitiator ],
 

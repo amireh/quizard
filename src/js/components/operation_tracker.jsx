@@ -40,7 +40,7 @@ define(function(require) {
       this.stop();
     },
 
-    componentDidUpdate: function(prevProps, prevState) {
+    componentDidUpdate: function(prevProps) {
       var done =
         prevProps.status === K.OPERATION_ACTIVE &&
         this.props.status !== K.OPERATION_ACTIVE;

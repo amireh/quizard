@@ -2,10 +2,7 @@
 define([], function() {
   var LinkUtils;
 
-  function NOOP() {};
-  function requestChangeWrapper(e, requestChange) {
-    return requestChange(e.target.value);
-  }
+  function NOOP() {}
 
   LinkUtils = {
     getValue: function(props) {

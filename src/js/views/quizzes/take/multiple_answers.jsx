@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 define(function(require) {
   var React = require('react');
-  var K = require('constants');
   var Checkbox = require('jsx!components/checkbox');
   var TooltipsMixin = require('mixins/views/tooltips');
   var RatiosMixin = require('jsx!./mixins/response_ratios');

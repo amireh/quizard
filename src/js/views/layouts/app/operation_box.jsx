@@ -5,7 +5,6 @@ define(function(require) {
   var Operation = require('jsx!components/operation_tracker');
   var OperationActions = require('actions/operations');
   var Alert = require('jsx!components/alert');
-  var K = require('constants');
   var t = require('i18n!operations');
 
   var OperationBox = React.createClass({
@@ -31,7 +30,7 @@ define(function(require) {
       this.setState({ title: document.title });
     },
 
-    componentDidUpdate: function(prevProps, prevState) {
+    componentDidUpdate: function() {
       var completion = parseInt(this.props.operation.ratio || 0, 10);
 
       if (completion < 100) {
@@ -59,7 +58,7 @@ define(function(require) {
           this.props.operation.name,
           'errors',
           this.state.error
-        ].join('.'), this.props.operation.item)
+        ].join('.'), this.props.operation.item);
       }
     },
 

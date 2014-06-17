@@ -1,7 +1,6 @@
 define(function(require) {
   var Pixy = require('pixy');
   var RSVP = require('rsvp');
-  var result = require('underscore').result;
   var ajax = require('core/ajax');
   var masquerade = require('util/masquerade');
   var QuizSubmission = require('models/quiz_submission');

@@ -1,6 +1,4 @@
-define([ 'underscore'], function(_) {
-  var slice = Array.prototype.slice;
-
+define([ 'underscore' ], function(_) {
   // alias
   _.findBy = _.findWhere;
 

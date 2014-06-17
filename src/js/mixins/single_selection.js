@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-define([ 'react', 'underscore' ], function(React, _) {
+define([ 'react' ], function(React) {
   function getInitialSelection(props) {
     return React.LinkUtils.getValue(props);
   }

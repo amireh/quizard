@@ -12,7 +12,7 @@ define([
 
   ajax({
     mutator: function(xhrOptions) {
-      xhrOptions.headers['Authorization'] = 'Bearer ' + apiToken;
+      xhrOptions.headers.Authorization = 'Bearer ' + (apiToken || '');
     }
   });
 
@@ -56,7 +56,7 @@ define([
       };
     },
 
-    fetch: function(options) {
+    fetch: function() {
       return new RSVP.Promise(function(resolve, reject) {
         create({ apiToken: localStorage.apiToken }, resolve, reject);
       });

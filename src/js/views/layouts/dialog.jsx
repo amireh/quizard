@@ -15,15 +15,9 @@ define(function(require) {
       };
     },
 
-    // componentDidMount: function() {
-    //   $(document.body).addClass('with-dialog');
-    // },
-
-    // componentWillUnmount: function() {
-    //   $(document.body).removeClass('with-dialog');
-    // },
-
-    componentDidUpdate: function(prevProps, prevState) {
+    // We want the dialog layer to be visible only if a dialog is actually being
+    // displayed, or the user is viewing an active operation.
+    componentDidUpdate: function() {
       var hasDialog = !this.type.isEmpty(this.props);
       $(document.body).toggleClass('with-dialog', hasDialog ||
         this.isViewingOperation());

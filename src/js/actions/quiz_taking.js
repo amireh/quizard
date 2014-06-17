@@ -40,12 +40,6 @@ function(Dispatcher, K) {
       }).index;
     },
 
-    addAnswer: function(questionId) {
-      return Dispatcher.dispatch(K.QUIZ_TAKING_ADD_ANSWER, {
-        questionId: questionId
-      }).index;
-    },
-
     addAnswerToVariant: function(questionId, variantId, answerId) {
       return Dispatcher.dispatch(K.QUIZ_TAKING_ADD_ANSWER_TO_VARIANT, {
         questionId: questionId,

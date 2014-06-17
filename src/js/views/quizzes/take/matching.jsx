@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 define(function(require) {
   var React = require('react');
-  var K = require('constants');
   var _ = require('ext/underscore');
   var findBy = _.findBy;
   var Chosen = require('jsx!components/chosen');
@@ -11,9 +10,6 @@ define(function(require) {
   var RatioRandomizer = require('jsx!./components/ratio_randomizer');
   var RatioControls = require('jsx!./components/ratio_controls');
   var Actions = require('actions/quiz_taking');
-  var getAnswers = function(props) {
-    return props.answerSets[0].answers;
-  };
 
   var Matching = React.createClass({
     mixins: [ TooltipsMixin, RatiosMixin, HasVariantsMixin ],

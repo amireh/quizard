@@ -1,4 +1,4 @@
-define([ 'react' ], function(React) {
+define([], function() {
   return {
     getDefaultProps: function() {
       return {};

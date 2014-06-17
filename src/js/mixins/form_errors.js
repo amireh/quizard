@@ -44,14 +44,10 @@ function(_, $, RSVP, FormError) {
      *         A well-formed API error that contains a "field_errors" map of
      *         errors.
      *
-     * @param  {Object} options
-     *         Rendering options to pass to the Modules.FormError()
-     *         constructor.
-     *
      * @return {Promise}
      *         Of the form being decorated with the error tooltips.
      */
-    showFormError: function(apiError, options) {
+    showFormError: function(apiError) {
       if (apiError.responseText) {
         apiError = JSON.parse(apiError.responseText);
       }

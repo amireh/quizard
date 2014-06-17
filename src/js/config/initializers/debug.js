@@ -8,9 +8,10 @@ var DEBUG = {
 !Root.PIXY_TEST && define([
   'config',
   'rsvp',
-  'util/diff'
+  'util/diff',
+  'underscore'
 ],
-function(CONFIG, RSVP, diff) {
+function(CONFIG, RSVP, diff, _) {
   DEBUG.RSVP = RSVP;
   DEBUG.DELAY_TIMER = 500;
 
@@ -53,7 +54,7 @@ function(CONFIG, RSVP, diff) {
     }
 
     return output;
-  }
+  };
 
   DEBUG.expose = function(path, name, callback) {
     if (arguments.length < 2) {
@@ -83,5 +84,5 @@ function(CONFIG, RSVP, diff) {
     return _.uniq(_.flatten(Object.keys(obj._events).map(function(name) {
       return _.pluck(obj._events[name], 'ctx');
     })));
-  }
+  };
 });

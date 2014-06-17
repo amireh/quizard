@@ -49,8 +49,10 @@ define(function(require) {
 
     toJSON: function() {
       return this.map(function(user) {
-        return { id: user.get('id') };
-      });;
+        return {
+          id: user.get('id')
+        };
+      });
     }
   });
 
