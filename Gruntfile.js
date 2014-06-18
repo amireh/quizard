@@ -85,6 +85,7 @@ module.exports = function(grunt) {
     grunt.task.run('version');
     grunt.task.run('build');
     grunt.task.run('tagrelease');
+    grunt.task.run('compress:release');
     grunt.task.run('development');
   });
 
