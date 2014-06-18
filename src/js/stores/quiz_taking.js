@@ -26,6 +26,9 @@ define(function(require) {
     if (!responseCount) {
       return onError(K.RESPONSE_COUNT_REQUIRED);
     }
+    else if (students.length < responseCount) {
+      return onError(K.QUIZ_TAKING_NOT_ENOUGH_STUDENTS);
+    }
 
     try {
       studentResponses = quizTaker.generateResponses(students);

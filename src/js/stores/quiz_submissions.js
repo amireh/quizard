@@ -17,7 +17,7 @@ define(function(require) {
 
       quizSubmission.fetch({
         parse: true,
-        url: masquerade(quizSubmission.url(), userId)
+        url: masquerade(quizSubmission.url() + '/self', userId)
       }).then(function() {
         if (quizSubmission.isUntaken()) {
           svc.resolve(quizSubmission);
