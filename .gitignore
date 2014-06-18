@@ -17,6 +17,7 @@
 [build]
 /tmp/*
 !/tmp/.gitkeep
+/releases
 
 [assets]
 /www/assets/fonts/*/index.html

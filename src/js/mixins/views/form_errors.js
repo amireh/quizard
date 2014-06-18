@@ -55,6 +55,8 @@ define([ 'rsvp', 'modules/form_error' ], function(RSVP, FormError) {
      *         Of the form being decorated with the error tooltips.
      */
     showFormError: function(apiError) {
+      apiError = apiError || {};
+
       if (apiError.responseText) {
         apiError = JSON.parse(apiError.responseText);
       }

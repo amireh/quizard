@@ -46,6 +46,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-symlink');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-yaml');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
   // Please don't rename these, they're used by `bin/build`:
   // ---
