@@ -1,6 +1,20 @@
 # Quizard
 
-An in-house tool for use by quiz developers for Canvas, the LMS by Instructure. Quizard provides automation for certain tasks that would otherwise require a large effort to do by hand, like taking a quiz by a thousand students.
+An in-house tool for use by developers of Canvas, the LMS by Instructure,
+working on quizzes. Quizard provides automation for certain tasks that would
+otherwise require a large effort to do by hand, like taking a quiz by a thousand
+students.
+
+See the [https://github.com/amireh/quizard/wiki](Wiki) to get started.
+
+## Development
+
+Follow the setting-up guide to get Quizard working with Canvas, then:
+
+1. clone the repo
+2. `npm install`
+3. `grunt development`
+4. `open http://quizard.localhost.com` (or `xdg-open`)
 
 ## License
 
