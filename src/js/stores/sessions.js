@@ -3,12 +3,14 @@ define([
   'underscore',
   'rsvp',
   'constants',
-  'core/session',
   'ext/jquery/ajax'
-], function(Pixy, _, RSVP, K, Session, ajax) {
+], function(Pixy, _, RSVP, K, ajax) {
   var store;
   var apiToken;
   var active;
+  var session = new Pixy.Model({}, {
+    url: '/users/self/profile'
+  });
 
   ajax({
     mutator: function(xhrOptions) {
@@ -29,7 +31,7 @@ define([
 
     active = false;
 
-    Session.fetch().then(function() {
+    session.fetch().then(function() {
       active = true;
       onChange();
     }).catch(onError);
@@ -50,9 +52,9 @@ define([
 
     get: function() {
       return {
-        id: Session.get('id') + '',
-        name: Session.get('name'),
-        email: Session.get('login_id')
+        id: session.get('id') + '',
+        name: session.get('name'),
+        email: session.get('login_id')
       };
     },
 
@@ -72,7 +74,7 @@ define([
     }
   });
 
-  Session.on('change', store.emitChange, store);
+  session.on('change', store.emitChange, store);
 
   return store;
 });

@@ -1,6 +1,7 @@
 define([
   'ext/jquery',
-  'jquery.qtip'
+  'jquery.qtip',
+  'jquery.chosen'
 ], function($) {
   'use strict';
 

@@ -2,16 +2,11 @@ require([
   'pixy',
   'config/initializer',
   'stores/sessions',
-  'bundles/core',
   'bundles/stores',
   'config/initializers/routes'
 ],
-function(Pixy, loadLocale, SessionStore) {
-  loadLocale().then(function() {
-    return SessionStore.fetch().catch(function() {
-      return true;
-    });
-  }).then(function() {
+function(Pixy, loadLocale, Session) {
+  loadLocale().then(Session.fetch.bind(Session)).finally(function() {
     // Start the routing engine
     return Pixy.ApplicationRouter.start({
       locale: 'en',

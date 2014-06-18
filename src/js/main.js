@@ -13,7 +13,7 @@ requirejs.config({
     'jquery': '../../vendor/js/jquery/jquery-2.0.2',
     'jquery.jquerypp': '../../vendor/js/jquery/jquerypp.custom',
     'jquery.qtip': '../../vendor/js/jquery/jquery.qtip',
-    'chosen': '../../vendor/js/chosen',
+    'jquery.chosen': '../../vendor/js/jquery/jquery.chosen',
     'react': '../../vendor/js/react-0.10.0',
     'store': '../../vendor/js/store',
     'underscore': '../../vendor/js/lodash/lodash.custom',
@@ -32,7 +32,7 @@ requirejs.config({
     'jquery': { exports: 'jQuery' },
     'jquery.jquerypp': [ 'jquery' ],
     'jquery.qtip': [ 'jquery' ],
-    'chosen': { deps: [ 'jquery' ], exports: 'Chosen' },
+    'jquery.chosen': { deps: [ 'jquery' ], exports: 'Chosen' },
 
     'underscore': { exports: '_' },
     'lodash': { exports: '_' },
