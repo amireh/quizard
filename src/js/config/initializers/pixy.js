@@ -1,5 +1,5 @@
 define([
-  'ext/pixy',
+  'pixy',
   'ext/jquery/ajax',
   'config',
   'stores/sessions',

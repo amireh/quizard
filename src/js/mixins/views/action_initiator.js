@@ -4,13 +4,13 @@ define([ 'underscore' ], function(_) {
   return {
     getInitialState: function() {
       return {
-        actionIndex: null
+        actionIndex: undefined
       };
     },
 
     getDefaultProps: function() {
       return {
-        storeError: null
+        storeError: undefined
       };
     },
 
@@ -25,7 +25,9 @@ define([ 'underscore' ], function(_) {
 
       if (storeError && storeError.actionIndex === this.state.actionIndex) {
         this.onStoreError(storeError);
-        this.setState({ storeError: clone(storeError) });
+        this.setState({
+          storeError: clone(storeError)
+        });
       }
     },
 

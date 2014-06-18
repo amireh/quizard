@@ -15,8 +15,6 @@ define(function(require) {
     },
 
     enter: function() {
-      this.clearStatus();
-
       CourseStore.addChangeListener(this.updateProps, this);
       QuizStore.addChangeListener(this.updateProps, this);
       RouteStore.addActionErrorListener(K.ROUTE_GO_TO_QUIZ, this.injectStoreError, this);
@@ -25,12 +23,10 @@ define(function(require) {
     },
 
     updateProps: function() {
-      var props = {};
-
-      props.activeCourseId = CourseStore.getActiveItemId();
-      props.courses = CourseStore.getAll();
-
-      this.update(props);
+      this.update({
+        activeCourseId: CourseStore.getActiveItemId(),
+        courses: CourseStore.getAll()
+      });
     }
   });
 });

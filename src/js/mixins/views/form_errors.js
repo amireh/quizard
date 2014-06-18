@@ -1,19 +1,26 @@
-define([ 'underscore', 'jquery', 'rsvp', 'modules/form_error' ],
-function(_, $, RSVP, FormError) {
+define([ 'rsvp', 'modules/form_error' ], function(RSVP, FormError) {
   'use strict';
 
   /**
    * @class React.FormErrorsMixin
    *
    * Provides component helpers for rendering form errors.
+   *
+   * The mixin expects the host to track the actionIndex in its state for the
+   * actions it performs for which form errors should be shown. This is usually
+   * done using the ActionInitiator mixin.
    */
   return {
-    getDefaultProps: function() {
-      return {};
+    getInitialState: function() {
+      return {
+        actionIndex: undefined
+      };
     },
 
-    getInitialState: function() {
-      return {};
+    getDefaultProps: function() {
+      return {
+        storeError: undefined
+      };
     },
 
     componentWillUnmount: function() {

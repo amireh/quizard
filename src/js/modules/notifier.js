@@ -1,4 +1,4 @@
-define([ 'ext/underscore', 'ext/pixy', 'humane', 'rsvp' ],
+define([ 'ext/underscore', 'pixy', 'humane', 'rsvp' ],
 function(_, Pixy, humane, RSVP, ConfirmationDialog) {
   'use strict';
 

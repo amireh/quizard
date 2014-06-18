@@ -5,9 +5,7 @@ define([
   'jsx!components/chosen'
 ],
 function(React, AccountActions, Chosen) {
-  var chosenOptions = {
-    width: '100%'
-  };
+  var chosenOptions = { width: '100%' };
   var NO_ACCOUNT_ID = 'none';
   var NO_ACCOUNT = [{
     id: NO_ACCOUNT_ID,
@@ -17,7 +15,7 @@ function(React, AccountActions, Chosen) {
   /**
    * @class Components.AccountPicker
    *
-   * [brief component description]
+   * A combo box that allows the user to activate a specific account.
    */
   var AccountPicker = React.createClass({
     propTypes: {

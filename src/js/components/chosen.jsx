@@ -1,9 +1,17 @@
 /** @jsx React.DOM */
-define([
-  'ext/react', 'ext/jquery', 'underscore', 'modules/combobox'
-], function(React, $, _, ComboBox) {
+define([ 'ext/react', 'ext/jquery', 'underscore' ], function(React, $, _) {
   var LinkUtils = React.LinkUtils;
   var extend = _.extend;
+  var chosenDefaults = {
+    inherit_select_classes: true,
+    disable_search: true
+  };
+  var updateChosen = function($select) {
+    $select.trigger('chosen:updated');
+  };
+  var destroyChosen = function($select) {
+    $select.chosen('destroy');
+  };
 
   /**
    * @class Components.Chosen
@@ -41,7 +49,11 @@ define([
     },
 
     componentDidMount: function() {
-      var $select;
+      var $select, options;
+
+      options = extend({}, chosenDefaults, {
+        width: this.props.width
+      }, this.props.chosenOptions);
 
       $select = $(this.refs.select.getDOMNode());
       $select.on('change', LinkUtils.getChangeHandler(this.props));
@@ -50,17 +62,21 @@ define([
         $select.on('change', this._synchronizeChosen);
       }
 
-      ComboBox.create($select, extend({
-        width: this.props.width
-      }, this.props.chosenOptions));
+      $select.chosen(options);
+
+      if (options.minWidth) {
+        $select.data('chosen').container.css({
+          minWidth: options.minWidth
+        });
+      }
     },
 
     componentWillUnmount: function() {
-      ComboBox.destroy($(this.refs.select.getDOMNode()));
+      destroyChosen($(this.refs.select.getDOMNode()));
     },
 
     componentDidUpdate: function() {
-      ComboBox.update($(this.refs.select.getDOMNode()));
+      updateChosen($(this.refs.select.getDOMNode()));
     },
 
     render: function() {
@@ -75,7 +91,7 @@ define([
       select = this.refs.select.getDOMNode();
       select.value = LinkUtils.getValue(this.props);
 
-      ComboBox.update($(select));
+      updateChosen($(this.refs.select.getDOMNode()));
     }
   });
 

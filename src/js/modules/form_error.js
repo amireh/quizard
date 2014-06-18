@@ -1,24 +1,31 @@
 define([
   'ext/jquery',
-  'ext/underscore',
+  'underscore',
   'jquery.qtip',
   'rsvp'
 ], function($, _, qTip, RSVP) {
   'use strict';
 
-  var $body;
+  var extend = _.extend;
+  var defer = _.defer;
+  var pairs = _.pairs;
+  var compact = _.compact;
+  var escape = _.escape;
 
   /**
    * @class Modules.FormError
-   * Decorate form fields with error messages.
+   * Decorate form fields with error messages using qTip tooltips.
    */
 
   /**
    * @method FormError
    * @constructor
+   * @async
    *
    * Create a form error to present a single API error which may contain several
-   * field errors.
+   * field errors. A field error when present is expected to map to an <input />
+   * with a corresponding [name] attribute. So, an error for the "name" property
+   * expects an <input name="name" /> to exist in the form.
    *
    * > **Note**
    * >
@@ -26,36 +33,54 @@ define([
    * > clears any previously attached form errors (to that view) when you create
    * > it.
    *
-   * @param {Pixy.View} view
-   *        The view holding the form. Needed for proper clean-up.
+   * @param {jQuery} $form (required)
+   *        The form element to decorate.
    *
    * @param {Object} apiError
-   *        An object containing API error that must have the "field_errors"
+   *        An object containing API error that must have the "fieldErrors"
    *        map.
    *
-   * @param {jQuery} [$form=view.$('form')]
-   *        The form element.
+   * @param {Object} options
    *
-   * @param {Boolean} [autoShow=true]
-   *        Pass to true to prevent the form error from showing automatically,
+   * @param {Boolean} [options.single=false]
+   *        Pass true if you want only the first field error to be shown.
+   *
+   * @param {Boolean} [options.autoShow=true]
+   *        Pass false to prevent the form error from showing automatically,
    *        then you're responsible for showing them using #show.
    *
+   *        WARNING: if autoShow is true, it will still defer the call to
+   *        show the form errors to the next tick. Be wary of this when you're
+   *        testing!
    *
    * **Example:**
    *
-   *     Pixy.View.extend({
-   *       onSaveObject: function() {
-   *         var that = this;
+   *     var $form = $('<form />');
    *
-   *         this.object.save().otherwise(function(apiError) {
-   *           new FormError(that, apiError);
-   *         });
-   *       }
+   *     someAPICall().catch(function(apiError) {
+   *       new FormError($form, apiError);
    *     });
+   *
+   * **API error synopsis:**
+   *
+   * {
+   *   "fieldErrors": {
+   *     "prop1": {
+   *       "code": "PROP1_ERR_CODE",
+   *       "message": "prop1 error message"
+   *     }
+   *   }
+   * }
+   *
+   * The error code is optional. If the API provides it, you will get to utilize
+   * it in FormError#formatMessage. For example, to translate the message.
+   *
+   * At least one of the error message or code must be present to display the
+   * error.
    */
-  var FormError = function(view, apiError, options) {
-    var error = apiError;
+  var FormError = function($form, apiError, options) {
     var service;
+    var error = apiError;
 
     if (!error || !error.fieldErrors) {
       console.error('Expected API error to contain a "fieldErrors" map:', error);
@@ -64,19 +89,18 @@ define([
 
     service =  RSVP.defer();
 
-    options = this.options = _.extend({}, this.defaults, {
-      // $form: view.$('form'),
+    this.options = extend({}, this.defaults, {
       autoShow: true,
       single: false
     }, options);
 
-    this.$form = this.locateForm($(view.$el), $(options.$form));
+    this.$form = $form;
 
     // Extract the fields and get a selector to their form elements:
-    this.fieldErrors = this.prepareFieldErrors(error.fieldErrors, this.$form, options.single);
+    this.formFields = this.prepareFormFields(error.fieldErrors, this.options.single);
 
-    if (options.autoShow) {
-      _.defer(_.bind(this.show, this, service));
+    if (this.options.autoShow) {
+      defer(this.show.bind(this, service.resolve));
     }
 
     this.promise = service.promise;
@@ -84,8 +108,7 @@ define([
     return this;
   };
 
-  _.extend(FormError.prototype, {
-
+  extend(FormError.prototype, {
     /**
      * @property {Promise}
      * A promise to be fulfilled once this form error has been shown.
@@ -115,90 +138,88 @@ define([
       }
     },
 
+    /**
+     * Override this if you need to do i18n work.
+     *
+     * @param  {String} [code=null]
+     * @param  {String} message
+     * @return {String}
+     *         The error message to show for the field.
+     */
     formatMessage: function(code, message) {
       return message;
     },
 
-    show: function(resolver) {
+    show: function(resolve) {
       var options = this.options.qtip;
 
-      this.fieldErrors.forEach(function(fieldError) {
-        var $field = fieldError.$field;
-        var message = fieldError.message;
-        var qTipOptions = _.extend({}, options, {
+      this.formFields.forEach(function(formField) {
+        var $field = formField.$field;
+        var error = formField.error;
+        var qTipOptions = extend({}, options, {
           content: {
-            text: message
+            text: error
           }
         });
 
         $field.addClass('invalid');
-        fieldError.qtip = $field.qtip(qTipOptions).qtip('api');
+        formField.qtip = $field.qtip(qTipOptions).qtip('api');
 
         // i've tried to debug and couldn't nail it: sometimes qTip is just not
         // rendering for some reason and not doing such a test is breaking other
         // things so we'll just guard against it:
-        if (fieldError.qtip) {
-          fieldError.qtip.show();
+        if (formField.qtip) {
+          formField.qtip.show();
         }
       });
 
-      if (resolver) {
-        resolver.resolve(this);
+      if (resolve) {
+        resolve(this);
       }
 
       return true;
     },
 
     clear: function() {
-      _.each(this.fieldErrors, function(fieldError) {
-        fieldError.$field.removeClass('invalid');
+      this.formFields.forEach(function(formField) {
+        formField.$field.removeClass('invalid');
+
         // see my comment above in #show
-        if (fieldError.qtip) {
-          fieldError.qtip.destroy(true);
+        if (formField.qtip) {
+          formField.qtip.destroy(true /* immediately */);
         }
       });
 
       return RSVP.resolve();
     },
 
-    locateForm: function($el, $candidate) {
-      if ($candidate && $candidate.is('form')) {
-        return $candidate;
-      }
-      else if ($el.is('form')) {
-        return $el;
-      }
-      else {
-        return $el.closest('form');
-      }
-    },
+    prepareFormFields: function(fieldErrors, single) {
+      var $form = this.$form;
+      var formatMessage = this.formatMessage.bind(this);
+      var formFields = pairs(fieldErrors).map(function(pair, index) {
+        var name, error, $field;
 
-    prepareFieldErrors: function(fieldErrors, $form, single) {
-      return _.chain(_.pairs(fieldErrors)).map(function(pair, index) {
         if (single && index > 0) {
-          return null;
+          return;
         }
 
-        var field = pair[0];
-        var error = pair[1];
-        var $field = $form.find('[name="' + _.escape(field) + '"]');
+        name = pair[0];
+        error = pair[1];
+        $field = $form.find('[name="' + escape(name) + '"]');
 
         if (!$field) {
           console.warn('No form field found for', pair[0], '=>', error);
-          return null;
+          return;
         }
 
         return {
-          field: field,
-          message: this.formatMessage(error.code, error.message),
+          error: formatMessage(error.code, error.message),
           $field: $field
         };
-      }, this).compact().value();
-    }
-  });
+      });
 
-  $(function() {
-    $body = $('body');
+      return compact(formFields);
+    }
   });
 
   return FormError;

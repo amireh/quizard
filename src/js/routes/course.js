@@ -12,8 +12,6 @@ define(function(require) {
     },
 
     setup: function(model) {
-      console.debug('CourseRoute: in #setup:', model.id);
-
       this.update({
         activeCourse: model
       });

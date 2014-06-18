@@ -17,6 +17,8 @@ function(React, _, CourseActions, Chosen) {
 
   /**
    * @class Components.CoursePicker
+   *
+   * A combo box similar to the Account Picker but this time for courses.
    */
   var CoursePicker = React.createClass({
     propTypes: {

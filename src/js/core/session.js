@@ -1,4 +1,4 @@
-define([ 'ext/underscore', 'ext/pixy', 'models/user' ],
+define([ 'ext/underscore', 'pixy', 'models/user' ],
   function(_, Pixy, User) {
 
   /**

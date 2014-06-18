@@ -39,7 +39,7 @@ define([ 'underscore', 'jquery', 'rsvp' ], function(_, $, RSVP) {
    * @async
    */
   function ajax(options, thisArg) {
-    var ajaxOptions;
+    var xhrOptions;
     var headers = Headers;
     var mutators = CORSOptions.mutators;
 
@@ -68,19 +68,19 @@ define([ 'underscore', 'jquery', 'rsvp' ], function(_, $, RSVP) {
 
     options.headers = extend({}, headers, options.headers);
 
-    for (var i = 0; i < mutators.length; ++i) {
-      mutators[i](options);
-    }
+    mutators.forEach(function(mutator) {
+      mutator(options);
+    });
 
     if (thisArg) {
-      _.each([ 'success', 'error', 'complete' ], function(callback) {
-        if (options[callback]) {
-          options[callback] = _.bind(options[callback], thisArg);
+      [ 'success', 'error', 'complete' ].forEach(function(callback) {
+        if (options.hasOwnProperty(callback)) {
+          options[callback] = options[callback].bind(thisArg);
         }
       });
     }
 
-    ajaxOptions = extend({
+    xhrOptions = extend({
       timeout: CORSOptions.timeout
     }, options, {
       success: function() {
@@ -94,7 +94,7 @@ define([ 'underscore', 'jquery', 'rsvp' ], function(_, $, RSVP) {
       }
     });
 
-    return RSVP.Promise.cast($.ajax(ajaxOptions));
+    return RSVP.Promise.cast($.ajax(xhrOptions));
   };
 
   /**

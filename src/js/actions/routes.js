@@ -1,4 +1,4 @@
-define([ 'ext/pixy', 'stores/app', 'stores/sessions', 'constants' ],
+define([ 'pixy', 'stores/app', 'stores/sessions', 'constants' ],
 function(Pixy, AppStore, SessionStore, K) {
   var router = Pixy.ApplicationRouter;
   var dispatcher = Pixy.Dispatcher;

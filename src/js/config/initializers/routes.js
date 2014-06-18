@@ -1,5 +1,5 @@
 define([
-  'ext/pixy',
+  'pixy',
   'constants',
   'rsvp',
   'bundles/routes'

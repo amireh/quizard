@@ -1,5 +1,5 @@
 require([
-  'ext/pixy',
+  'pixy',
   'config/initializer',
   'stores/sessions',
   'bundles/core',

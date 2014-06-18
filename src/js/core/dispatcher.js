@@ -1,3 +1,3 @@
-define([ 'ext/pixy' ], function(Pixy) {
+define([ 'pixy' ], function(Pixy) {
   return Pixy.Dispatcher;
 });

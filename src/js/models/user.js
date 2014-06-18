@@ -1,4 +1,4 @@
-define([ 'ext/pixy' ], function(Pixy) {
+define([ 'pixy' ], function(Pixy) {
 
   /**
    * @class Models.User

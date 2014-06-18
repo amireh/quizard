@@ -3,7 +3,7 @@ define([ 'react' ], function(React) {
   /**
    * @class Components.Dialog
    *
-   * Dialog.
+   * A dialog component to be mounted inside the DialogLayout.
    */
   var Dialog = React.createClass({
     propTypes: {

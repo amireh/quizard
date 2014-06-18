@@ -30,6 +30,7 @@ function(Pixy, K, RouteActions) {
     enter: function() {
       forwardRouteChange(router.activeTransition);
     },
+
     exit: function() {
       if (isSecondary(this)) {
         RouteActions.trackRoute(undefined, K.APP_SECONDARY_LAYER);

@@ -1,4 +1,4 @@
-define([ 'ext/pixy', 'underscore', 'constants' ],
+define([ 'pixy', 'underscore', 'constants' ],
 function(Pixy, _, Constants) {
   var store;
   var primaryRoute;

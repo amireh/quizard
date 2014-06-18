@@ -1,8 +1,8 @@
 define([
   'pixy/ext/react',
   './react/link_utils',
-  'mixins/action_initiator',
-  'mixins/form_errors'
+  'mixins/views/action_initiator',
+  'mixins/views/form_errors'
  ],
 function(React, LinkUtils, ActionInitiatorMixin, FormErrorsMixin) {
   React.mixins = {};

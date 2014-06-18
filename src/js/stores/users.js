@@ -1,5 +1,5 @@
 define(function(require) {
-  var Pixy = require('ext/pixy');
+  var Pixy = require('pixy');
   var K = require('constants');
   var Accounts = require('stores/accounts');
   var Courses = require('stores/courses');
