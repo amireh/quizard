@@ -1,6 +1,6 @@
 # Quizard
 
-An in-house tool for use by developers for Canvas, the LMS by Instructure. Quizard provides automation for certain tasks that would otherwise require a large effort to do by hand, like taking a quiz by a thousand students.
+An in-house tool for use by quiz developers for Canvas, the LMS by Instructure. Quizard provides automation for certain tasks that would otherwise require a large effort to do by hand, like taking a quiz by a thousand students.
 
 ## License
 
