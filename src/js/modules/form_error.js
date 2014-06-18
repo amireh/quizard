@@ -82,6 +82,8 @@ define([
     var service;
     var error = apiError;
 
+    this.formFields = [];
+
     if (!error || !error.fieldErrors) {
       console.error('Expected API error to contain a "fieldErrors" map:', error);
       return this;
