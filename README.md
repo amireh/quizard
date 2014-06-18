@@ -5,7 +5,7 @@ working on quizzes. Quizard provides automation for certain tasks that would
 otherwise require a large effort to do by hand, like taking a quiz by a thousand
 students.
 
-See the [https://github.com/amireh/quizard/wiki](Wiki) to get started.
+See the [wiki](https://github.com/amireh/quizard/wiki) to get started.
 
 ## Development
 
