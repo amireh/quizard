@@ -23,7 +23,7 @@ function(Pixy, K, RouteActions) {
     targetHandler = router.getHandler(targetName);
     layer = routeLayer(targetHandler);
 
-    RouteActions.trackRoute(targetName, layer);
+    RouteActions.trackRoute(transition.intent.url, layer);
   }
 
   return {

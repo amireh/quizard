@@ -78,6 +78,7 @@ function(CONFIG, RSVP, diff, _) {
   DEBUG.expose('stores/quizzes', 'quizStore');
   DEBUG.expose('stores/quiz_taking', 'quizTakingStore');
   DEBUG.expose('stores/operations', 'operationStore');
+  DEBUG.expose('stores/settings', 'settingStore');
   DEBUG.expose('core/ajax', 'ajax');
 
   DEBUG.listeners = function(obj) {

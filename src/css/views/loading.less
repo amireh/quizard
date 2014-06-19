@@ -1,5 +1,5 @@
 #asset_preloader {
-  font-family: 'Pibi';
+  font-family: 'Quizard';
   position: absolute;
   width:  1px;
   height: 0;
@@ -9,14 +9,17 @@
   display: block;
 }
 
+body.state-loading {
+  overflow: hidden;
+}
+
 #loading_screen {
   .fullscreen();
   .disable-selection();
   .transition(~"opacity 0.25s ease-in-out 0s");
 
   opacity: 1;
-  background: @brand-color;
-  color: white;
+  background: white;
 
   &.background {
     display: none;
@@ -26,49 +29,34 @@
   z-index: 1000;
   overflow: hidden;
 
-  header {
-    margin: -55px 0 0 0;
-    font-size: 14px;
+  .version {
+    margin: 85px 0 0 -115px;
     position: absolute;
     top: 50%;
     left: 50%;
     width: 240px;
-
-    > span {
-      display: block;
-    }
-  }
-
-  .version {
-    font-size: 24px;
+    text-align: center;
+    font-size: 10.5px;
     line-height: 40px;
     font-weight: bold;
-    border-bottom: 1px solid rgba(255,255,255,0.25);
-  }
-
-  #loading_status {
-    padding: 5px 0;
   }
 
   .logo {
+    @size: 196px;
+
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
-    height:     168px;
-    margin-top: -96px;
-    margin-left: -200px;
+    left: 50%;
+    height: @size;
+    margin-top: -1 * (@size / 2);
+    margin-left: -1 * (@size / 2);
+    color: @brand-color;
+    .jelly();
 
     &:before {
       .iconify(@icon-quiz);
-      line-height: 168px;
+      font-size: @size;
+      line-height: @size;
     }
-  }
-}
-
-// This is done in CSS because we don't want it to show up in SEO.
-#loading_status:empty {
-  &:after {
-    content: "Loading... Please wait.";
   }
 }

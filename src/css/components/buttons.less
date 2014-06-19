@@ -457,81 +457,23 @@ input[type="submit"].btn.btn-mini {
 .btn-group {
   position: relative;
   display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
-  /*font-size: 0;*/
   vertical-align: middle;
   white-space: nowrap;
-  *margin-left: .3em;
 }
-.btn-group:first-child {
-  *margin-left: 0;
-}
-
 .btn-group > .btn {
   position: relative;
-  .border-radius(0);
 }
 .btn-group > .btn + .btn {
   margin-left: -1px;
 }
-.btn-group > .btn,
-.btn-group > .dropdown-menu,
-.btn-group > .popover {
-  font-size: 14px;
-}
-.btn-group > .btn-mini {
-  font-size: 10.5px;
-}
-.btn-group > .btn-small {
-  font-size: 11.9px;
-}
-.btn-group > .btn-large {
-  font-size: 17.5px;
-}
+
 .btn-group > .btn:first-child {
   margin-left: 0;
-  -webkit-border-top-left-radius:     @radius;
-  -moz-border-radius-topleft:         @radius;
-  border-top-left-radius:             @radius;
-  -webkit-border-bottom-left-radius:  @radius;
-  -moz-border-radius-bottomleft:      @radius;
-  border-bottom-left-radius:          @radius;
+  border-radius: 4px 0 0 4px;
 }
-.btn-group > .btn:last-child,
-.btn-group > .dropdown-toggle {
-  -webkit-border-top-right-radius: @radius;
-  -moz-border-radius-topright: @radius;
-  border-top-right-radius: @radius;
-  -webkit-border-bottom-right-radius: @radius;
-  -moz-border-radius-bottomright: @radius;
-  border-bottom-right-radius: @radius;
-}
-.btn-group > .btn.large:first-child {
-  margin-left: 0;
-  -webkit-border-top-left-radius: @radius * 1.5;
-  -moz-border-radius-topleft: @radius * 1.5;
-  border-top-left-radius: @radius * 1.5;
-  -webkit-border-bottom-left-radius: @radius * 1.5;
-  -moz-border-radius-bottomleft: @radius * 1.5;
-  border-bottom-left-radius: @radius * 1.5;
-}
-.btn-group > .btn.large:last-child,
-.btn-group > .large.dropdown-toggle {
-  -webkit-border-top-right-radius: @radius * 1.5;
-  -moz-border-radius-topright: @radius * 1.5;
-  border-top-right-radius: @radius * 1.5;
-  -webkit-border-bottom-right-radius: @radius * 1.5;
-  -moz-border-radius-bottomright: @radius * 1.5;
-  border-bottom-right-radius: @radius * 1.5;
-}
-.btn-group > .btn:hover,
-.btn-group > .btn:focus,
-.btn-group > .btn:active,
-.btn-group > .btn.active {
-  z-index: 2;
+
+.btn-group > .btn:last-child {
+  border-radius: 0 4px 4px 0;
 }
 
 .btn-next,

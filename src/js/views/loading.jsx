@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
-define([ 'react', 'jquery' ], function(React, $) {
+define([ 'react', 'jquery', 'version' ], function(React, $, version) {
   var Loading = React.createClass({
     getDefaultProps: function() {
       return {
-        version: '1.0.0',
+        version: version,
         visible: true
       };
     },
@@ -30,6 +30,8 @@ define([ 'react', 'jquery' ], function(React, $) {
         opacity: visible ? '1' : '0'
       });
 
+      $(document.body).toggleClass('state-loading', visible);
+
       setTimeout(function() {
         $this.toggleClass('background', !visible);
       }, 250);
@@ -38,18 +40,14 @@ define([ 'react', 'jquery' ], function(React, $) {
 
     render: function() {
       return(
-        <div id="loading_screen" className="loading">
-          <header>
-            <span className="version">
-              Quizard
-              {' '}
-              {this.props.version}
-            </span>
-
-            <span id="loading_status"></span>
+        <div id="loading_screen">
+          <header className="version pulsate">
+            Quizard
+            {' '}
+            {this.props.version}
           </header>
 
-          <div className="logo text-center crazy-flip icon-128" />
+          <div className="logo" />
         </div>
       );
     }

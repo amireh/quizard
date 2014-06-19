@@ -1,5 +1,5 @@
 define(function(require) {
-  var Route = require('routes/secondary');
+  var Route = require('routes/base');
   var View = require('jsx!views/recipes/take_quiz');
   var CourseStore = require('stores/courses');
   var QuizStore = require('stores/quizzes');

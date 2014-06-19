@@ -72,6 +72,10 @@ function(Pixy, AppStore, SessionStore, K) {
 
     goToUserEnrollment: function() {
       return transitionTo(K.RECIPE_ENROLL_STUDENTS);
+    },
+
+    goToSettings: function() {
+      return transitionTo('/settings');
     }
   };
 });

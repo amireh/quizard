@@ -6,6 +6,7 @@ define([
 ], function(Pixy, RouteMixins, TrackableMixin, NavHighlighterMixin) {
   var Route = Pixy.Route.extend({
     mixins: [
+      RouteMixins.SecondaryTransitions,
       RouteMixins.AccessPolicy,
       RouteMixins.WindowTitle,
       RouteMixins.Loading,
@@ -14,6 +15,10 @@ define([
       TrackableMixin,
       NavHighlighterMixin
     ],
+
+    events: {
+      willTransition: RouteMixins.SecondaryTransitions.willTransition
+    },
 
     mount: function(component, options) {
       return this.trigger('render', component, options);

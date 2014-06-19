@@ -61,6 +61,10 @@ define([ 'rsvp', 'modules/form_error' ], function(RSVP, FormError) {
         apiError = JSON.parse(apiError.responseText);
       }
 
+      if (this.formatFormError) {
+        apiError = this.formatFormError(apiError);
+      }
+
       return this.clearFormError().then(function() {
         this.formError = new FormError(this.refs.form.getDOMNode(), apiError);
 
@@ -71,13 +75,14 @@ define([ 'rsvp', 'modules/form_error' ], function(RSVP, FormError) {
     },
 
     clearFormError: function() {
-      if (this.formError) {
-        return this.formError.clear().finally(function() {
-          this.formError = null;
-        }.bind(this));
-      }
+      var formError = this.formError;
 
-      return RSVP.resolve();
+      if (formError) {
+        this.formError = null;
+        return formError.clear();
+      } else {
+        return RSVP.resolve();
+      }
     },
 
     /**

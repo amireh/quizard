@@ -10,5 +10,6 @@ define([
   'routes/course',
   'routes/quizzes/quiz',
   'routes/quizzes/quiz/show',
-  'routes/quizzes/quiz/take'
+  'routes/quizzes/quiz/take',
+  'routes/settings'
 ], function() {});

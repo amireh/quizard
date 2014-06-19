@@ -27,6 +27,7 @@ define([
       match('/').to('index');
       match('/login').to('login');
       match('/logout').to('logout');
+      match('/settings').to('settings');
 
       // Recipes
       match('/recipes/enroll_students').to('enrollStudentsRecipe');

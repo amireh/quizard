@@ -68,7 +68,7 @@ define([ 'react' ], function(React) {
          *
          * Makes the dialog's height fixed.
          */
-        scrollable: true,
+        scrollable: false,
 
         /**
          * @cfg {Boolean} [stickyActions=false]
@@ -112,7 +112,8 @@ define([ 'react' ], function(React) {
         'dialog': true,
         'thin-dialog': this.props.thin,
         'align-center': this.props.centered,
-        'no-padding': this.props.noPadding
+        'no-padding': this.props.noPadding,
+        'scrollable': this.props.scrollable
       });
 
       return (

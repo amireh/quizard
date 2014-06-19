@@ -192,6 +192,8 @@ define([
         }
       });
 
+      this.formFields = [];
+
       return RSVP.resolve();
     },
 

@@ -251,11 +251,16 @@
 
   .operation-log {
     margin-top: @whitespace;
+    line-height: 18px;
+    font-size: 11.5px;
+    font-family: monospace, Monospace, Consolata;
+    height: 180px;
+    position: relative;
+    overflow: auto;
+    margin-left: 0;
+    list-style: none;
 
     li {
-      line-height: 24px;
-      font-size: 12.5px;
-
       &.failed {
         color: @red;
       }
@@ -265,6 +270,12 @@
       margin-left: 5px;
       color: @mute-fg;
     }
+  }
+
+  .operation-actions {
+    padding-top: @whitespace;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: right;
   }
 }
 

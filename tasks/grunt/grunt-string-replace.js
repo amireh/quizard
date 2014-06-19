@@ -1,8 +1,8 @@
 module.exports = {
   version: {
     files: {
-      'www/index.html': "www/index.html",
-      "www/pibi.appcache": "www/pibi.appcache"
+      'www/index.html': 'www/index.html',
+      'src/js/version.js': 'src/js/version.js'
     },
     options: {
       replacements: [{

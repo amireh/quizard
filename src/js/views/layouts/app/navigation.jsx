@@ -1,6 +1,10 @@
 /** @jsx React.DOM */
-define([ 'react', 'constants', 'actions/operations' ],
-function(React, K, OperationActions) {
+define(function(require) {
+  var React = require('react');
+  var K = require('constants');
+  var OperationActions = require('actions/operations');
+  var RouteActions = require('actions/routes');
+
   /**
    * @internal
    *
@@ -79,18 +83,23 @@ function(React, K, OperationActions) {
           </section>
 
           <section className="navbar-actions">
-            {this.props.authenticated &&
-              <a href="/logout">Logout</a>
-            }
-            {!this.props.authenticated &&
+            {this.props.authenticated ?
+              <a className="btn btn-default" href="/logout">Logout</a> :
               <a className="btn btn-primary" href="/login">Login</a>
             }
 
-            <button
-              className="a11y-btn icon-console stick-right"
-              onClick={this.toggleOperation}
-              disabled={!this.props.operation.name || !this.props.operation.minimized}
-              title="Restore the operation progress box" />
+            <div className="btn-group pull-right">
+              <button
+                className="btn btn-default icon-console"
+                onClick={this.toggleOperation}
+                disabled={!this.props.operation.name || !this.props.operation.minimized}
+                title="Restore the operation progress box" />
+
+              <button
+                className="btn btn-default icon-cog"
+                onClick={this.goToSettings}
+                title="Configure Quizard" />
+            </div>
           </section>
         </nav>
       );
@@ -99,6 +108,11 @@ function(React, K, OperationActions) {
     toggleOperation: function(e) {
       e.preventDefault();
       OperationActions.restore();
+    },
+
+    goToSettings: function(e) {
+      e.preventDefault();
+      RouteActions.goToSettings();
     }
   });
 
