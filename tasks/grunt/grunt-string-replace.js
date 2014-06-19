@@ -2,7 +2,8 @@ module.exports = {
   version: {
     files: {
       'www/index.html': 'www/index.html',
-      'src/js/version.js': 'src/js/version.js'
+      'src/js/version.js': 'src/js/version.js',
+      'config/chrome/manifest.json': 'config/chrome/manifest.json'
     },
     options: {
       replacements: [{

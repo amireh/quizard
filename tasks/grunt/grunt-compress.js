@@ -19,7 +19,7 @@ module.exports = {
           'www/assets/**',
           'www/dist/*',
           'www/index.html',
-          'www/chrome.js',
+          'www/favicon.ico',
         ],
         dest: 'quizard/'
       },

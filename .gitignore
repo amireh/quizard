@@ -22,9 +22,9 @@
 
 [assets]
 /www/assets/fonts/*/index.html
-/www/assets/images/bgs
-/www/assets/images/wallpapers
-/www/assets/images/screenshots
+/www/assets/icons/quizard-favicon.png
+/www/assets/icons/quizard-512.png
+/www/assets/icons/icon-128.png
 exclude
 *.zip
 *.gz
