@@ -62,9 +62,7 @@ define([ 'rsvp', 'modules/form_error' ], function(RSVP, FormError) {
       }
 
       return this.clearFormError().then(function() {
-        this.formError = new FormError({}, apiError, {
-          $form: this.refs.form.getDOMNode()
-        });
+        this.formError = new FormError(this.refs.form.getDOMNode(), apiError);
 
         return this.formError.promise;
       }.bind(this)).catch(function(e) {

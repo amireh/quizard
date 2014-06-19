@@ -10,14 +10,6 @@ module.exports = {
       inlineText:               true,
       preserveLicenseComments:  false,
 
-      uglify: {
-        toplevel:         true,
-        ascii_only:       true,
-        beautify:         false,
-        max_line_length:  1000,
-        no_mangle:        false
-      },
-
       uglify2: {
         warnings: true,
         mangle:   true,

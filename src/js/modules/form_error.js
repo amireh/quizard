@@ -96,7 +96,7 @@ define([
       single: false
     }, options);
 
-    this.$form = $form;
+    this.$form = $($form);
 
     // Extract the fields and get a selector to their form elements:
     this.formFields = this.prepareFormFields(error.fieldErrors, this.options.single);

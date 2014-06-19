@@ -1,0 +1,23 @@
+{
+  "name": "Quizard",
+  "short_name": "Quizard",
+  "description": "Canvas quizzes something.",
+  "version": "1.0.3",
+  "manifest_version": 2,
+  "minimum_chrome_version": "23",
+  "icons": {
+    "128": "assets/icons/chrome_96x96_padded.png"
+  },
+  "app": {
+    "launch": {
+      "local_path": "index.html"
+    }
+  },
+
+  "offline_enabled": true,
+
+  "permissions": [
+    "unlimitedStorage",
+    "http://localhost:3000/*"
+  ]
+}

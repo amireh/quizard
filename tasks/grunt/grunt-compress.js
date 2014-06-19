@@ -16,12 +16,20 @@ module.exports = {
           'README.md',
           'LICENSE',
           'config/sample-httpd.conf',
-          'www/assets/fonts/Quizard/fonts/*',
-          'www/assets/locales/*',
+          'www/assets/**',
           'www/dist/*',
           'www/index.html',
+          'www/chrome.js',
         ],
         dest: 'quizard/'
+      },
+      {
+        expand: true,
+        flatten: false,
+        src: 'config/chrome/manifest.json',
+        rename: function(dest, src) {
+          return 'quizard/www/manifest.json';
+        }
       }
     ]
   }

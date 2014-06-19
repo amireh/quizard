@@ -13,6 +13,7 @@
 /en.json
 /en.xml
 /integration-tests.html
+/doc/coverage
 
 [build]
 /tmp/*
@@ -36,7 +37,8 @@ exclude
 /www/src
 /www/vendor
 /src/js/config/environments/*.js
-
+/.plato
+/.eslint*
 
 [repos]
 /vendor/js/router.js

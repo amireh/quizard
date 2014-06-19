@@ -19,15 +19,22 @@ define([
     },
 
     onStoreError: function(storeError) {
+      var apiError = storeError.error;
+
       this.refs.saveButton.markDone(false);
-      this.showFormError({
-        fieldErrors: {
-          apiToken: {
-            code: undefined,
-            message: storeError.error.errors[0].message
+
+      // Can we use the API decorator to handle these cases where no API
+      // error is returned?
+      if (apiError) {
+        this.showFormError({
+          fieldErrors: {
+            apiToken: {
+              code: undefined,
+              message: apiError.errors[0].message
+            }
           }
-        }
-      });
+        });
+      }
     },
 
     render: function() {
