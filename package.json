@@ -1,7 +1,7 @@
 {
   "name": "Quizard",
   "description": "In-house tool for Canvas, the LMS by Instructure.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "homepage": "https://github.com/amireh/quizard",
   "author": {
     "name": "Ahmad Amireh",
