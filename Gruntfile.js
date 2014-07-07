@@ -41,6 +41,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-string-replace');
   grunt.loadNpmTasks('grunt-connect-rewrite');
+  grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-contrib-symlink');
@@ -74,7 +75,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('docs',  [ 'react', 'jsduck' ]);
-  grunt.registerTask('default', [ 'test' ]);
+  grunt.registerTask('server', [ 'configureProxies:www', 'connect:www' ]);
+  grunt.registerTask('default', [ 'server' ]);
   grunt.registerTask('version', [ 'string-replace:version' ]);
 
   // Release alias task

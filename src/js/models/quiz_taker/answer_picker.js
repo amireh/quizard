@@ -119,7 +119,7 @@ define(function(require) {
           var matchId = pair.matchId;
 
           if (matchId.substr(0,4) === 'none') {
-            return undefined;
+            return pairs;
           }
 
           return pairs.concat([{
