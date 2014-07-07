@@ -1,0 +1,10 @@
+/.grunt
+/assets
+/doc
+/src
+/tmp
+/vendor
+/releases
+/www/sfx
+/www/src
+/www/vendor
