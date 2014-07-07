@@ -1,10 +1,12 @@
 /* jslint node: true */
 var shell = require('shelljs');
 
-module.exports = function(grunt, readPackage) {
+module.exports = function(grunt, config, readPackage, loadFrom) {
   'use strict';
 
   console.log('Quizard: development mode engaged.');
+
+  loadFrom('./tasks/development/options/', config);
 
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jasmine');

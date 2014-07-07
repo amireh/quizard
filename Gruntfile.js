@@ -25,7 +25,7 @@ module.exports = function(grunt) {
     env: process.env
   };
 
-  loadFrom('./tasks/grunt/', config);
+  loadFrom('./tasks/options/', config);
 
   grunt.initConfig(config);
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-connect-proxy');
 
   if (!process.env.production) {
-    require('./tasks/Gruntfile.development')(grunt, readPackage);
+    require('./tasks/Gruntfile.development')(grunt, config, readPackage, loadFrom);
   }
 
   grunt.registerTask('server', [ 'configureProxies:www', 'connect:www' ]);
