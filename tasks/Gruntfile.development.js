@@ -60,7 +60,6 @@ module.exports = function(grunt, config, readPackage, loadFrom) {
     grunt.task.run('build');
     grunt.task.run('tagrelease');
     grunt.task.run('compress');
-    grunt.task.run('development');
   });
 
   grunt.registerTask('development',

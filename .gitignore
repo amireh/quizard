@@ -2,7 +2,6 @@
 /build/!README
 /build/*
 /www/dist
-/www/assets/dist
 /www/assets/locales/*/*.json
 /bin/reporters/event_listeners.html
 /doc/api
