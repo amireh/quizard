@@ -13,15 +13,12 @@ module.exports = {
       port: 3000,
       https: false,
       changeOrigin: false,
-      xforward: false,
-      // rewrite: {
-      //   '^/api/v1': '',
-      // }
+      xforward: false
     }],
 
     options: {
       keepalive: true,
-      port: 8001,
+      port: 8442,
       base: 'www',
       middleware: function (connect, options) {
         var middlewares = [];
