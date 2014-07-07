@@ -2,7 +2,7 @@
   "name": "Quizard",
   "short_name": "Quizard",
   "description": "Canvas quizzes something.",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "manifest_version": 2,
   "minimum_chrome_version": "23",
   "icons": {
