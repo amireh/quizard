@@ -28,7 +28,7 @@ define([
     render: function() {
       return (
         <div id="main">
-          {this.props.loading && <LoadingBar />}
+          {(this.props.loading || this.props.loadingAppData) && <LoadingBar />}
 
           <Navigation
             authenticated={this.props.authenticated}

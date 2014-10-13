@@ -33,7 +33,9 @@ define(function(require) {
       }
 
       return (
-        <a className={React.addons.classSet(klasses)} href={this.props.href}>
+        <a
+          onClick={this.props.onClick}
+          className={React.addons.classSet(klasses)} href={this.props.href}>
           {this.props.children}
         </a>
       );

@@ -14,7 +14,12 @@ Follow the setting-up guide to get Quizard working with Canvas, then:
 1. clone the repo
 2. `npm install`
 3. `grunt development`
-4. `open http://quizard.localhost.com` (or `xdg-open`)
+4. `webpack -c -d --display-error-details --bail -v --watch`
+5. `open http://quizard.localhost.com` (or `xdg-open`)
+
+### Recipes
+
+*TBD*
 
 ## License
 

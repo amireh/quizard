@@ -32,4 +32,6 @@ var Quiz = BaseQuiz.extend({
 
     return props;
   }
-})
+});
+
+module.exports = Quiz;

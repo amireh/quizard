@@ -62,14 +62,6 @@ function(Pixy, AppStore, SessionStore, K) {
       });
     },
 
-    goToQuiz: function(courseId, quizId, quizAction) {
-      return dispatcher.dispatch(K.ROUTE_GO_TO_QUIZ, {
-        courseId: courseId,
-        quizId: quizId,
-        quizAction: quizAction
-      }).index;
-    },
-
     goToUserEnrollment: function() {
       return transitionTo(K.RECIPE_ENROLL_STUDENTS);
     },

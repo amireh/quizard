@@ -27,6 +27,7 @@
   "private": false,
   "preferGlobal": true,
   "devDependencies": {
+    "bundle-loader": "^0.5.1",
     "es6-loader": "^0.2.0",
     "grunt-bumpup": "0.2.x",
     "grunt-contrib-clean": "^0.5.0",

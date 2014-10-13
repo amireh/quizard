@@ -1,28 +1,26 @@
-define([
-  'routes/base',
-  'stores/quizzes'
-], function(Route, QuizStore) {
-  new Route('quiz', {
-    model: function(params) {
-      return QuizStore.find(params.quiz_id).then(function(quiz) {
-        return QuizStore.fetchQuestions(quiz.id);
-      });
-    },
+var Route = require('routes/base');
+var QuizStore = require('stores/quizzes');
 
-    setup: function(model) {
-      this.quizId = model.id;
-      this.updateProps();
-    },
+module.exports = new Route('quiz', {
+  model: function(params) {
+    return QuizStore.find(params.quiz_id).then(function(quiz) {
+      return QuizStore.fetchQuestions(quiz.id);
+    });
+  },
 
-    enter: function() {
-      this.listenTo(QuizStore, 'change', this.updateProps);
-      this.listenTo(QuizStore, 'change:data', this.updateProps);
-    },
+  setup: function(model) {
+    this.quizId = model.id;
+    this.updateProps();
+  },
 
-    updateProps: function() {
-      this.update({
-        quiz: QuizStore.get(this.quizId)
-      });
-    }
-  });
+  enter: function() {
+    this.listenTo(QuizStore, 'change', this.updateProps);
+    this.listenTo(QuizStore, 'change:data', this.updateProps);
+  },
+
+  updateProps: function() {
+    this.update({
+      quiz: QuizStore.get(this.quizId)
+    });
+  }
 });

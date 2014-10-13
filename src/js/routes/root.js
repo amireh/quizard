@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var RSVP = require('rsvp');
   var RootLayout = require('jsx!views/layouts/root');
+  var AppStore = require('stores/app');
   var SessionStore = require('stores/sessions');
   var AccountStore = require('stores/accounts');
   var OperationStore = require('stores/operations');
@@ -48,9 +49,10 @@ define(function(require) {
 
       this.applicationLayout.resolve(layout);
 
-      SessionStore.addChangeListener(this.switchAuthStates, this);
+      AppStore.addChangeListener(this.updateProps, this);
       AccountStore.addChangeListener(this.updateProps, this);
       OperationStore.addChangeListener(this.updateProps, this);
+      SessionStore.addChangeListener(this.switchAuthStates, this);
 
       this.updateProps();
     },
@@ -62,6 +64,7 @@ define(function(require) {
       props.accounts = AccountStore.getAll();
       props.activeAccountId = AccountStore.getActiveItemId();
       props.operation = OperationStore.toProps();
+      props.loadingAppData = AppStore.isLoadingAppData();
 
       this.events.update.call(this, props);
     }

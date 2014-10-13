@@ -1,5 +1,3 @@
-define(function(require) {
-  var Route = require('routes/base');
-  new Route('quizShow', {
-  });
+var Route = require('routes/base');
+module.exports = new Route('quizShow', {
 });

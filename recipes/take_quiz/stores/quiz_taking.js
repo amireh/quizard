@@ -2,7 +2,7 @@ define(function(require) {
   var Pixy = require('pixy');
   var K = require('constants');
   var QuizTaker = require('models/quiz_taker');
-  var batchedTakeQuiz = require('./operations/batched_take_quiz');
+  var batchedTakeQuiz = require('../operations/batched_take_quiz');
   var Quizzes = require('stores/quizzes');
   var OperationStore = require('stores/operations');
   var Users = require('stores/users');

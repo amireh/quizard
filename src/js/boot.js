@@ -4,6 +4,7 @@ require([
   'stores/settings',
   'stores/sessions',
   'bundles/stores',
+  'bundles/recipes',
   'config/initializers/routes'
 ],
 function(Pixy, loadLocale, Settings, Session) {

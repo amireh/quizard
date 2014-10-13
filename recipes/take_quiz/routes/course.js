@@ -1,20 +1,18 @@
-define(function(require) {
-  var Route = require('routes/base');
-  var CourseStore = require('stores/courses');
-  var CourseActions = require('actions/courses');
+var Route = require('routes/base');
+var CourseStore = require('stores/courses');
+var CourseActions = require('actions/courses');
 
-  new Route('course', {
-    model: function(params) {
-      return CourseStore.find(params.course_id).then(function(model) {
-        CourseActions.activate(model.id);
-        return model;
-      });
-    },
+module.exports = new Route('course', {
+  model: function(params) {
+    return CourseStore.find(params.course_id).then(function(model) {
+      CourseActions.activate(model.id);
+      return model;
+    });
+  },
 
-    setup: function(model) {
-      this.update({
-        activeCourse: model
-      });
-    }
-  });
+  setup: function(model) {
+    this.update({
+      activeCourse: model
+    });
+  }
 });

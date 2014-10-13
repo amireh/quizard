@@ -4,7 +4,7 @@ define(function(require) {
   var Dialog = require('jsx!components/dialog');
   var Alert = require('jsx!components/alert');
   var CoursePicker = require('jsx!components/course_picker');
-  var RouteActions = require('actions/routes');
+  var RecipeActions = require('../actions');
 
   // This recipe is just a dialog that takes the user to the proper quiz
   // view.
@@ -80,7 +80,7 @@ define(function(require) {
         this.setState({ error: 'You must enter the id of the quiz.' });
       }
       else {
-        this.trackAction(RouteActions.goToQuiz(courseId, quizId, 'take'));
+        RecipeActions.goToQuiz(courseId, quizId, 'take');
       }
 
       return false;
