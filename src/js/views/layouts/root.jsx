@@ -33,11 +33,6 @@ define(function(require) {
     componentWillReceiveProps: function(nextProps) {
       var prop;
 
-      //>>excludeStart("production", pragmas.production);
-      /* global DEBUG: false */
-      log('new props:', DEBUG.diff(this.props, nextProps));
-      //>>excludeEnd("production");
-
       // Remove "unset" props (ones that are undefined) completely
       for (prop in nextProps) {
         if (nextProps.hasOwnProperty(prop) && nextProps[prop] === undefined) {

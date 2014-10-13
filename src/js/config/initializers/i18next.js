@@ -3,7 +3,7 @@ define([
   'config',
   'underscore',
   'i18next',
-  'text!defaultLocale',
+  'assets/locales/en.json',
   'rsvp',
   './locale'
 ], function(require, Config, _, i18n, defaultLocale, RSVP, locale) {
@@ -46,12 +46,12 @@ define([
     };
 
     locales.en = {};
-    locales.en[namespace] = JSON.parse(defaultLocale).en;
+    locales.en[namespace] = defaultLocale.en;
 
     if (userLocale) {
       try {
         locales[locale] = {};
-        locales[locale][namespace] = JSON.parse(userLocale)[locale];
+        locales[locale][namespace] = userLocale[locale];
       } catch(e) {
         console.log('Locale error! Unable to parse locale data: ', userLocale);
 
@@ -98,7 +98,7 @@ define([
     var service = RSVP.defer();
 
     if (locale !== 'en') {
-      require([ 'text!/assets/locales/' + locale + '.json' ], function(userLocale) {
+      require([ 'assets/locales/' + locale + '.json' ], function(userLocale) {
         init(userLocale, service.resolve, service.reject);
       });
     } else {

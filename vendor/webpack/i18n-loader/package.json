@@ -1,0 +1,34 @@
+{
+  "name": "amireh-i18n-loader",
+  "version": "0.1.0",
+  "author": {
+    "name": "Ahmad Amireh @amireh"
+  },
+  "description": "i18n loader module for webpack using i18next + React utilities (if needed.)",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amireh/webpack-i18n-loader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amireh/webpack-i18n-loader/issues"
+  },
+  "homepage": "https://github.com/amireh/webpack-i18n-loader",
+  "maintainers": [
+    {
+      "name": "amireh",
+      "email": "ahmad@amireh.net"
+    }
+  ],
+  "directories": {},
+  "files": [
+    "README.md",
+    "index.js",
+    "t.js"
+  ]
+}

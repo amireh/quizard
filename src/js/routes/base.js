@@ -1,9 +1,10 @@
 define([
   'pixy',
-  'pixy/mixins/routes',
   'mixins/routes/trackable',
   'mixins/routes/nav_highlighter'
-], function(Pixy, RouteMixins, TrackableMixin, NavHighlighterMixin) {
+], function(Pixy, TrackableMixin, NavHighlighterMixin) {
+  var RouteMixins = Pixy.Mixins.Routes;
+
   var Route = Pixy.Route.extend({
     mixins: [
       RouteMixins.SecondaryTransitions,

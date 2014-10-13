@@ -4,7 +4,7 @@ define([
   'config',
   'stores/sessions',
   'constants',
-  'store'
+  'vendor/js/store'
 ], function(Pixy, ajax, Config, SessionStore, K, Store) {
   'use strict';
 

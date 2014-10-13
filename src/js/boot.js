@@ -11,6 +11,7 @@ function(Pixy, loadLocale, Settings, Session) {
 
   loadLocale().then(Session.fetch.bind(Session)).finally(function() {
     // Start the routing engine
+    // console.log('Booting...');
     return Pixy.ApplicationRouter.start({
       locale: 'en',
       pushState: false,
