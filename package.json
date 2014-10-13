@@ -25,6 +25,7 @@
     "start": "./bin/quizard"
   },
   "private": false,
+  "preferGlobal": true,
   "devDependencies": {
     "es6-loader": "^0.2.0",
     "grunt-bumpup": "0.2.x",
@@ -50,9 +51,9 @@
     "jshint-stylish-ex": "^0.2.0",
     "json-loader": "^0.5.1",
     "less": "1.7.x",
+    "pixy": "1.7.2",
     "react": "0.10.0",
     "react-tools": "x",
-    "pixy": "1.6.3",
     "router": "git://github.com/tildeio/router.js.git#master",
     "rsvp": "3.0.14",
     "shelljs": "0.1.2",

@@ -32,15 +32,6 @@ define([
       // Recipes
       match('/recipes/enroll_students').to('enrollStudentsRecipe');
       match('/recipes/load_students').to('loadStudentsRecipe');
-      match('/recipes/take_quiz').to('takeQuizRecipe');
-
-      // App
-      match('/courses/:course_id').to('course', function(match) {
-        match('/quizzes/:quiz_id').to('quiz', function(match) {
-          match('/').to('quizShow');
-          match('/take').to('takeQuiz');
-        });
-      });
 
       // 404
       match('/*rogueRoute').to('notFound');

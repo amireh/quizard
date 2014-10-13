@@ -1,7 +1,7 @@
 define(function(require) {
+  var t = require('i18n!take_quiz');
   var K = require('constants');
   var BatchedOperation = require('models/batched_operation');
-  var t = require('i18n!take_quiz');
   var QuizSubmissions = require('stores/quiz_submissions');
 
   return new BatchedOperation({

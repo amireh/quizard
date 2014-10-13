@@ -13,8 +13,6 @@
 /en.xml
 /integration-tests.html
 /doc/coverage
-# webpack generates this as part of its build:
-/src/js/main.js
 
 [build]
 /tmp/*

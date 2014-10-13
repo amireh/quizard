@@ -4,5 +4,4 @@ define([
   'stores/users',
   'stores/accounts',
   'stores/routes',
-  'stores/quiz_taking',
 ], function() {});

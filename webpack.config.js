@@ -6,7 +6,7 @@ var I18nPlugin = require('./vendor/webpack/i18n_plugin');
 
 var jsRoot = path.join(__dirname, 'src', 'js');
 
-module.exports = {
+module.exports = [{
   entry: './boot.js',
   context: jsRoot,
   output: {
@@ -41,7 +41,6 @@ module.exports = {
       'router$': 'node_modules/router/dist/commonjs/router/router.js',
       'rsvp': 'node_modules/rsvp/lib/rsvp',
       'rsvp$': 'node_modules/rsvp/rsvp.js',
-      'when': 'rsvp',
       'pixy$': 'node_modules/pixy/lib/pixy/main.js',
 
       // Use react-with-addons
@@ -77,4 +76,4 @@ module.exports = {
       { test: /\.json$/, loader: 'json-loader' },,
     ]
   }
-};
+}];
