@@ -28,6 +28,10 @@ define(function(require) {
     },
 
     parse: function(payload) {
+      if (!payload.quiz_submissions) {
+        return payload;
+      }
+
       return payload.quiz_submissions[0];
     },
 

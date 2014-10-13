@@ -42,6 +42,12 @@ define([
         });
       },
 
+      renderMany: function(specs) {
+        this.get('applicationLayout', function(layout) {
+          layout.addMany(specs);
+        });
+      },
+
       update: function(props) {
         this.get('applicationLayout', function(layout) {
           layout.setProps(props);

@@ -21,7 +21,7 @@ requirejs.config({
     'shortcut': '../../vendor/js/shortcut',
     'inflection': '../../vendor/js/inflection',
     'humane': '../../vendor/js/humane',
-    'pixy': '../../vendor/js/pixy',
+    'pixy': '../../node_modules/pixy/dist/pixy',
     'rsvp': '../../vendor/js/pixy',
     'router': '../../vendor/js/pixy',
     'i18next': '../../vendor/js/i18next.amd-1.6.3',
